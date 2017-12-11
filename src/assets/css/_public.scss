@@ -1,0 +1,129 @@
+@import './_variable';
+@import './_mixin';
+
+//可以写一些公共样式
+.right-bar-wrapper {
+  position: absolute;
+  right: 0.86rem;
+  top: 3rem;
+  ul {
+    li {
+      cursor: pointer;
+      color: #0372B1;
+      margin-bottom: 0.2rem;
+      .iconfont {
+        font-size: 0.42rem;
+      }
+      &.active {
+        color: $cl-main;
+      }
+    }
+  }
+}
+
+.small-window-wrapper {
+  .window1 {
+    position: absolute;
+    right: 1.52rem;
+    top: 0.34rem;
+  }
+  .window2 {
+    position: absolute;
+    right: 1.52rem;
+    top: 33.7%;
+  }
+  .window3 {
+    position: absolute;
+    right: 1.52rem;
+    top: 63.5%;
+  }
+  .window4 {
+    position: absolute;
+    right: 6.52rem;
+    top: 63.5%;
+  }
+  .window5 {
+    position: absolute;
+    right: 11.52rem;
+    top: 63.5%;
+  }
+  .window5 {
+    position: absolute;
+    right: 11.52rem;
+
+    top: 63.5%;
+  }
+  .window6 {
+    position: absolute;
+    right: 11.52rem;
+    top: 33.7%;
+  }
+  .window7 {
+    position: absolute;
+    right: 11.52rem;
+
+    top: 0.34rem;
+  }
+}
+.big-window-wrapper{
+  box-shadow: 0 0 10px #888888;
+}
+.small-window-wrapper{
+  box-shadow: 0 0 3px #888888;
+}
+.big-wrapper {
+  padding: 0 .5rem .5rem .5rem;
+  .bigW-intro {
+    font-size: .24rem;
+    height: .9rem;
+    line-height: .9rem;
+    /*border-bottom: 1px solid #054672*/
+  }
+  .bigW-option {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: .15rem;
+    align-items: center;
+  }
+}
+h3{
+    &.small-title{
+            margin-top: -.32rem;
+            margin-bottom: .2rem;
+            float: left;
+            width: 84%;
+            text-align: center;
+            text-indent: 2em;
+            font-size: 0.18rem;
+    }
+    &.big-title{
+        font-size: 0.36rem;
+        line-height: 0.92rem;
+        text-align: center;
+        font-weight: 100;
+        margin-top: -.85rem;
+    }
+}
+.big-window-wrapper .openBig {
+	@include animation();
+	&:hover {
+		transform: scale(0.7);
+	}
+
+}
+.small-window-wrapper .openBig {
+  @include animation();
+  &:hover {
+    transform: scale(1.5);
+  }
+}
+
+.option .close .iconfont {
+	display: inline-block;
+	@include animation();
+	&:hover {
+		transform: rotate(90deg);
+		transition:.5s;
+	}
+}
+

@@ -1,0 +1,104 @@
+@import './variable';
+@import './mixin';
+
+// ***********************
+// selectTree 组件
+// ************************
+
+.el-tree {
+  cursor: default;
+  background: #071429;
+  border: none!important;
+}
+
+.scroll-wrapper {
+  color: #fff;
+}
+
+.el-tree-node__expand-icon {
+  cursor: pointer;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
+  border: 5px solid transparent;
+  border-right-width: 0;
+  border-left-color: $blue;
+  border-left-width: 5px;
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+  transition: transform .3s ease-in-out;
+}
+
+.el-checkbox__inner {
+  // display: none;
+  background: transparent;
+  border: none; // 阿里font字体
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  &:after {
+    content: "\E603";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(0deg) !important;
+    color: $blue;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// 选中样式
+.el-checkbox__inner::after {
+  border: none !important;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: transparent !important;
+  border: none !important;
+  &::after {
+    -ms-transform: rotate(0) !important;
+    color: $blue !important;
+    transform: rotate(0) !important;
+    content: "\e655";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(0deg) !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// 减号
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: transparent;
+  border-color: transparent;
+  &::before {
+    content: "\e604";
+    position: absolute;
+    display: block;
+    // margin-top: -1px;
+    background: transparent;
+    border: none;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    height: 100% !important;
+    color: $blue;
+  }
+}
+
+// 单元hover 效果
+.el-tree-node__content {
+  @include animation();
+  &:hover {
+    background: #0e335b;
+  }
+}
+
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+  background-color: #0E335B;
+}

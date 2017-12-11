@@ -1,0 +1,56 @@
+//页面布局相关样式
+
+@import './mixin';
+@import './variable';
+
+body, html{
+  font: 18px \5FAE\8F6F\96C5\9ED1, \5B8B\4F53, "Hiragino Sans GB", STHeiti, "WenQuanYi Micro Hei", "Droid Sans Fallback", SimSun, sans-serif;
+  font-family: "微软雅黑";
+  line-height: 1;
+  font-size: 18px;
+//color: $cl-text ;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  }
+
+//框架整体布局
+#app{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url(./../img/bg_01.jpg) no-repeat center;
+  background-size: cover;
+  // background-size: 100% 100%;
+  .app-content{
+    position: relative;
+    width: 96%;
+    height: calc(100% - 0.98rem);
+    margin: 0 auto;
+  }
+  .product-wrapper {
+    height: 100%;
+    box-sizing: border-box;
+    .cont {
+      width: 80%;
+      height: 100%;
+      margin-left:2.25rem;
+      box-sizing: border-box;
+      padding-bottom: 0.5rem;
+    }
+  }
+}
+
+// 右侧样式
+.right-bar-wrapper ul li .iconfont, .left-bar-wrapper ul li p .iconfont {
+  @include animation();
+  &:hover {
+    color: #00B064;
+  }
+}
+
+
+// 大弹窗 样式修改
+.big-window-header .title {
+  font-weight: bold !important;
+}

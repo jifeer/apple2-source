@@ -1,0 +1,49 @@
+//按钮样式
+@import './variable';
+@import './mixin';
+
+.btn {
+  width: 100px;
+  line-height: 40px;
+  text-align: center;
+  color: $cl-text;
+}
+
+.btn-submit {
+  background-color: $cl-bg-btn;
+}
+
+.btnGroup {
+  @include flex(space-between);
+  position: absolute;
+  bottom: 0;
+  left: 0; // position: relative;
+  width: 100%;
+  height: 0.33rem;
+  box-sizing: border-box;
+  background: #071429;
+  z-index: 1011;
+  border-top: 1px solid #025787;
+  color: #40b0fc;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0.01rem;
+    height: 0.17rem;
+    background: #025787;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+  >div {
+    flex: 1 1 1px;
+    @include flex(center, center);
+    height: 100%;
+    cursor: pointer;
+    @include animation();
+    &:hover {
+      color: #0A3BB9;
+    }
+  }
+}
