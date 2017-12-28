@@ -145,39 +145,40 @@
                   }
                 }
               })
-            }, {
-              name: '全球鲜苹果出口贸易分布',
-              type: 'map',
-              geoIndex: 1,
-              zlevel: 1,
-              showLegendSymbol: false,
-              zoom: 1.25,
-              roam: false,
-              itemStyle: {
-                normal: {
-                  // areaColor: 'rgba(122, 247, 179, 0.9)',
-                  areaColor: '#fff',
-                  borderColor: '#20508a'
-                },
-                emphasis: {
-                  areaColor: '#3952ca'
-                }
-              },
-              mapType: 'world',
-              label: {
-                normal: {
-                  show: false
-                },
-                emphasis: {
-                  show: true,
-                  formatter: function(d) {
-                    return nameMap[d.name]
-                  }
-                }
-              },
-              data: areaData
             });
           });
+          series.push({
+            name: '全球鲜苹果出口贸易分布',
+            type: 'map',
+            geoIndex: 1,
+            zlevel: 1,
+            showLegendSymbol: false,
+            zoom: 1.25,
+            roam: false,
+            itemStyle: {
+              normal: {
+                // areaColor: 'rgba(122, 247, 179, 0.9)',
+                areaColor: '#fff',
+                borderColor: '#20508a'
+              },
+              emphasis: {
+                areaColor: '#3952ca'
+              }
+            },
+            mapType: 'world',
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: true,
+                formatter: function(d) {
+                  return nameMap[d.name]
+                }
+              }
+            },
+            data: areaData
+          })
           return series
         }
         // 流向地图基本样式
@@ -188,16 +189,17 @@
             formatter: function(params) {
               let str = ''
               // 流向的
+              let unite = me.appleType === '苹果干' ? '吨' : '万吨'
               if (params.componentSubType === 'effectScatter') {
                 if (me.dir === '出口') {
-                  str = `${params.seriesName} > ${params.name} <br> 交易量：${params.value[2][0]}吨（${params.value[2][1]}%）`
+                  str = `${params.seriesName} > ${params.name} <br> 交易量：${params.data.value[2][0]}${unite}（${params.data.value[2][1]}%）`
                 } else {
-                  str = `${params.name} > ${params.seriesName} <br> 交易量：${params.value[2][0]}吨（${params.value[2][1]}%）`
+                  str = `${params.name} > ${params.seriesName} <br> 交易量：${params.data.value[2][0]}${unite}（${params.data.value[2][1]}%）`
                 }
               } else if (params.componentSubType === 'map') {
-                let unite = me.appleType === '苹果干' ? '吨' : '万吨'
+                // let unite = me.appleType === '苹果干' ? '吨' : '万吨'
                 if (params.value) {
-                  return `${me.time}年${nameMap[params.name]}<br>${me.dir}量：${params.value}${unite}`
+                  return `${me.time}年${nameMap[params.name]}<br>${me.dir}量：${params.data.value}${unite}`
                 }
               }
               return str
@@ -227,100 +229,187 @@
               }
             }
           },
-          // visualMap: {
-          //   type: 'piecewise',
-          //   min: 0,
-          //   max: 2500,
-          //   color: ['#ff3000', '#ff7800', '#ffc000', '#eaff00', '#4ad9c6', '#007acf'],
-          //   splitNumber: 6,
-          //   pieces: [{
-          //     min: 50,
-          //     label: '>50',
-          //     color: '#ff3000'
-          //   }, {
-          //     min: 30,
-          //     max: 50,
-          //     label: '30-50',
-          //     color: '#ff7800'
-          //   }, {
-          //     min: 20,
-          //     max: 30,
-          //     label: '20-30',
-          //     color: '#ffc000'
-          //   }, {
-          //     min: 10,
-          //     max: 20,
-          //     label: '10-20',
-          //     color: '#eaff00'
-          //   }, {
-          //     min: 5,
-          //     max: 10,
-          //     label: '5-10',
-          //     color: '#007acf'
-          //   }, {
-          //     min: 1,
-          //     max: 5,
-          //     label: '1-5',
-          //     color: '#4ad9c6'
-          //   }],
-          //   left: '0',
-          //   bottom: '20',
-          //   // text: ['高', '低'], // 文本，默认为数值文本
-          //   textStyle: {
-          //     color: '#fff'
-          //   },
-          //   calculable: true
-          // },
           visualMap: {
-            type: 'piecewise', //分段型。
-            splitNumber: 6,
-            inverse: false,
+            type: 'piecewise',
+            min: 0,
+            // max: 2500,
+            // color: ['#ff3000', '#ff7800', '#ffc000', '#eaff00', '#4ad9c6', '#007acf'],
+            // splitNumber: 6,
             pieces: [{
               min: 50,
               label: '>50',
-              color: '#00934E'
+              color: '#ff3000'
             }, {
               min: 30,
               max: 50,
               label: '30-50',
-              color: '#22AD6C',
-
+              color: '#ff7800'
             }, {
               min: 20,
               max: 30,
               label: '20-30',
-              color: '#10BD6C'
+              color: '#ffc000'
             }, {
               min: 10,
               max: 20,
               label: '10-20',
-              color: '#12CA6D'
-
+              color: '#eaff00'
             }, {
               min: 5,
               max: 10,
               label: '5-10',
-              color: '#41DA89'
-
+              color: '#007acf'
             }, {
               min: 1,
               max: 5,
               label: '1-5',
-              color: '#75F8B1'
+              color: '#4ad9c6'
             }],
-            left: '4%',
-            bottom: '6%',
-            itemGap: 0,
-            itemWidth: 20,
-            itemHeight: 30,
-            inRange: {
-              symbol: 'rect',
-            },
+            left: '0',
+            bottom: '20',
+            // text: ['高', '低'], // 文本，默认为数值文本
             textStyle: {
               color: '#fff'
-            }
+            },
+            calculable: true
           },
           series: handleResData(this.flowData)
+        }
+
+        const visualMapSmall = {
+          type: 'piecewise',
+          min: 0,
+          pieces: [{
+            min: 50,
+            label: '>50',
+            color: '#ff3000'
+          }, {
+            min: 30,
+            max: 50,
+            label: '30-50',
+            color: '#ff7800'
+          }, {
+            min: 20,
+            max: 30,
+            label: '20-30',
+            color: '#ffc000'
+          }, {
+            min: 10,
+            max: 20,
+            label: '10-20',
+            color: '#eaff00'
+          }, {
+            min: 5,
+            max: 10,
+            label: '5-10',
+            color: '#007acf'
+          }, {
+            min: 1,
+            max: 5,
+            label: '1-5',
+            color: '#4ad9c6'
+          }],
+          left: '0',
+          bottom: '20',
+          // text: ['高', '低'], // 文本，默认为数值文本
+          textStyle: {
+            color: '#fff'
+          },
+          calculable: true
+        }
+
+        const visualMapBig = {
+          type: 'piecewise',
+          min: 0,
+          pieces: [{
+            min: 20000,
+            label: '>20000',
+            color: '#ff3000'
+          }, {
+            min: 10000,
+            max: 20000,
+            label: '10000-20000',
+            color: '#ff7800'
+          }, {
+            min: 3000,
+            max: 10000,
+            label: '3000-10000',
+            color: '#ffc000'
+          }, {
+            min: 1000,
+            max: 3000,
+            label: '1000-3000',
+            color: '#eaff00'
+          }, {
+            min: 500,
+            max: 1000,
+            label: '500-1000',
+            color: '#007acf'
+          }, {
+            min: 1,
+            max: 500,
+            label: '1-500',
+            color: '#4ad9c6'
+          }],
+          left: '0',
+          bottom: '20',
+          // text: ['高', '低'], // 文本，默认为数值文本
+          textStyle: {
+            color: '#fff'
+          },
+          calculable: true
+        }
+
+        const visualMapGanJinkou = {
+          type: 'piecewise',
+          min: 0,
+          pieces: [{
+            min: 4000,
+            label: '>4000',
+            color: '#ff3000'
+          }, {
+            min: 3000,
+            max: 4000,
+            label: '3000-4000',
+            color: '#ff7800'
+          }, {
+            min: 2000,
+            max: 3000,
+            label: '2000-3000',
+            color: '#ffc000'
+          }, {
+            min: 1000,
+            max: 2000,
+            label: '1000-2000',
+            color: '#eaff00'
+          }, {
+            min: 500,
+            max: 1000,
+            label: '500-1000',
+            color: '#007acf'
+          }, {
+            min: 1,
+            max: 500,
+            label: '1-500',
+            color: '#4ad9c6'
+          }],
+          left: '0',
+          bottom: '20',
+          // text: ['高', '低'], // 文本，默认为数值文本
+          textStyle: {
+            color: '#fff'
+          },
+          calculable: true
+        }
+
+        if (this.appleType === '苹果干') {
+          if (this.dir === '出口') {
+            option.visualMap = visualMapGanJinkou
+          } else {
+            option.visualMap = visualMapBig
+          }
+        } else {
+          option.visualMap = visualMapSmall
         }
 
         this.myChart.setOption(option, true)

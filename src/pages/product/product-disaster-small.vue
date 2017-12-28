@@ -64,7 +64,7 @@ this.renderChart()
   @import "./../../assets/css/_mixin.scss";
 
   .small-wrapper {
-    height: 100%;
+    height: 90%;
     padding: 0 0.2rem;
     .disaster-map-wrapper {
       height: 100%;

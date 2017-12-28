@@ -5,7 +5,7 @@
       <selectDiy :data="selectDiyData" @change="_changeAppleType" class="marginRight"></selectDiy>
       <selectBtn :btnData="btnData" @changeBtn="_changeExportType" :btnIndex.sync="btnIndex" class="marginRight"></selectBtn>
       <!-- <selectBtn :btnData="monthOrYear" @changeBtn="_changeTimeType" :btnIndex.sync="btnIndex2" class="marginRight"></selectBtn> -->
-      <explain>数据来源于联合国商品贸易统计数据库，贸易量起始于1990年，贸易流向数据起始于1997年。</explain>
+      <explain>数据起始于1988年，贸易流向数据起始于1997年，源于联合国商品贸易统计数据库。</explain>
     </div>
     <div class="large-chart">
       <div class="large-chart-left">
@@ -45,7 +45,7 @@
         timeType: 'year',
         isHideChina: true,
 
-        selectDiyData: ['鲜苹果', '苹果汁', '苹果干'],
+        selectDiyData: ['鲜苹果', '苹果干', '苹果汁'],
         rankingEchartToggle: true,
 
         // 时间轴参数
@@ -121,7 +121,6 @@
       // 时间轴参数
       _scorllTime(time) {
         this.scrollTime = time
-        this.$emit('bigFiveTime', time)
       },
       //获取地图数据
       // 获取 第一个 大弹窗 地图数据 与 柱状图数据
@@ -190,6 +189,7 @@
           if (newVal.TIME_ID && newVal.NAME && newVal.PRODUCT) {
             this.getPopFourData()
             this.getFlowData()
+            this.$emit('bigFiveTime', newVal)
           }
         },
         deep: true

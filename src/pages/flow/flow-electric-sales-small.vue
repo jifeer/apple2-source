@@ -43,7 +43,8 @@
         this.$xhr.get('apple/circulation/getDsChannelSaleAys', {
           params: {
             timeType: 'month',
-            years: str
+            years: str,
+            appleType:'全部'
           }
         }).then((res) => {
           this.echartsData.xdata = res.data.time,

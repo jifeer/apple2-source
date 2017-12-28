@@ -196,7 +196,25 @@
             normal: {
               color: '#33A0EA'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         },{
           type: 'bar',
           barMaxWidth: 16,
@@ -221,7 +239,25 @@
             normal: {
               color: '#119368'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         },{
           type: 'bar',
           barMaxWidth: 16,
@@ -246,7 +282,25 @@
             normal: {
               color: '#C7C516'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         },{
           type: 'bar',
           barMaxWidth: 16,
@@ -261,7 +315,25 @@
             normal: {
               color: '#CF7013'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         }, {
           type: 'line',
           symbolSize: 0,
@@ -271,7 +343,25 @@
             normal: {
               color: '#CF7013'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         },{
           type: 'bar',
           barMaxWidth: 16,
@@ -296,7 +386,25 @@
             normal: {
               color: '#AD3335'
             }
-          }
+          },
+          markLine: {
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            symbolSize: 0,
+            lineStyle: {
+              normal: {
+                color: 'red',
+                type: 'dotted',
+                width: 1
+              }
+            },
+            data: [{
+              yAxis: 0,
+            }]
+          },
         },]
 
         let resData = deepcopy(this.data)
@@ -318,6 +426,9 @@
             }
           })
         })
+
+        // 月度的时候没有变化率
+        option.yAxis[1].name = this.timeType === 'year' ?  '变化率（%）' : ''
 
         // 混合数据与样式
         resData.forEach((item, index) => {

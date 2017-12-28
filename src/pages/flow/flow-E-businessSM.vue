@@ -24,9 +24,7 @@
           },
           series: [{
             symbolSize: function (val) {
-              //console.log(val)
               return Math.max(val[2] / 300, 8);
-
             }
           }]
 
@@ -37,17 +35,7 @@
       }
     },
     mounted() {
-
       this.renderChart()
-
-      /*let that = this
-      window.onresize = () => {
-          return (() => {
-              window.screenWidth = document.body.clientWidth
-              that.screenWidth = window.screenWidth
-              that.renderMap()
-          })()
-      }*/
     },
     computed: {
       flowSalesParms() {

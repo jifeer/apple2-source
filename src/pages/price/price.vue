@@ -36,26 +36,26 @@
         <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="全国富士苹果批发价格时滞性" @openBigWindow="openBigWindow">
           <delaySmall></delaySmall>
         </smallWindow>
-        <smallWindow class="window5" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5" title="全国鲜苹果各环节价格比较" @openBigWindow="openBigWindow">
+        <smallWindow class="window5" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5" title="全国富士苹果各环节价格比较" @openBigWindow="openBigWindow">
           <trendSmall></trendSmall>
         </smallWindow>
         <smallWindow class="window6" @closeWindow="closeWindow" :isShow="window6" whichWindow="window6" title="全国富士苹果批发价格影响因素" @openBigWindow="openBigWindow">
           <elementSmall></elementSmall>
         </smallWindow>
-        <smallWindow class="window7" @closeWindow="closeWindow" :isShow="window7" whichWindow="window7" title="全国富士苹果批发价格预测及涨跌预警" @openBigWindow="openBigWindow">
+        <smallWindow class="window7" @closeWindow="closeWindow" :isShow="window7" whichWindow="window7" title="全国富士苹果批发价格预测" @openBigWindow="openBigWindow">
           <Warningsmall></Warningsmall>
         </smallWindow>
       </div>
     </div>
     <div class="right-bar-wrapper">
       <ul>
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-xiaoliang"></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-diqiu1"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-ditu"></i></li>
-        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-jiazai"></i></li>
-        <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-jiage1"></i></li>
-        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-gongqiu"></i></li>
-        <li :class="{'active':active7}" @click="showSmall('window7')"><i class="iconfont icon-tongji"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-jiage-jiagezoushi"></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-jiage-jijiexingguilv"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-jiage-diquxing"></i></li>
+        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-jiage-shizhixing"></i></li>
+        <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-jiage-gehuanjiejiage"></i></li>
+        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-jiage-yingxiangyinsu"></i></li>
+        <li :class="{'active':active7}" @click="showSmall('window7')"><i class="iconfont icon-jiage-zhangdiefuyuce"></i></li>
       </ul>
     </div>
     <bigWindow :title="selectName" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
@@ -67,16 +67,16 @@
     <bigWindow title="全国富士苹果批发价格地区性传导机制" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <conductionEchartBig ref="big3"></conductionEchartBig>
     </bigWindow>
-    <bigWindow title="全国富士苹果批发价格时滞性" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <delayBig></delayBig>
+    <bigWindow :title="bigTitle4" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <delayBig @changeTitle="changeTitle"></delayBig>
     </bigWindow>
-    <bigWindow title="全国鲜苹果各环节价格趋势比较" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <trendBig></trendBig>
+    <bigWindow :title="appleType" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <trendBig @changeAppleType="changeAppleType"></trendBig>
     </bigWindow>
     <bigWindow title="全国富士苹果批发价格影响因素" :isShow="bigwindow6" whichWindow="bigwindow6" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <elementBig></elementBig>
     </bigWindow>
-    <bigWindow title="全国富士苹果批发价格预测及涨跌预警" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+    <bigWindow title="全国富士苹果批发价格预测" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <Warningbig></Warningbig>
     </bigWindow>
   </div>
@@ -85,7 +85,7 @@
   import selectBtn from 'components/selectBtn/selectBtn'
   import explain from 'components/explain/explain';
 
-  import { rightBarMixin } from 'assets/js/common.js'
+  import {rightBarMixin} from 'assets/js/common.js'
 
   import Mapecharts from 'pages/price/echarts/price-index.vue'
   import rankingEchart from './echarts/rankingBar.vue'
@@ -105,7 +105,7 @@
   import trendSmall from './price-trend-small.vue'
   import trendBig from './price-trend-big.vue'
 
-  import { convertData, geoCoordMap, provinceList } from 'assets/js/common'
+  import {convertData, geoCoordMap, provinceList} from 'assets/js/common'
   //import axios from 'axios';
   export default {
     mixins: [rightBarMixin],
@@ -113,11 +113,12 @@
     data() {
       return {
         btnData: ['日度', '周度', '月度', '年度'],
-        eText: '数据来源于农业部。',
+        eText: '数据级别为省级，来源于农业部。',
         isHide: false,
         proviceName: '山东',
         selectName: '',
         btnIndex: 3,
+        warningTitle: '',
         echartsData: {
           data: [],
           option: {}
@@ -128,10 +129,12 @@
           option: {}
 
         },
-        rankingEchartToggle: false,
+        rankingEchartToggle: true,
         isShowArea: '',
         titleDate: '',
-        TIME_ID: 'year'
+        appleType: '全国富士苹果各环节价格趋势比较',
+        TIME_ID: 'year',
+        bigTitle4: '',        // 大弹窗5标题
       }
     },
     computed: {
@@ -165,9 +168,23 @@
         }
         this.TIME_ID = _timeType;
       },
-      changeName(name) {
-        this.selectName = name + '富士苹果批发价格走势及涨跌情况'
+      changeName(params) {
+        let desc = ''
+        if (params.areas !== '610000') {
+          desc = parseInt(params.grade) === 1 ? '批发价' : '出库价'
+        } else {
+          desc = '出库价'
+        }
+
+        this.selectName = `${params.areasName}${params.appleType}${desc}走势及涨跌情况`
       },
+      changeAppleType(type) {
+        this.appleType = '全国富士苹果各环节价格趋势比较'
+      },
+      /*changeTitleapple(type){
+        this.warningTitle = '全国'+ type +'批发价格预测及涨跌预警'
+      },*/
+
       /*rankingBar() {
         this.rankingEchart.yAxisData = ['山东', '陕西', '山西', '河北', '河南', '浙江', '江苏', '甘肃', '湖北', '湖南'];
         this.rankingEchart.data = [200, 189, 155, 132, 166, 178, 198, 132, 145, 152];
@@ -214,7 +231,9 @@
           console.log(err)
         })
       },
-
+      changeTitle(area) {
+        this.bigTitle4 = `${area}富士苹果批发价格时滞性`
+      },
       /*      renderMap() {
        let data = [
        {name: "上海", value: 102.76},
@@ -351,7 +370,6 @@
       color: #00B064;
     }
     width: 100%;
-    text-align: tenter;
     display: flex;
     justify-content: center;
   }
@@ -368,6 +386,7 @@
     top: 2.5rem;
     right: 1.8rem;
     width: 3.13rem;
+    height: 3.75rem;
     .rank-title {
       height: 0.6rem;
       line-height: 0.6rem;

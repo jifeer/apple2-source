@@ -6,10 +6,11 @@
 
 <script>
   import {extend, $, resizeMixin} from 'assets/js/common'
-  export default{
+
+  export default {
     name: "costDetails",
     mixins: [resizeMixin],
-    data(){
+    data() {
       return {
         option: null,
         isShow: true,
@@ -22,13 +23,13 @@
 
         }
       },
-      aa: {
+      units: {
         type: Boolean,
         default: true
       },
       pieTitleInfo: {
         type: Object,
-        default: ()=>{
+        default: () => {
 
         }
       }
@@ -49,7 +50,7 @@
     },
 
     methods: {
-      initOption(){
+      initOption() {
         if (Object.keys(this.cdPieData).length) {
           this.option = {
             tooltip: {
@@ -64,7 +65,7 @@
               formatter: (params) => {
 //			                	console.log(params)
                 return "<div style='text-align:left'>" + `${params.marker}${params.name}<br/>
-			                	        ${params.value}${this.aa == true ? "元/亩" : "元/公斤"}<br/>
+			                	        ${params.value}${this.units == true ? "元/亩" : "元/公斤"}<br/>
 			                	        ${params.percent}%` + "</div>"
               }
             },
@@ -107,17 +108,17 @@
 
         }
       },
-      initChart(){
+      initChart() {
         //如果有新的配置项的变化 深度拷贝
         if (Object.keys(this.cdPieData.option).length) {
           this.option = $.extend(true, this.option, this.cdPieData.option)
         }
-        let aa = []
+        let list = []
         let value = []
 //          	this.cdPieData.data.forEach((val,index,arr)=>{
 //          		value.push(val.value)
 //          	})
-        if(this.cdPieData.data.length){
+        if (this.cdPieData.data.length) {
           for (let i = 0; i < this.cdPieData.data.length; i++) {
             value.push(this.cdPieData.data[i].value)
           }
@@ -130,7 +131,7 @@
 //          		console.log("待定值"+val.value)
             if (value[7] && val.value * 1 < value[7] * 1) {
 //          			console.log("通过值"+val.value)
-              aa.push({
+              list.push({
                 name: arr[index].name,
                 value: arr[index].value,
                 label: {
@@ -155,7 +156,7 @@
               })
 
             } else {
-              aa.push({
+              list.push({
                 name: arr[index].name,
                 value: arr[index].value,
                 label: {
@@ -180,8 +181,8 @@
               })
             }
           })
-//          	console.log(aa)
-          this.option.series[0].data = aa
+//          	console.log(list)
+          this.option.series[0].data = list
         } else {
           this.option.series[0].data = []
         }
@@ -192,10 +193,10 @@
         this.myChart.setOption(this.option, true);
       },
 
-      _windowResizeHandler(){
+      _windowResizeHandler() {
         this.myChart.resize()
       },
-      _destroyEchart(){
+      _destroyEchart() {
         this.myChart.dispose()
       }
     }

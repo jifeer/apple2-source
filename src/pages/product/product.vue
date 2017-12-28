@@ -1,59 +1,38 @@
 <template>
-
   <div class="product-wrapper">
     <leftBar></leftBar>
     <div class="cont">
-
       <div class="procuct-title-info">
-
-
         <h2>{{btnIndexCountry ? '全球苹果' : '全国苹果优势'}}产区分布</h2>
-
-
       </div>
-
       <p class="btnwrapper">
         <selectBtn :btnIndex.sync='btnIndexCountry' :btnData="btnData" @changeBtn="changeBtn"></selectBtn>
-
-        <selectBtn :btnIndex.sync='btnIndexRankingCache' :btnData="btnDataRanking"
-                   @changeBtn="changeBtnRanking"></selectBtn>
-
+        <selectBtn :btnIndex.sync='btnIndexRankingCache' :btnData="btnDataRanking" @changeBtn="changeBtnRanking"></selectBtn>
         <explain :eText="eText"></explain>
       </p>
-
       <div class="map-echarts-wrapper">
-
         <div class="map">
           <!--地图标题-->
           <div class="map-title">
-            <p>{{subTitle.year}}年{{btnIndexCountry ? '全球' : '全国'}}苹果{{btnIndexRanking ? '产量' : '种植面积'}}<span
-              style="color: #00af67">{{subTitle.value}}</span>{{btnIndexRanking ? '万吨' : '万亩'}}</p>
+            <p>{{subTitle.year}}年{{btnIndexCountry ? '全球' : '全国'}}苹果{{btnIndexRanking ? '产量' : '种植面积'}}<span style="color: #fff">{{subTitle.value}}</span>{{btnIndexRanking ? '万吨' : '万亩'}}</p>
           </div>
-
           <div class="toggle-map-wrapper map-china" v-if="showChina">
             <!--中国地图visualMap-->
             <ul class="visual-map">
-              <li v-for="(item, index) in visualMap" :class="{unchecked: item.active}"
-                  @click="_toggle(item.data, index)">
+              <li v-for="(item, index) in visualMap" :class="{unchecked: item.active}" @click="_toggle(item.data, index)">
                 <span>{{item.data[1] ? (item.data[0] + '-' + item.data[1]) : '>' + item.data[0]}}</span></li>
             </ul>
-
             <!--中国地图组件-->
-            <mapChina ref="mapchina" :echartsData="echartsDataChina" :mapColor="mapColor"
-                      @showInfo="showInfo"></mapChina>
-
+            <mapChina ref="mapchina" :echartsData="echartsDataChina" :mapColor="mapColor" @showInfo="showInfo"></mapChina>
           </div>
-
           <!--世界地图组件-->
           <div class="toggle-map-wrapper map-world" v-if="showWorld">
             <mapWorld :echartsData="echartsDataWorld"></mapWorld>
           </div>
-
           <!--时间轴组件-->
           <div class="timeScroll-wrapper">
             <timeScroll :scorllOption="scorllOption" @scorllTime="_scorllTime"></timeScroll>
           </div>
-
           <!--排名-->
           <div class="rank-echarts-wrapper">
             <!--<p class="rank-btn">
@@ -61,13 +40,11 @@
                          @changeBtn="changeBtnRanking"></selectBtn>
             </p>-->
             <div class="rank-title">{{rankingTitle}}</div>
-            <ranking :echartsData="rankingEchart" v-if="rankingEchartToggle"
-                     @tipHighLight="tipHighLight"></ranking>
+            <ranking :echartsData="rankingEchart" v-if="rankingEchartToggle" @tipHighLight="tipHighLight"></ranking>
             <div class="show-button" :class="{'active':isHide}">
               <i class="iconfont icon-xiangxia" @click="hideRankecharts"></i>
             </div>
           </div>
-
         </div>
         <!--<div class="map" v-if="showChina">
           &lt;!&ndash;中国地图标题&ndash;&gt;
@@ -100,7 +77,6 @@
           </div>
 
         </div>-->
-
         <!--<div class="map" v-if="showWorld">
           <div class="map-title">
             <p>{{subTitleW.year}}年全球苹果{{subTitleW.type}}<span style="color: #00af67">{{subTitleW.value}}</span>{{btnIndexWorld?'万吨':'万亩'}}</p>
@@ -123,106 +99,88 @@
             </div>
           </div>
         </div>-->
-
       </div>
-
-
       <div class="small-window-wrapper">
-        <smallWindow class="window1"
-                     :isShow="window1"
-                     whichWindow="window1"
-                     @closeWindow="closeWindow"
-                     @openBigWindow="openBigWindow"
-                     title="全国苹果种植面积变化趋势">
+        <smallWindow class="window1" :isShow="window1" whichWindow="window1" @closeWindow="closeWindow" @openBigWindow="openBigWindow" title="全国苹果种植面积变化趋势">
           <productHisSmall ref="small1"></productHisSmall>
         </smallWindow>
-
         <!--<smallWindow class="window2" @closeWindow="closeWindow" :isShow="window2"  whichWindow="window2" title="全国苹果园占果园种植面积比重走势" @openBigWindow="openBigWindow">
           <productAreaSmall ref="small2"></productAreaSmall>
         </smallWindow>-->
-
-        <smallWindow class="window2" @closeWindow="closeWindow" :isShow="window2" whichWindow="window2"
-                     title="全国苹果种植面积增减幅排名" @openBigWindow="openBigWindow">
+        <smallWindow class="window2" @closeWindow="closeWindow" :isShow="window2" whichWindow="window2" title="全国苹果种植面积增减幅排名" @openBigWindow="openBigWindow">
           <productRisefallSmall></productRisefallSmall>
         </smallWindow>
-
-        <smallWindow class="window3" @closeWindow="closeWindow" :isShow="window3" whichWindow="window3" title="气象灾害监测"
-                     @openBigWindow="openBigWindow">
+        <smallWindow class="window3" @closeWindow="closeWindow" :isShow="window3" whichWindow="window3" title="气象灾害监测" @openBigWindow="openBigWindow">
           <productDisasterSmall></productDisasterSmall>
         </smallWindow>
-        <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="单产预测"
-                     @openBigWindow="openBigWindow">
+        <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="单产预测" @openBigWindow="openBigWindow">
           <productYeildSmall ref="small5"></productYeildSmall>
         </smallWindow>
-        <smallWindow class="window1" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5"
-                     title="全球苹果种植面积变化趋势" @openBigWindow="openBigWindow">
+        <smallWindow class="window5" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5" title="我国苹果主产区套袋量监测" @openBigWindow="openBigWindow">
+          <productAppleBagSmall></productAppleBagSmall>
+        </smallWindow>
+        <smallWindow class="window1" @closeWindow="closeWindow" :isShow="window6" whichWindow="window6" title="全球苹果种植面积变化趋势" @openBigWindow="openBigWindow">
           <productWorldTrendSmall></productWorldTrendSmall>
         </smallWindow>
         <!--<smallWindow class="window2" @closeWindow="closeWindow" :isShow="window6"  whichWindow="window6" title="全球苹果园占果园种植面积比重走势" @openBigWindow="openBigWindow">
           <productWorldAreaSmall></productWorldAreaSmall>
         </smallWindow>-->
-        <smallWindow class="window2" @closeWindow="closeWindow" :isShow="window6" whichWindow="window6"
-                     title="全球苹果种植面积增减幅排名" @openBigWindow="openBigWindow">
+        <smallWindow class="window2" @closeWindow="closeWindow" :isShow="window7" whichWindow="window7" title="全球苹果种植面积增减幅排名" @openBigWindow="openBigWindow">
           <productWorldRisefallSmall></productWorldRisefallSmall>
         </smallWindow>
       </div>
     </div>
     <div class="right-bar-wrapper">
       <ul v-if="showChina">
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-lishi"></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-tongji1"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-tianqi"></i></li>
-        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-xiaoliang"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-shengchan-lishiyanbian"></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-shengchan-mianjizengjianfu"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-shengchan-zaihaijiance"></i></li>
+        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-shengchan-danchanyuce"></i></li>
+        <!-- <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-shengchan-taodaishuaijiance"></i></li> -->
       </ul>
       <ul v-if="showWorld">
-        <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-lishi"></i></li>
-        <!--<li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-line-chart"></i></li>-->
-        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-tongji1"></i></li>
+        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-shengchan-lishiyanbian"></i></li>
+        <li :class="{'active':active7}" @click="showSmall('window7')"><i class="iconfont icon-shengchan-mianjizengjianfu"></i></li>
       </ul>
     </div>
-    <bigWindow title="苹果生产及占水果比重走势" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="苹果生产及占水果比重走势" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productHis ref="big1"></productHis>
     </bigWindow>
     <!--<bigWindow title="全国苹果占水果比重走势" :isShow="bigwindow2"  whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productArea ref="big2"></productArea>
     </bigWindow>-->
-    <bigWindow title="" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productRisefall></productRisefall>
     </bigWindow>
-    <bigWindow title="" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
-
+    <bigWindow title="" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <!---->
       <productDisaster></productDisaster>
     </bigWindow>
-    <bigWindow title="单产预测" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="单产预测" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productYeild></productYeild>
     </bigWindow>
-    <bigWindow title="苹果生产及占水果比重走势" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <productAppleBag></productAppleBag>
+    </bigWindow>
+    <bigWindow title="苹果生产及占水果比重走势" :isShow="bigwindow6" whichWindow="bigwindow6" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productWorldTrend></productWorldTrend>
     </bigWindow>
     <!--<bigWindow title="全球苹果占水果比重走势" :isShow="bigwindow6"  whichWindow="bigwindow6" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productWorldArea></productWorldArea>
     </bigWindow>-->
-    <bigWindow title="" :isShow="bigwindow6" whichWindow="bigwindow6" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productWorldRisefall></productWorldRisefall>
     </bigWindow>
-
     <!--弹出层地图-->
-    <bigWindow title="" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow"
-               @closeBigWindow="closeBigWindow">
+    <bigWindow title="" :isShow="bigwindow8" whichWindow="bigwindow8" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <productMapTrend :popAreaInfo="popAreaInfo"></productMapTrend>
     </bigWindow>
-
+    <!--气象灾害地图弹出层-->
+    <bigWindow title="单产预测" :isShow="bigwindow9" whichWindow="bigwindow9" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <productYeildSingle :paramsdata="paramsdata"></productYeildSingle>
+    </bigWindow>
   </div>
-
 </template>
-
 <script>
   import productHisSmall from 'pages/product/product-historical-evolution-small';
   import productHis from 'pages/product/product-historical-evolution';
@@ -232,6 +190,7 @@
   import productRisefall from 'pages/product/product-risefall-ranking';
   import productYeildSmall from 'pages/product/product-yeild-forecast-small';
   import productYeild from 'pages/product/product-yeild-forecast';
+  import productYeildSingle from 'pages/product/product-yeild-forecast-single';
   import productMapTrend from 'pages/product/product-map-trend';
 
   import productWorldTrendSmall from 'pages/product/product-world-plant-trend-small';
@@ -243,6 +202,9 @@
   import productDisasterSmall from 'pages/product/product-disaster-small';
   import productDisaster from 'pages/product/product-disaster';
 
+  import productAppleBag from 'pages/product/product-apple-bag';
+  import productAppleBagSmall from 'pages/product/product-apple-bag-small';
+
   import mapChina from './echarts/product-map-china'
   import mapWorld from 'pages/product/echarts/product-map-world'
 
@@ -252,7 +214,7 @@
   import explain from 'components/explain/explain'
   import timeScroll from 'components/timeScroll/timeScroll'
 
-  import {rightBarMixin, resizeMixin} from 'assets/js/common.js'
+  import { rightBarMixin, resizeMixin } from 'assets/js/common.js'
 
   export default {
     mixins: [rightBarMixin, resizeMixin],
@@ -274,7 +236,7 @@
         // 种植面积和产量对应的查询参数
         btnType: ['121689', '112716'],
         // 文字说明
-        textInfo: [`数据来源于农业部，起始于1982年，级别为县级。`, `数据来源于FAO，起始于1990年，级别为全球、各国。`],
+        textInfo: [`数据起始于1982年，级别为县级，来源于农业部。`, `数据来源于FAO，起始于1990年，级别为全球、各国。`],
         // 世界的文字说明
         // 排名小图标切换
         isHide: false,
@@ -285,10 +247,10 @@
         rankingEchartToggle: false,
 
         // 中国地图的legend 分段数据
-        visualMap: [{active: false, data: [150, 300]}, {active: false, data: [120, 149]}, {
+        visualMap: [{ active: false, data: [150, 300] }, { active: false, data: [120, 149] }, {
           active: false,
           data: [90, 119]
-        }, {active: false, data: [60, 89]}, {active: false, data: [30, 59]}, {active: false, data: [0, 29]}],
+        }, { active: false, data: [60, 89] }, { active: false, data: [30, 59] }, { active: false, data: [0, 29] }],
         // 和vaisualMap 的data一样，传入地图显示和legend对应的颜色
         mapColor: [],
         // 中国地图的数据
@@ -348,13 +310,17 @@
           // 数据类型 种植面积/产量/单产  default: 121689 || 112716
           type: '121689'
         },
+        // 气象灾害弹出层传递参数
+        paramsdata: {
+          areaname: ''
+        },
       }
     },
     created() {
 
     },
 
-    mounted(){
+    mounted() {
 
       this.$nextTick(() => {
         this.getDOMStyle()
@@ -364,7 +330,7 @@
 
     computed: {
       // 计算弹窗 title 的名字
-      popTittle: function () {
+      popTittle: function() {
         return this.popAreaInfo[0] + '苹果生产历史演变及占水果的比重走势'
       },
 
@@ -400,14 +366,14 @@
 
       // 计算排名处的标题
       rankingTitle: {
-        get: function () {
+        get: function() {
           let dw = ['万亩', '万吨']
           let county = ['全国', '全球']
           // 要'全国'，'全球'称就打开下面一行注释掉的
           // return `${county[this.btnIndexCountry]}${this.btnDataRanking[this.btnIndexRanking]}排名（${dw[this.btnIndexRanking]}）`
           return `${this.btnDataRanking[this.btnIndexRanking]}排名（${dw[this.btnIndexRanking]}）`
         },
-        set: function (val) {
+        set: function(val) {
           // 奇了怪了，如果不设置setter会报错 版本问题 参见 state.js
           console.log(val)
         }
@@ -428,7 +394,7 @@
       },
 
       apiChinaParamsR(newVal) {
-        if (newVal.TIME_ID && newVal.type && !this.btnIndexCountry) {
+        if (newVal.TIME_ID && newVal.type && !this.btnIndexCountry && this.rankingEchartToggle) {
           this.rankingBarChina()
 
         }
@@ -442,7 +408,7 @@
       },
 
       apiWorldParamsR(newVal) {
-        if (newVal.TIME_ID && newVal.type && this.btnIndexCountry) {
+        if (newVal.TIME_ID && newVal.type && this.btnIndexCountry && this.rankingEchartToggle) {
           this.rankingBarWorld()
         }
       }
@@ -457,7 +423,7 @@
             ...this.apiChinaParams
           }
         }).then((res) => {
-//          console.log(res)
+          //          console.log(res)
           // 地图数据
           this.echartsDataChina.data = res.data.mapData
           // 标题需要展示的数据
@@ -475,7 +441,14 @@
             this.mapColor = this.getVisualMap(res.data.min, res.data.max)
 
           } else {
-            let v = [[100,], [50, 100], [30, 50], [10, 30], [5, 10], [0, 5]]
+            let v = [
+              [100, ],
+              [50, 100],
+              [30, 50],
+              [10, 30],
+              [5, 10],
+              [0, 5]
+            ]
             this.visualMap.forEach((item, index) => {
               item.data = v[index]
             })
@@ -493,10 +466,10 @@
       // 获取世界地图数据
       getWorldChartData() {
         this.$xhr.get('apple/production/AllTheMap', {
-          params: {
-            ...this.apiWorldParams
-          }
-        })
+            params: {
+              ...this.apiWorldParams
+            }
+          })
           .then((res) => {
             // 地图数据
             this.echartsDataWorld.data = res.data.data
@@ -516,13 +489,13 @@
       },
 
       // 渲染中国的排名列表
-      rankingBarChina(){
+      rankingBarChina() {
         // 请求后台数据
         this.$xhr.get(`/apple/production/ranking?t=${Date.now()}`, {
-          params: {
-            ...this.apiChinaParamsR
-          }
-        })
+            params: {
+              ...this.apiChinaParamsR
+            }
+          })
           .then((res) => {
             this.rankingEchart.data = res.data.data;
             this.rankingEchart.yAxisData = res.data.yAxisData
@@ -533,13 +506,13 @@
       },
 
       // 渲染世界的排名列表
-      rankingBarWorld(){
+      rankingBarWorld() {
         // get data from server
         this.$xhr.get(`/apple/production/Qranking`, {
-          params: {
-            ...this.apiWorldParamsR,
-          }
-        })
+            params: {
+              ...this.apiWorldParamsR,
+            }
+          })
           .then((res) => {
             this.rankingEchart.data = res.data.data;
             this.rankingEchart.yAxisData = res.data.yAxisData
@@ -550,7 +523,7 @@
       },
 
       //切换全国和全球
-      changeBtn(val){
+      changeBtn(val) {
         if (val === '中国' && !this.showChina) {
           this.showWorld = false;
           this.showChina = true;
@@ -563,7 +536,7 @@
             needDefault: true,
             url: 'apple/production/ChinaTime'
           }
-//          this.getChinaChartData()
+          //          this.getChinaChartData()
 
         } else if (val === '全球' && !this.showWorld) {
           this.showChina = false;
@@ -590,7 +563,7 @@
               url: 'apple/production/AllMapTime?type=112716'
             }
           }
-//          this.getWorldChartData()
+          //          this.getWorldChartData()
           // 重置中国地图的legend选中状态
           this.resetMapLegend()
 
@@ -616,7 +589,7 @@
             this.paramsC.type = '112716'
             this.paramsCR.type = '112716'
           }
-// 重置中国地图的legend选中状态
+          // 重置中国地图的legend选中状态
           this.resetMapLegend()
         } else if (this.btnIndexCountry == 1) {
           if (val === '种植面积') {
@@ -689,11 +662,11 @@
       },
 
       // 切换中国排名图表的展开和收起
-      hideRankecharts(){
+      hideRankecharts() {
         this.rankingEchartToggle = !this.rankingEchartToggle
         if (this.rankingEchartToggle) {
           document.getElementsByClassName("rank-echarts-wrapper")[0].style.height = '4.74rem'
-//          document.getElementsByClassName("rank-echarts-wrapper")[0].style.height = '5.87rem'
+          //          document.getElementsByClassName("rank-echarts-wrapper")[0].style.height = '5.87rem'
           // 根据btn的index来渲染不同的图表
           if (this.btnIndexCountry == 0) {
             if (this.btnIndexRanking === 0) {
@@ -728,7 +701,7 @@
         // val ['榆中县', '2012', '121689']
         this.popAreaInfo = val
         // 显示窗口
-        this.bigwindow7 = true;
+        this.bigwindow8 = true;
       },
 
       // 中国地图tip联动高亮
@@ -759,7 +732,7 @@
       },
 
       // 时间轴切换事件事件
-      _scorllTime(time){
+      _scorllTime(time) {
         // 这句话是为了处理时间轴线还没有返回的情况下就拿错误的日期去请求数据了！！！
         this.btnIndexRanking = this.btnIndexRankingCache
         this.paramsC.time = time
@@ -832,8 +805,8 @@
       timeScroll,
       productHisSmall,
       productHis,
-//      productAreaSmall,
-//      productArea,
+      //      productAreaSmall,
+      //      productArea,
       productDisasterSmall,
       productDisaster,
 
@@ -841,19 +814,21 @@
       productRisefall,
       productYeildSmall,
       productYeild,
+      productYeildSingle,
       productMapTrend,
       productWorldTrendSmall,
       productWorldTrend,
       productWorldRisefallSmall,
       productWorldRisefall,
-//      productWorldAreaSmall,
-//      productWorldArea
-
+      //      productWorldAreaSmall,
+      //      productWorldArea
+      productAppleBag,
+      productAppleBagSmall
     }
 
   };
-</script>
 
+</script>
 <style lang="scss">
   @import "./../../assets/css/_variable.scss";
   @import "./../../assets/css/_mixin.scss";
@@ -879,7 +854,8 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    & > div:nth-child(1), & > div:nth-child(2) {
+    &>div:nth-child(1),
+    &>div:nth-child(2) {
       margin-right: 0.2rem;
     }
   }
@@ -1012,14 +988,12 @@
           i {
             display: inline-block;
             transition: all .5s ease;
-
           }
         }
         .show-button:hover {
           color: #0174af;
         }
       }
-
     }
   }
 
@@ -1035,7 +1009,11 @@
   .right-bar-wrapper {
     ul {
       text-align: center;
-      li:nth-child(1), li:nth-child(2), li:nth-child(3), li:nth-child(4) {
+      li:nth-child(1),
+      li:nth-child(2),
+      li:nth-child(3),
+      li:nth-child(4),
+      li:nth-child(5) {
         .iconfont {
           font-size: $size*50rem;
           &:hover {
@@ -1049,4 +1027,5 @@
   echarts {
     width: 10rem;
   }
+
 </style>

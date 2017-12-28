@@ -32,7 +32,6 @@
     },
     mounted() {
     	this.myChart = this.$echarts.init(this.$refs.topBarline)
-      this.initChart()
     },
     computed: {
 
@@ -59,7 +58,7 @@
             backgroundColor: '#099d4f',
             formatter:(params)=>{
 //          	   console.log(params)
-            	   return `${params[0].name}年<br/>
+            	   return `${params[0].name}<br/>
             	           ${params[0].marker}${params[0].seriesName}：${params[0].value}万吨<br/>
             	           ${params[1].marker}${params[1].seriesName}：${params[1].value}%<br/>
             	           ${params[2].marker}${params[2].seriesName}：${params[2].value}万吨<br/>
@@ -127,6 +126,7 @@
           }, {
             type: 'value',
             name: '变化率（%）',
+            offset:-3,
             nameTextStyle: {
               fontSize: 12,
               color:'#fff',
@@ -219,9 +219,10 @@
                 }
               },
               data: [{
-                type: 'average',
-//              value: this.tradeTopBarData.flag
-              }]
+//              type: 'min',
+                name:"平均值",
+                yAxis: 0
+                }]
             },
             data: this.tradeTopBarData.yieldChangeRate,
           }]

@@ -3,15 +3,15 @@
     <div class="trade-big5-top">
       <div class="big-filter">
         <selectDiy :data="selectData" @change="_changeAppleType" class="marginRight"></selectDiy>
+        <selectArea :url="areaUrl" @change="_changeArea" class="marginRight" num="4"></selectArea>
         <selectTime @chooseTime="_chooseTime" url="apple/trade/scale/getTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :areaId="area"></selectTime>
-        <selectArea url="apple/trade/internationalStatus/getArea" @change="_changeArea" class="marginRight" num="4"></selectArea>
-        <explain>数据来源于联合国商品贸易统计数据库，起始于1990年，级别为全球、各国（贸易量排名前十的国家）</explain>
+        <explain>数据起始于1990年，级别为全球、各国（贸易量排名前十的国家），来源于联合国商品贸易统计数据库。</explain>
       </div>
       <tradeBig5top :data="echartsData1" v-if="echartsData1.length"></tradeBig5top>
     </div>
     <div class="trade-big5-bt">
       <div class="big-filter">
-        <explain>某国国际市场占有率=某国出口额/全球出口额；数据来源于联合国商品贸易统计数据库，起始于1990年。</explain>
+        <explain>某国国际市场占有率=某国出口额/全球出口额；数据起始于1990年，来源于联合国商品贸易统计数据库。</explain>
       </div>
       <tradeBig5bt :data="echartsData2" v-if="echartsData2.length"></tradeBig5bt>
     </div>
@@ -55,6 +55,9 @@
           AREA: this.area,
           PRODUCT: this.appleType
         }
+      },
+      areaUrl() {
+        return `apple/trade/internationalStatus/getArea?product=${this.appleType}`
       }
     },
     methods: {
@@ -95,6 +98,7 @@
       ApiParams(val) {
         if (val.TIME_ID && val.AREA && val.PRODUCT) {
           this.getData()
+          this.$emit('bigSenvenTitle', val)
         }
       }
     }

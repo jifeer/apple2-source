@@ -31,7 +31,8 @@
       return {
         canWidth: 0,
         timerLeft: null,
-        timerRight: null
+        timerRight: null,
+        timer: 0
       }
     },
     mounted(){
@@ -46,7 +47,7 @@
           .then((res) => {
             var SWlefter = LibraryWave.waveLeft;
 
-            var SWleft = new SWlefter({
+            this.SWleft = new SWlefter({
               dom: 'myCanvasLeft',
               width: this.canWidth,
               height: 30,
@@ -55,14 +56,12 @@
               years: res.data.requestYear,
               percent: res.data.productRateData
             });
-            SWleft.setSpeed(0.1);
-            SWleft.start();
-            this.timerLeft = setInterval(function () {
-              SWleft.setNoise(0.8);
-            }, 0);
+            this.SWleft.setSpeed(0.1);
+            this.SWleft.setNoise(0.8)
+            this.SWleft.start();
 
             var SWrighter = LibraryWave.waveRight;
-            var SWright = new SWrighter({
+            this.SWright = new SWrighter({
               dom: 'myCanvasRight',
               width: this.canWidth,
               height: 30,
@@ -71,13 +70,10 @@
               years: res.data.requestYear,
               percent: res.data.consumeRateData
             });
-            SWright.setSpeed(0.1);
-            SWright.start();
-            this.timerRight = setInterval(function () {
-              SWright.setNoise(0.8);
-            }, 0);
+            this.SWright.setSpeed(0.1);
+            this.SWright.setNoise(0.8)
+            this.SWright.start();
           })
-
       },
 
       // 获取canvas的宽度
@@ -94,9 +90,9 @@
       },
       // 销毁something
       _destroyEchart() {
-        // 清除定时器
-        clearInterval(this.timerLeft)
-        clearInterval(this.timerRight)
+        // 停止循环
+        this.SWleft.stop()
+        this.SWright.stop()
       }
     },
   }

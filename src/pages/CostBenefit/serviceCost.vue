@@ -23,8 +23,9 @@
   import selectArea from 'components/selectArea/selectArea';
   import selectBtn from 'components/selectBtn/selectBtn';
   import selectTime from 'components/selectTime/selectTime';
-  import selectTree from 'components/selectTree/selectTree';
+  import selectTree from 'components/selectTree/selectTreeSpecial';
   import explain from 'components/explain/explain';
+
   export default {
     name: 'serviceCost',
 
@@ -33,7 +34,7 @@
         myowndata: "我国苹果种植成本收益评估",
         btnIndex: 0,
         timeType: "year",
-        eText: "数据来源于农业部，起始于1998年。级别为全国、省级。",
+        eText: "数据起始于1998年，级别为全国、省级，来源于农业部。其中，北京2001-2003年及2005年、山东的2002年、宁夏1999年及2008-2011年的数据为估算值。",
 //		  selectData: [{
 //        label: '物质与服务费用',
 //        children: [
@@ -66,7 +67,7 @@
           timeData: [],
           option: {
             yAxis: {
-              name: '元/亩             ',
+              name: '元/亩',
             }
           },
         },
@@ -85,7 +86,7 @@
         item: null,
       }
     },
-    mounted(){
+    mounted() {
 //	this.getSChartData()
     },
     computed: {
@@ -99,39 +100,40 @@
       },
     },
     methods: {
-      _chooseTime(time){
+      _chooseTime(time) {
         this.time = time.time
 //	          alert(this.time)
       },
-      _changeBtn(val){
+      _changeBtn(val) {
         if (val == 0) {
           this.type = 101002
-          this.SCchartData.option.yAxis.name = '元/亩          '
+          this.SCchartData.option.yAxis.name = '元/亩'
           this.item = true
         }
         else {
           this.type = 101018
-          this.SCchartData.option.yAxis.name = '元/公斤 '
+          this.SCchartData.option.yAxis.name = '元/公斤'
           this.item = false
         }
       },
-      _changeArea(area){
+      _changeArea(area) {
         if (this.i == 1) {
           area = [101, 116, 128]
           this.i++
         }
         this.area = area.toString()
       },
-      _treeAsync(val){
-        let string = val.toString()
+      _treeAsync(val) {
+        /*let string = val.toString()
         if (string.indexOf("102022") != -1 && string.indexOf("102004") != -1 && string.indexOf("102006") != -1 && string.indexOf("102005") != -1 && string.indexOf("102015") != -1 && string.indexOf("102008") != -1 && string.indexOf("102024") != -1) {
           this.itemId = "101007"
         } else {
           this.itemId = val.toString()
-        }
+        }*/
+        this.itemId = val[0]
       },
       //获取数据
-      getSChartData(){
+      getSChartData() {
         this.$xhr.get('apple/income/getMaterialServiceData', {
           params: {
             ...this.ApiSChartParms
@@ -146,7 +148,7 @@
 
     },
     watch: {
-      ApiSChartParms(newVal){
+      ApiSChartParms(newVal) {
         if (newVal.area && newVal.time && newVal.type && newVal.itemId) {
           this.getSChartData()
         }
@@ -174,6 +176,11 @@
   .bigW-option {
     color: #0164A0;
     padding-top: 0.2rem;
+    .select-wrapper {
+      &:nth-child(3) {
+        width: 2.0rem !important;
+      }
+    }
   }
 
   .bigW-intro {
@@ -184,6 +191,7 @@
   }
 
   .select-wrapper {
+    width: auto;
     margin-right: 0.2rem;
   }
 

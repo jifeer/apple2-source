@@ -24,7 +24,7 @@
         <!--左二图-->
         <router-link class="nav-item row standard" :to="{name:'product'}">
           <div class="index-description">
-            <div class="title">预计陕西{{desYear}}年苹果单产增长</div>
+            <div class="title">预计全国{{titleInfo.desYear}}年苹果单产{{titleInfo.desPrice}}公斤/亩，同比{{titleInfo.desResult}}{{titleInfo.desPercent}}</div>
           </div>
           <div class="echart-inst" id="affect-analyse">
             <yieldForecastchart :yechartsData="yechartsData"></yieldForecastchart>
@@ -66,7 +66,7 @@
                   <p><i class="iconfont icon-xiaofei"></i><br/><span>消费</span></p>
                 </router-link>
                 <router-link class="nav-item" tag="li" :to="{name:'ForeignTrade'}">
-                  <p><i class="iconfont icon-shijieditu"></i><br/><span>对外贸易</span></p>
+                  <p><i class="iconfont icon-shijieditu"></i><br/><span>贸易</span></p>
                 </router-link>
                 <router-link class="nav-item" tag="li" :to="{name:'CostBenefit'}">
                   <p><i class="iconfont icon-yizhuanshouyi"></i><br/><span>成本收益</span></p>
@@ -86,6 +86,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
         <div class="row row-two two-side">
@@ -123,7 +124,7 @@
         <!--右二图-->
         <router-link class="nav-item row standard " :to="{name:'expence'}">
           <div class="index-description">
-            <div class="title">2017年，果核规格在{{maxTitle}}的苹果更受消费者欢迎</div>
+            <div class="title">2017年，果径规格在{{maxTitle}}的苹果更受消费者欢迎</div>
           </div>
           <div class="echart-inst" id="flexibility">
             <fruitWidth @maxTitle="title" :fWchartData="fWchartData"></fruitWidth>
@@ -161,7 +162,7 @@
   export default {
     name: "index",
     mixins: [rightBarMixin],
-    data(){
+    data() {
       return {
         width: "100%",
         height: "100%",
@@ -177,7 +178,12 @@
           data1: [],
           data2: [],
         },
-        desYear: null,
+        titleInfo: {
+          desYear: '2017',
+          desResult: '',
+          desPrice: '',
+          desPercent: ''
+        },
         //左三图
         cbchartData: {
 //	              id:"cbchart",
@@ -231,11 +237,13 @@
         exportTitle: null,
         exportfreshApple: null,
         exportappleJuice: null,
+
+        toggleshow: false
       }
     },
 
 
-    mounted(){
+    mounted() {
       this.renderMap()
       this.renderYeild()
       this.renderCBchart()
@@ -249,7 +257,7 @@
     methods: {
 
       //左一图
-      renderMap(){
+      renderMap() {
 
         this.$xhr.get("apple/index/getChinaYieldData")
           .then((res) => {
@@ -262,10 +270,10 @@
 
       },
       //左二图
-      renderYeild(){
+      renderYeild() {
         this.$xhr.get("apple/production/yieldForecast", {
           params: {
-            AREA_NAME: "陕西",
+            AREA_NAME: "全国",
             TIME_ID: "2002,2003,3004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017",
             type: "1",
           }
@@ -275,13 +283,16 @@
             this.yechartsData.data1 = res.data.data1
             this.yechartsData.data2 = res.data.data2
             this.yechartsData.xdata = res.data.dates
-            this.desYear = res.data.desYear
+            this.titleInfo.desYear = res.data.desYear
+            this.titleInfo.desPrice = res.data.desPrice
+            this.titleInfo.desResult = res.data.desResult
+            this.titleInfo.desPercent = res.data.desPercent
           })
 
 
       },
       //左三图
-      renderCBchart(){
+      renderCBchart() {
         this.$xhr.get("apple/income/getIndexTrendChange")
           .then((res) => {
             this.cbchartData.data = res.data.data
@@ -292,9 +303,15 @@
           })
       },
       //中下左图
-      firstLoad(){
+      firstLoad() {
 
-        this.$xhr.get("/apple/price/getEveryPriceData?timeType=month&areaId=000000")
+        this.$xhr.get("/apple/price/getEveryPriceData", {
+          params: {
+            timeType: 'month',
+            areaId: '000000',
+//            appleType:'富士苹果',
+          }
+        })
           .then((res) => {
 //          	console.log(res)
             this.trend.seriesData[0] = res.data.lsjg
@@ -305,7 +322,7 @@
           })
       },
       //中下右图
-      getFlowdata(){
+      getFlowdata() {
         this.$xhr.get('apple/index/getIndexDetect')
           .then((res) => {
             let dataArr = [];
@@ -342,7 +359,7 @@
 
       },
       //右二图
-      getfWchartData(){
+      getfWchartData() {
 
         this.$xhr.get("apple/consume/feature/getFruitDiameterPreference?TIME_ID=201701,201702,201703,201704,201705,201706,201707,201708,201709,201710,201711,201712&AREA_NAME=%E5%85%A8%E5%9B%BD&TIME_TYPE=month")
           .then((res) => {
@@ -352,13 +369,14 @@
           })
 
       },
-      title(maxTitle){
+      title(maxTitle) {
         this.maxTitle = maxTitle
       },
       //右三图
-      renderExport(){
+      renderExport() {
         this.$xhr.get("apple/index/getExportInfo")
           .then((res) => {
+//        	console.log(res)
             this.exportDate.xdata = res.data.time
             this.exportDate.freshApple = res.data.freshApple
             this.exportDate.appleJuice = res.data.appleJuice
@@ -367,7 +385,8 @@
             this.exportappleJuice = res.data.titleJuiceNum
 
           })
-      }
+      },
+
 
     },
     components: {
@@ -441,6 +460,7 @@
   .index-wrapper .main .column-left .row {
 
   }
+
   .index-wrapper .main .column-left, .index-wrapper .main .column-right {
     flex: 1 1 auto;
     width: 26.88%;
@@ -492,6 +512,15 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    .navigator {
+      height: calc(7% + 30px);
+    }
+    .meter {
+      height: calc(73% - 60px);
+    }
+    .water {
+      height: 20%;
+    }
   }
 
   .index-wrapper .main .column-mid .row-one .true-mid .item {
@@ -500,11 +529,9 @@
     display: -moz-box;
     align-items: center;
     justify-content: space-between;
-    flex:1 1 auto;
+    flex: 1 1 auto;
   }
 
-  /*.index-wrapper .main .column-mid .row-one .true-mid .meter {
-    flex: 2 1 66.67%; }*/
   .index-wrapper .main .column-mid .row-one .true-mid .nav {
     display: flex;
     align-items: center;
@@ -779,7 +806,6 @@
     }
   }
 
-
   .standard .index-cont {
     flex: 1 0 auto;
     height: calc(100% - 30px);
@@ -817,7 +843,7 @@
   }
 
   a {
-    cursor:  default;
+    cursor: default;
     font-size: 14px;
   }
 
@@ -832,7 +858,7 @@
   }
 
   .navigator {
-    padding-top: 40px;
+    padding-top: 30px;
     .nav {
       width: 90% !important;
       align-items: flex-end !important;
@@ -876,5 +902,9 @@
         }
       }
     }
+  }
+
+  .chart_main {
+    margin-bottom: 0.5rem;
   }
 </style>

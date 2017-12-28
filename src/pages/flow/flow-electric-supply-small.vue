@@ -21,14 +21,14 @@
             title: {
               text: '主产地配送排行（吨）',
               textStyle: {
-                fontSize: 12,
+                fontSize: 14,
                 color: '#fff',
               },
               top: '0',
               left: 'center'
             },
             grid: {
-              left: '22%',
+              left: '15%',
               top: '12%',
               right: '12%',
               bottom: '5%'
@@ -36,7 +36,18 @@
             yAxis: [{
               axisLabel: {
                 interval: 0,
-                align: 'right'
+                align: 'right',
+                textStyle: {
+                  fontSize: 12,
+                },
+                formatter:function (params) {
+                  let h = params.length;
+                  if(h>4){
+                    return params.slice(0,4) + '...'
+                  }else{
+                    return params;
+                  }
+                }
               }
             }, {
               axisLabel: {
@@ -64,21 +75,18 @@
     },
     methods: {
       renderChart() {
-
-
         this.$xhr.get('apple/circulation/getDsFeaturesOrder', {
           params: {
             timeType: 'month',
             saleType: 1,
-            date: ''
+            date: '',
+            appleType:'全部'
           }
         }).then((res) => {
           this.rankingEchart.yAxisData = res.data.xdata,
             this.rankingEchart.data = res.data.ydata
           this.rankingEchart.yNumber = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
         })
-
-
       },
     },
     components: {

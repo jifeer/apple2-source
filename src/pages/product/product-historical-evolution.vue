@@ -54,7 +54,7 @@
       return {
         btnData: ['种植面积', '产量', '单产'],
         btnIndex: 1,
-        eTextUp: '数据来源于农业部，起始于1982年，级别为全国、省级。',
+        eTextUp: '数据起始于1982年，级别为全国、省级，来源于农业部。',
         // 弹窗 上图数据
         echartsDataUp: {
           data: {},
@@ -233,7 +233,7 @@
 
         }
         .select-wrapper {
-          width: 1.5rem;
+          width: auto;
           margin-right: 0.2rem;
         }
         p {

@@ -28,16 +28,10 @@
     mounted(){
       this.getlandChartData()
     },
+
     computed: {
-//  	ApilandChartParms() {
-//		        return {
-//		              area: "101,116,128",
-//	                time: "2010,2011,2012,2013,2014",
-//	                type: "101002",
-//	                itemId: "101008",
-//		        }
-//		      },
     },
+
     methods: {
       //获取数据
       getlandChartData(){
@@ -72,8 +66,7 @@
       height: 100%;
       flex: 1;
       .landChart-wrapper {
-        height: 85%;
-        /*width: 90%;*/
+        height: 100%;
         margin: 0 auto;
       }
     }

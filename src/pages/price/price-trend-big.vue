@@ -4,10 +4,11 @@
       <h2 class="line"><!--{{title}}--></h2>
       <div class="forecast-title">
         <selectDiy @change="_changeDiy" url="apple/price/everyprice/getArea?type=2"></selectDiy>
+        <!--<selectDiy @change="_changeDiyType" :data="typeData"></selectDiy>-->
         <selectTime @chooseTime="_chooseTime" url="apple/price/monitor/getTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :areaId="areaId"></selectTime>
         <explain :eText="eText"></explain>
       </div>
-      <trendLine v-if="echartsData.data1.length" :echartsData="echartsData"></trendLine>
+      <trendLine v-if="lineFlag" :echartsData="echartsData"></trendLine>
     </div>
   </div>
 </template>
@@ -49,7 +50,9 @@
             }
           }
         },
-        eText: '数据来源于农业部；收购价取值：山东取栖霞市和蓬莱市均值(80#以上一二级)，陕西取洛川县和富县均值(70#以上半商品)，甘肃取肃宁价格(70#以上)。',
+        eText: '批发价格、进出口价格数据起始于1995年，零售价起始于1997年，收购价格起始于1998年，级别为省级，来源于农业部',
+        typeData:['富士苹果', '国光苹果', '黄元帅苹果', '黄香蕉苹果', '红星苹果'],
+        appleType:'',
         width: '100%',
         height: '100%',
         timeTypeData: ['日度', '月度', '年度'], // selectTime 组件
@@ -58,7 +61,8 @@
         time: '',
         timeType: 'year',
         areaType: '中国',
-        title: '2017年8月中国地区，苹果零售和批发价差为2.54元/公斤，2017年7月出口和批发价差为-1.18元/公斤。'
+        title: '2017年8月中国地区，苹果零售和批发价差为2.54元/公斤，2017年7月出口和批发价差为-1.18元/公斤。',
+        lineFlag: false
       }
     },
     computed: {
@@ -76,6 +80,11 @@
         //console.log(name)
         this.areaType = name
       },
+      /* //查询苹果类型的下拉框
+       _changeDiyType(type){
+         this.appleType = type
+         this.$emit('changeAppleType', type)
+      },*/
       // 时间参数 捕获
       _chooseTime(time) {
         this.time = time.time
@@ -138,7 +147,9 @@
             this.echartsData.name5 = ''
           }
           this.echartsData.legendData = legendData
-          //处理标题部分
+
+          this.lineFlag = true
+          /*//处理标题部分
           let newYear = res.data.tit.nowTime.substr(0, 4)
           let newMonth = res.data.tit.nowTime.substr(4, 2)
           let newDay = res.data.tit.nowTime.substr(6, 2)
@@ -153,7 +164,7 @@
           if (this.timeType == 'day') {
             //2017年10月31日黑龙江省地区，苹果零售和批发价差为0.00元/公斤
             this.title = newYear + '年' + newMonth + '月' + newDay + '日' + this.areaType + '苹果零售和批发价差为' + res.data.tit.ls_pf + '元/公斤。'
-          }
+          }*/
 
 
         })

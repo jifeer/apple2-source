@@ -31,7 +31,7 @@
       return {
         btnData:['种植面积', '产量', '单产'],
         btnIndex: 0,
-        eText:'数据来源于农业部，起始于1982年，级别为全国、省级。',
+        eText:'数据起始于1982年，级别为全国、省级，来源于农业部。',
         echartsData:{
           xdata: [],
           data: [],

@@ -31,17 +31,13 @@
       }
     },
     mounted() {
-
-      this.$nextTick(()=>{
-        this.initChart()
-      })
+      this.myChart = this.$echarts.init(this.$refs.barchart)
     },
     computed: {
 
     },
     methods: {
       initChart(){
-        this.myChart = this.$echarts.init(this.$refs.barchart)
 
         if (Object.keys(this.echartsData).length) {
             let option = {

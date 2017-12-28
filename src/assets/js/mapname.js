@@ -136,7 +136,7 @@ export const nameMap = {
   'Qatar': '卡塔尔',
   'Romania': '罗马尼亚',
   'Russia': '俄罗斯',
-  'Russia': '俄罗斯联邦',
+  // 'Russia': '俄罗斯联邦',
   'Rwanda': '卢旺达',
   'Western Sahara': '西撒哈拉',
   'Saudi Arabia': '沙特阿拉伯',
@@ -389,7 +389,8 @@ export const worldGeoCoordMap = {
 
   "新加坡": [114.1, 22.2],
   "日本": [139.46, 35.42],
-  "塞尔维亚": [20.28, 44.49]
+  "塞尔维亚": [20.28, 44.49],
+  "台湾": [121.53, 25.02]
 }
 // 世界地名 对应的 json 文件名
 export const cityMap = {

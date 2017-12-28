@@ -50,7 +50,7 @@
         if (Object.keys(this.rankingEchart).length) {
           let option = {
             grid: {
-              left: 80,
+              left: 90,
               top: 0,
               bottom: 0
             },
@@ -64,10 +64,10 @@
                 margin: 10,
                 textStyle: {
                   fontSize: echartOpt.fz,
-                  color: function (value, index) {
+                  /*color: function (value, index) {
                     return index >= 7 ? '#eeeff1' : '#63676e';
-                  }
-
+                  }*/
+                  color: '#eeeff1'
                 }
               },
               //offset:'15',

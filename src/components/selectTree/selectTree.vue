@@ -75,7 +75,7 @@
 
           // 初始化获取数据后，让html显示第一个item的label，并将其id传出去
           this.xianshi = res.data[0].label
-          this.$emit("change", res.data[0].itemId)
+          this.$emit("change", res.data[0].z)
         })
       },
       handleCheckChange(data, checked, indeterminate) {

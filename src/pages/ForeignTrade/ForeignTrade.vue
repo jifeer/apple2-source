@@ -3,15 +3,15 @@
     <leftBar></leftBar>
     <div class="cont">
       <div class="trade-wrapper">
-        <h2>中国{{appleType}}贸易规模监测</h2>
+        <h2>中国{{appleType}}贸易规模</h2>
         <div class="trade-block">
           <div class="trade-top-wrapper">
             <div class="trade-top-block">
               <div class="condition-wrapper">
-                <selectTime @chooseTime="_chooseTime" url="apple/trade/scale/getTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :productId="appleType"></selectTime>
                 <selectDiy :data="selectData" @change="_changeAppleType"></selectDiy>
                 <selectBtn :btnData="btnDataTrade" @changeBtn="_changeTradeType" :btnIndex.sync="btnIndex"></selectBtn>
-                <explain>折算鲜苹果贸易量=鲜苹果贸易量+苹果汁贸易量*8。数据来源于海关总署，数据起始于1993年。</explain>
+                <selectTime @chooseTime="_chooseTime" url="apple/trade/scale/getTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :productId="appleType"></selectTime>
+                <explain>折算鲜苹果贸易量=鲜苹果贸易量+苹果汁贸易量*8；变化率=(当年值-上年值)/上年值*100%；进出口价格=进出口贸易额/进出口贸易量。数据起始于1993年，来源于海关总署。</explain>
               </div>
               <div class="trade-top-echart">
                 <topBarLine :data="ApiBodyTopData" :appleType="appleType" :tradeType="tradeType" v-if="ApiBodyTopData.length"></topBarLine>
@@ -34,10 +34,10 @@
         <smallWindow class="window2" @closeWindow="closeWindow" :isShow="window2" whichWindow="window2" title="中国进出口贸易占比及流向" @openBigWindow="openBigWindow">
           <tradeSaleroomSmall></tradeSaleroomSmall>
         </smallWindow>
-        <smallWindow class="window3" @closeWindow="closeWindow" :isShow="window3" whichWindow="window3" title="中国苹果进出口贸易季节性规律" @openBigWindow="openBigWindow">
+        <smallWindow class="window3" @closeWindow="closeWindow" :isShow="window3" whichWindow="window3" title="中国苹果产品贸易季节性特点" @openBigWindow="openBigWindow">
           <tradeSeasonalSmall></tradeSeasonalSmall>
         </smallWindow>
-        <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="中国苹果进出口贸易影响因素" @openBigWindow="openBigWindow">
+        <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="中国苹果贸易影响因素" @openBigWindow="openBigWindow">
           <tradeAffectSmall></tradeAffectSmall>
         </smallWindow>
         <smallWindow class="window5" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5" title="全球贸易分布及流向" @openBigWindow="openBigWindow">
@@ -46,42 +46,42 @@
         <smallWindow class="window6" @closeWindow="closeWindow" :isShow="window6" whichWindow="window6" title="全球苹果进出口变化趋势" @openBigWindow="openBigWindow">
           <tradeVolumeSmall></tradeVolumeSmall>
         </smallWindow>
-        <smallWindow class="window7" @closeWindow="closeWindow" :isShow="window7" whichWindow="window7" title="全球各国苹果竞争力比较" @openBigWindow="openBigWindow">
+        <smallWindow class="window7" @closeWindow="closeWindow" :isShow="window7" whichWindow="window7" title="全球苹果主要出口国竞争力比较" @openBigWindow="openBigWindow">
           <tradePriceSmall></tradePriceSmall>
         </smallWindow>
       </div>
     </div>
     <div class="right-bar-wrapper">
       <ul>
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-ditu "></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-xianlu"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-xiaoliang"></i></li>
-        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-gongqiu"></i></li>
-        <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-diqiu1"></i></li>
-        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-tongji"></i></li>
-        <li :class="{'active':active7}" @click="showSmall('window7')"><i class="iconfont icon-jiage1"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-duiwaimaoyi-quanguoliuxiang "></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-duiwaimaoyi-diquliuxiang"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-duiwaimaoyi-jijiexingguilv"></i></li>
+        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-duiwaimaoyi-yingxiangyinsu"></i></li>
+        <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-duiwaimaoyi-maoyifenbu"></i></li>
+        <li :class="{'active':active6}" @click="showSmall('window6')"><i class="iconfont icon-duiwaimaoyi-jinchukouqushi"></i></li>
+        <li :class="{'active':active7}" @click="showSmall('window7')"><i class="iconfont icon-duiwaimaoyi-jingzhengli"></i></li>
       </ul>
     </div>
     <bigWindow :title="bigOneTitleTime" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <tradeFlowLarge @bigOneTime="bigOneTime"></tradeFlowLarge>
     </bigWindow>
-    <bigWindow title="中国进出口贸易占比及流向" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <tradeSaleroomLarge></tradeSaleroomLarge>
+    <bigWindow :title="bigTwoTitle" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <tradeSaleroomLarge @bigTwo="bigTwo"></tradeSaleroomLarge>
     </bigWindow>
-    <bigWindow title="中国苹果进出口贸易季节性规律" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+    <bigWindow title="中国苹果产品贸易季节性特点" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <tradeSeasonalLarge></tradeSeasonalLarge>
     </bigWindow>
-    <bigWindow title="中国苹果进出口贸易影响因素" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+    <bigWindow title="中国苹果贸易影响因素" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <tradeAffectLarge></tradeAffectLarge>
     </bigWindow>
     <bigWindow :title="bigFiveTitleTime" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <tradeDistributeLarge @bigFiveTime="bigFiveTime"></tradeDistributeLarge>
     </bigWindow>
-    <bigWindow title="全球苹果进出口变化趋势" :isShow="bigwindow6" whichWindow="bigwindow6" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <tradeVolumeLarge></tradeVolumeLarge>
+    <bigWindow :title="bigSix" :isShow="bigwindow6" whichWindow="bigwindow6" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <tradeVolumeLarge @bigSixTitle="bigSixTitle"></tradeVolumeLarge>
     </bigWindow>
-    <bigWindow title="全球各国苹果竞争力比较" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <tradePriceLarge></tradePriceLarge>
+    <bigWindow :title="bigSenven" :isShow="bigwindow7" whichWindow="bigwindow7" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <tradePriceLarge @bigSenvenTitle="bigSenvenTitle"></tradePriceLarge>
     </bigWindow>
   </div>
 </template>
@@ -121,12 +121,14 @@
         btnData: ['中国', '全球'],
         btnDataTrade: ['贸易量', '贸易额'],
         btnDataIO: ['进口', '出口'],
-        selectValue: '鲜苹果/苹果干/苹果汁进/',
         selectData: ['鲜苹果', '苹果干', '苹果汁', '折算鲜苹果'],
         bigOneTitle: '鲜苹果',
 
         bigOneTitleTime: '',  // 大弹窗1 的时间
+        bigTwoTitle: '',      // 大弹窗2 弹窗标题
         bigFiveTitleTime: '', // 大弹窗5 的时间
+        bigSix: '', // 大弹窗6 的标题
+        bigSenven: '', // 大弹窗7 的标题
 
         btnIndex: 0,
 
@@ -174,11 +176,20 @@
       },
     },
     methods: {
-      bigOneTime(time) {
-        this.bigOneTitleTime = descTime(time) + '中国苹果贸易流向'
+      bigOneTime(title) {
+        this.bigOneTitleTime = descTime(title.TIME_ID) + `中国${title.PRODUCT}贸易流向`
       },
-      bigFiveTime(time) {
-        this.bigFiveTitleTime = descTime(time) + '全球贸易分布及流向'
+      bigTwo(title) {
+        this.bigTwoTitle = `${descTime(title.TIME_ID)}中国${title.PRODUCT}分省贸易流向`
+      },
+      bigFiveTime(title) {
+        this.bigFiveTitleTime = `${descTime(title.TIME_ID)}全球贸易${title.PRODUCT}${title.NAME}分布及流向`
+      },
+      bigSixTitle(title) {
+        this.bigSix = `全球${title.PRODUCT}${title.NAME}变化趋势`
+      },
+      bigSenvenTitle(title) {
+        this.bigSenven = `全球${title.PRODUCT}主要出口国竞争力比较`
       },
       // 时间参数 捕获
       _chooseTime(time) {

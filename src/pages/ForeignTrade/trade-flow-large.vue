@@ -5,7 +5,7 @@
       <selectDiy :data="selectDiyData" @change="_changeAppleType" class="marginRight"></selectDiy>
       <selectBtn :btnData="btnData" @changeBtn="_changeExportType" :btnIndex.sync="btnIndex" class="marginRight"></selectBtn>
       <selectBtn :btnData="monthOrYear" @changeBtn="_changeTimeType" :btnIndex.sync="btnIndex2" class="marginRight"></selectBtn>
-      <explain>以地图展示全国鲜苹果、苹果汁和苹果干年度和月度进出口来源和去向。数据来源于海关总署，起始于1993年，级别为全国。</explain>
+      <explain>数据起始于1988年，贸易流向数据起始于1997年，源于联合国商品贸易统计数据库，中国数据来源于海关总署。</explain>
     </div>
     <div class="large-chart">
       <div class="large-chart-left">
@@ -45,7 +45,7 @@
         timeType: 'year',
         isHideChina: true,
 
-        selectDiyData: ['鲜苹果', '苹果汁', '苹果干'],
+        selectDiyData: ['鲜苹果', '苹果干', '苹果汁'],
         rankingEchart: [],
         rankingEchartToggle: true,
 
@@ -66,7 +66,9 @@
         btnData: ['出口', '进口'],
         monthOrYear: [{ name: '月度', value: 'month' }, { name: '年度', value: 'year' }],
         echartsData: [],
-        topThree: '' // 前三国家
+        topThree: '', // 前三国家
+
+        emitTitle: {}
       }
     },
     created() {
@@ -120,11 +122,12 @@
       // 鲜苹果 苹果干 参数捕获
       _changeAppleType(item) {
         this.appleType = item
+        this.emitTitle.appleType = item
       },
       // 时间轴参数
       _scorllTime(time) {
         this.scrollTime = time
-        this.$emit('bigOneTime', time)
+        this.emitTitle.time = time
       },
       // 获取title标题数据
       getTitleData() {
@@ -201,6 +204,7 @@
           let flag2 = newVal.TIME_ID.length === 6 && newVal.TIME_TYPE === 'month'
           let flag = flag1 || flag2
           if (flag && newVal.NAME && newVal.PRODUCT) {
+            this.$emit('bigOneTime', newVal)
             this.getPopOneData()
           }
         },

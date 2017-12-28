@@ -26,43 +26,49 @@
     position: absolute;
     right: 1.52rem;
     top: 0.34rem;
+    z-index: 20;
   }
   .window2 {
     position: absolute;
     right: 1.52rem;
     top: 33.7%;
+    z-index: 20;
   }
   .window3 {
     position: absolute;
     right: 1.52rem;
     top: 63.5%;
+    z-index: 20;
   }
   .window4 {
     position: absolute;
     right: 6.52rem;
     top: 63.5%;
+    z-index: 20;
   }
   .window5 {
     position: absolute;
     right: 11.52rem;
     top: 63.5%;
+    z-index: 20;
   }
   .window5 {
     position: absolute;
     right: 11.52rem;
-
     top: 63.5%;
+    z-index: 20;
   }
   .window6 {
     position: absolute;
     right: 11.52rem;
     top: 33.7%;
+    z-index: 20;
   }
   .window7 {
     position: absolute;
     right: 11.52rem;
-
     top: 0.34rem;
+    z-index: 20;
   }
 }
 .big-window-wrapper{
@@ -127,3 +133,13 @@ h3{
 	}
 }
 
+.el-message-box {
+  background-color: #005CAF;
+  .el-message-box__content {
+    color: #fff;
+    p {
+      font-size: 18px;
+      text-align: center;
+    }
+  }
+}

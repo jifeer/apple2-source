@@ -1,7 +1,7 @@
 <template>
   <div class="price-big-wrapper">
     <div class="price-title">
-      <h2>苹果价格在<span>7-8</span>月出现峰值，<span>11-12</span>月出现谷底。</h2>
+      <h2>苹果价格在7-8月出现峰值，11-12月出现谷底。</h2>
       <explain :eText="eText"></explain>
     </div>
     <div class="price-echarts-wrapper">
@@ -19,7 +19,7 @@
     name: 'seasonal-big',
     data() {
       return {
-        eText: '以最近五年的数据分析苹果批发和零售价格季节性波动规律，数据来源于农业部。',
+        eText: '据近五年的数据来分析苹果批发和零售价格季节性波动规律，数据来源于农业部。',
         echartsData: {
           xAxisData: [],
           data1: [],

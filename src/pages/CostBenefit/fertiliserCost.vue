@@ -6,7 +6,7 @@
         <selectTime class="selectTime" @chooseTime="_chooseTime" url="apple/income/getTime?timeType=1"
                     defaultTimeType="年度"></selectTime>
         <selectArea class="selectArea" @change="_changeArea" url="apple/income/getArea"></selectArea>
-        <selectTree @change="_treeAsync" url="apple/income/getCostSelectData?costType=103015"></selectTree>
+        <selectTree @change="_treeAsync" url="apple/income/getCostSelectData2"></selectTree>
         <selectBtn class="selectBtn" :btnIndex.sync="btnIndex" :btnData="btnData" @changeBtn="_changeBtn"></selectBtn>
         <explain :eText="eText"></explain>
       </div>
@@ -23,7 +23,7 @@
   import selectArea from 'components/selectArea/selectArea';
   import selectBtn from 'components/selectBtn/selectBtn';
   import selectTime from 'components/selectTime/selectTime';
-  import selectTree from 'components/selectTree/selectTree';
+  import selectTree from 'components/selectTree/selectTreeSpecial';
   import explain from 'components/explain/explain';
   export default {
     name: 'fertiliserCost',
@@ -40,34 +40,14 @@
           name: '金额',
           value: 1
         }],
-        eText: "数据来源于农业部，起始于2004年。级别为全国、省级。",
-//		selectData: [{
-//        label: '化肥',
-//        children: [
-//          {
-//          	label: '氮肥',
-//          },
-//          {
-//          	label: '磷肥',
-//          },
-//          {
-//          	label: '钾肥',
-//          },
-//          {
-//          	label: '复混肥',
-//          },
-//          {
-//          	label: '其他肥料',
-//          },
-//
-//        ],
-//      }],
+        eText: "数据起始于1998年，级别为全国、省级，来源于农业部。其中，北京2001-2003年及2005年，宁夏1999年、2003年、2008-2011年，山东2002年的化肥费用与北京2001-2006年，宁夏1999年、2001-2003年、2008-2011年以及其他省份的2001-2003年的化肥用量的数据为估算数据。",
+
         FCchartData: {
           data: [],
           timeData: [],
           option: {
             yAxis: {
-              name: '公斤/亩      ',
+              name: '公斤/亩',
             }
           },
         },
@@ -77,11 +57,14 @@
         itemId: null,
         i: 1,
         item: null,
+
+        idStr: [],
       }
     },
     mounted(){
-//	this.getFCchartData()
+
     },
+
     computed: {
       ApiFCchartParms() {
         return {
@@ -92,20 +75,22 @@
         }
       },
     },
+
     methods: {
       _chooseTime(time){
-
         this.time = time.time
       },
+
       _changeBtn(val) {
+        this.itemId = this.idStr[this.btnIndex]
         if (val == 0) {
           this.type = 101002
-          this.FCchartData.option.yAxis.name = '公斤/亩   '
+          this.FCchartData.option.yAxis.name = '公斤/亩'
           this.item = true;
         }
         else {
           this.type = 101018
-          this.FCchartData.option.yAxis.name = '元/亩        '
+          this.FCchartData.option.yAxis.name = '元/亩'
           this.item = false
         }
       },
@@ -116,15 +101,23 @@
         }
         this.area = area.toString()
       },
+
       _treeAsync(val){
-        let string = val.toString()
-        if (string.indexOf("103016") != -1 && string.indexOf("103020") != -1 && string.indexOf("103022") != -1 && string.indexOf("103024") != -1 && string.indexOf("103030") != -1) {
-          this.itemId = "103015"
-        } else {
-          this.itemId = val.toString()
+        let idArr = val[0].split(',')
+        let idArr1=[],idArr2=[]
+        if(idArr.length> 1){
+            idArr.forEach((v, i)=>{
+                if(i%2 === 0){
+                    idArr1.push(v)
+                } else {
+                  idArr2.push(v)
+                }
+            })
         }
+        this.idStr = [idArr1.toString(),idArr2.toString()]
+        this.itemId = this.idStr[this.btnIndex]
       },
-//获取数据
+      //获取数据
       getFCchartData(){
         this.$xhr.get('/apple/income/getChemicalFertilizerData', {
           params: {
@@ -202,6 +195,11 @@
 
   .selectArea, .select-wrapper {
     margin-right: 0.2rem;
+  }
+  .select-wrapper {
+    &:nth-child(2){
+      width: auto;
+    }
   }
   .selectBtn {
     margin-right: 0.2rem;

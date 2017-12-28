@@ -15,7 +15,7 @@
             <explain :eText="eText"></explain>
           </div>
           <div class="cbchart-box">
-            <CBchart :aa="aa" @toCostStructure="fromCBchart" :cbchartData="cbchartData"></CBchart>
+            <CBchart :units="units" @toCostStructure="fromCBchart" :cbchartData="cbchartData"></CBchart>
           </div>
         </div>
         <div class="charts-wrapper big-wrapper">
@@ -32,10 +32,10 @@
           </div>
           <div class="clearfix charts-content">
             <div class="charts-box costStructure">
-              <costStructure :aa="aa" @toCostBenefit="fromCostStructure" :csPieData="csPieData" :pieTitleInfo="pieTitleInfo"></costStructure>
+              <costStructure :units="units" @toCostBenefit="fromCostStructure" :csPieData="csPieData" :pieTitleInfo="pieTitleInfo"></costStructure>
             </div>
             <div class="charts-box costDetails">
-              <costDetails :aa="aa" :cdPieData="cdPieData" :pieTitleInfo="pieTitleInfo"></costDetails>
+              <costDetails :units="units" :cdPieData="cdPieData" :pieTitleInfo="pieTitleInfo"></costDetails>
             </div>
           </div>
         </div>
@@ -58,10 +58,10 @@
     </div>
     <div class="right-bar-wrapper">
       <ul>
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-gongzitiao"></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-tudi"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-fuwufei"></i></li>
-        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-xiaoliang"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-chengbenshouyi-rengongchengben"></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-chengbenshouyi-tudichengben"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-chengbenshouyi-fuwuchengben"></i></li>
+        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-chengbenshouyi-huafeichengben"></i></li>
       </ul>
     </div>
     <bigWindow title="我国苹果主产区人工成本变化趋势" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
@@ -114,8 +114,8 @@
           value: 101018
         }],
         btnIndex: 0,
-        eText: "成本利润率=净利润/总成本。数据来源于农业部，数据始于1998年。",
-        eText2: "数据来源于农业部，总成本及物质与服务费用数据始于1998年，人工和土地成本细分项数据始于2004年。",
+        eText: "数据起始于1998年，级别为全国、省级，来源于农业部。",
+        eText2: "总成本及物质与服务费用数据始于1998年，人工和土地成本细分项数据始于2004年，数据来源于农业部。",
         cbchartData: {
           data: [],
           time: [],
@@ -144,17 +144,17 @@
         area: '',         //地区
         time: '',         //时间
         itemId: 101008,   //子成本结构id
-        year: 2014,       //饼图时间初始化时间
+        year: '',       //饼图时间初始化时间
         idData: [],       //饼图一的id
         areaId: '',       // 101
         areaIdData: [],   //地区名称对应的ID
         areaNameData: [], // 地区中文名字列表
-        aa: null,
+        units: null,
         areas: "",
         // 饼图标题时间和地区联动
         pieTitleInfo: {
-          year: 2014,
-          area: '全国'
+          year: '',
+          area: ''
         }
       }
     },
@@ -187,10 +187,10 @@
         }
       },
       pieTitleLeft() {
-        return `${this.pieTitleInfo.year}${this.pieTitleInfo.area}苹果总成本`
+        return `${this.pieTitleInfo.year}年${this.pieTitleInfo.area}苹果总成本`
       },
       pieTitleRight() {
-        return `${this.pieTitleInfo.year}${this.pieTitleInfo.area}${this.cdPieData.tdata}`
+        return `${this.pieTitleInfo.year}年${this.pieTitleInfo.area}${this.cdPieData.tdata}`
       }
     },
 
@@ -216,7 +216,12 @@
 
       // 捕获时间
       _chooseTime(time) {
+        // console.log(time)
         this.time = time.time
+        let timeStr = time.time
+        let timeArr = timeStr.split(',')
+        this.year = timeArr[timeArr.length-1]
+        this.pieTitleInfo.year = timeArr[timeArr.length -1]
       },
 
       // 捕获地点
@@ -228,10 +233,10 @@
       _changeBtn(val) {
         if (val == 101002) {
           this.cbchartData.option.yAxis[0].name = "元/亩            ",
-            this.aa = true;
+            this.units = true;
         } else {
           this.cbchartData.option.yAxis[0].name = "元/公斤            "
-          this.aa = false
+          this.units = false
         }
       },
 
@@ -430,6 +435,7 @@
   }
 
   .select-wrapper {
+    width: auto !important;
     margin-right: 0.2rem;
   }
 

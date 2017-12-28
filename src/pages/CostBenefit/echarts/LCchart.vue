@@ -8,13 +8,14 @@
 <script>
   import {extend, $, resizeMixin} from 'assets/js/common'
   import {axisLabel, dataZoom} from 'assets/js/echarts-style'
+
   export default {
     name: 'LCchart',
     mixins: [resizeMixin],
     props: {
       lcChartData: {
         type: Object,
-        default: ()=>{
+        default: () => {
 
         }
       },
@@ -26,7 +27,7 @@
       btnIndex: {
         type: Number,
         default: 0
-      }
+      },
     },
 
     watch: {
@@ -40,8 +41,7 @@
 
     data() {
       return {
-        color: ["#009E4C", "#E9C80E", "#0071B3", "#FF7200"],
-        unit: null,
+        color: ["#009E4C", "#E9C80E", "#0071B3", "#FF7200", '#986DB2', '#86C1ee', '#64363C', '#F0A986', '#F7C242', '#2EA9DF', '#E03C8A', '#5DAC81'],
       };
     },
 
@@ -51,24 +51,24 @@
     },
 
     methods: {
-      initOption(){
-        if (Object.keys(this.lcChartData).length) {
-          this.option = {
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                show: true,
-                type: 'line',
-                snap: true,
-                lineStyle: {
-                  color: '#CF6900',
-                  width: 2,
-                  type: "dashed"
-                }
-              },
-              backgroundColor: '#099d4f',
+      initOption() {
+        this.option = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              show: true,
+              type: 'line',
+              snap: true,
+              lineStyle: {
+                color: '#CF6900',
+                width: 2,
+                type: "dashed"
+              }
             },
-            dataZoom: [{
+            backgroundColor: '#099d4f',
+          },
+          dataZoom: [
+            {
               show: true,
               height: 13,
 //              "xAxisIndex": [0],
@@ -104,98 +104,130 @@
                 fontSize: '12'
               },
               borderColor: "#3458B4"
-            },{
+            }, {
               "type": "inside",
               "show": true,
               "height": 13,
               "start": 1,
               "end": 35
             }],
-            legend: {
-              type: 'scroll',
-              pageButtonGap: 20,
-              pageIconColor: '#fff',
-              pageIconInactiveColor: '#666',
-              pageTextStyle: {
-                color: '#fff'
-              },
-              data: [],
-              width: '1100',
-              top: "3%",
-              itemHeight: 8,
-              itemWidth: 14,
-              color: "#099D4F",
-              itemGap: 5,
-              icon: "line",
-              textStyle: {
-                color: "#fff",
-                fontSize: 18,
-                padding: [5, 10]
-              },
+          legend: {
+            type: 'scroll',
+            pageButtonGap: 20,
+            pageIconColor: '#fff',
+            pageIconInactiveColor: '#666',
+            pageTextStyle: {
+              color: '#fff'
             },
-            grid: {
-              left: '100',
-              right: '45',
-              bottom: '15%',
-              top: "15%",
-              containLabel: false  //总宽度是否包含坐标轴标签
+            data: [],
+            width: '1100',
+            top: "3%",
+            itemHeight: 8,
+            itemWidth: 14,
+            color: "#099D4F",
+            itemGap: 5,
+            icon: "line",
+            textStyle: {
+              color: "#fff",
+              fontSize: 18,
+              padding: [5, 10]
             },
-            xAxis: {
-              type: 'category',
-              boundaryGap: true,   //坐标轴的留白
-              axisLine: {      //隐藏X轴线
-                show: true,
-                lineStyle: {
-                  color: "#004B7D",
-                }
-              },
-              axisLabel: axisLabel,
-              data: [],
-            },
-            yAxis: {
-              name: '',
-              nameTextStyle: {
-                color: '#fff',
-                fontSize: '20',
-                align: "center",
-                lineHeight: 50,
-              },
-              nameGap: 26,
-              type: 'value',
+          },
+          grid: {
+            left: '100',
+            right: '45',
+            bottom: '15%',
+            top: "15%",
+            containLabel: false  //总宽度是否包含坐标轴标签
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: true,   //坐标轴的留白
+            axisLine: {      //隐藏X轴线
               show: true,
-              min: '0',
-              axisLine: {
-                show: false,
-              },
-              axisLabel: axisLabel,
-              splitLine: {
-                lineStyle: {
-                  color: '#004574',
-                  type: "dashed",
-
-                }
-              },
+              lineStyle: {
+                color: "#004B7D",
+              }
             },
-            series: [],
-          };
-        }
+            axisLabel: axisLabel,
+            data: [],
+          },
+          yAxis: {
+            name: '',
+            nameTextStyle: {
+              color: '#fff',
+              fontSize: '18',
+              align: "left",
+              padding: [0, 0, 0, -40]
+            },
+            nameGap: 26,
+            type: 'value',
+            show: true,
+            min: '0',
+            axisLine: {
+              show: false,
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#fff',
+                fontSize: 16,
+                fontWeight: 'lighter'
+              },
+              margin: 18,
+              formatter:(params)=>{
+                return params
+              }
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#004574',
+                type: "dashed",
+
+              }
+            },
+          },
+          series: [],
+        };
       },
 
-      initChart(){
-        //如果有新的配置项的变化 深度拷贝
-        if (Object.keys(this.lcChartData.option).length) {
-          this.option = $.extend(true, this.option, this.lcChartData.option)
-        }
+      initChart() {
 
         let newSeries = [];
         let legendData = [];
+        let axisName = [];
+        this.option.yAxis.axisLabel.formatter = null
         this.lcChartData.data.forEach((val, index, arr) => {
+
+          // Y轴单位
+          if (!this.btnIndex) {
+            if (val.name.indexOf('成本') >= 0 || val.name.indexOf('费用') >= 0 || val.name.indexOf('折价') >= 0) {
+              axisName.push('元/亩')
+            } else if (val.name.indexOf('工价') >= 0) {
+              axisName.push('元（亩·日）')
+            } else if (val.name.indexOf('天数') >= 0) {
+              axisName.push('天')
+            }
+          } else {
+            if (val.name.indexOf('成本') >= 0 || val.name.indexOf('费用') >= 0 || val.name.indexOf('折价') >= 0) {
+              axisName.push('元/50公斤')
+              this.option.yAxis.axisLabel.formatter = function (value, index) {
+                return value * 50
+              }
+            } else if (val.name.indexOf('工价') >= 0) {
+              axisName.push('元（亩·日）')
+            } else if (val.name.indexOf('天数') >= 0) {
+              axisName.push('天')
+            }
+          }
+
+          // 新的 legend
           legendData.push({
-            name: arr[index].name.replace('-','')
+            name: arr[index].name.replace('-', '')
           })
+          // 新的系列
           newSeries.push({
             type: "line",
-            name: arr[index].name.replace('-',''),
+            name: arr[index].name.replace('-', ''),
             symbolSize: 13,
             symbol: "circle",
             icon: "none",
@@ -217,50 +249,52 @@
               }
             }
           },)
-//                   newSeries.push(val[index].value)
-//                   console.log(val)
         })
-        //为tootip加单位
-        if (this.item == 0) {
-          this.unit = "元/亩"
-        }
-        else if (this.item == 1) {
-          this.unit = "元/公斤"
-        }
-        else if (this.item == 2) {
-          this.unit = "元/（亩·日）"
-        }
-//          	alert(this.item)
+
         this.option.tooltip.formatter = (params) => {
 //          console.log(params)
-          let a1 = "<div style='text-align:left'>" + params[0].name + "年<br/>"
+          let tooltip = "<div style='text-align:left'>" + params[0].name + "年<br/>"
           if (!this.btnIndex) {
             for (let index = 0; index < params.length; index++) {
-              a1 += params[index].marker + params[index].seriesName + "：" + params[index].value + (params[index].seriesName.indexOf('天数') >= 0 ? '元/(亩·日)' : params[index].seriesName.indexOf('工价') >= 0 ? '元/(亩·日)' : '元/亩') + "<br/>"
+              tooltip += `${params[index].marker}${params[index].seriesName}：${params[index].value === '-' ? 0 : params[index].value.toFixed(2)} ${(params[index].seriesName.indexOf('天数') >= 0 ? '天' : params[index].seriesName.indexOf('工价') >= 0 ? '元/(亩·日)' : '元/亩')}<br/>`
             }
           } else {
             for (let index = 0; index < params.length; index++) {
-              a1 += params[index].marker + params[index].seriesName + "：" + params[index].value + (params[index].seriesName.indexOf('天数') >= 0 ? '元/(亩·日)' : params[index].seriesName.indexOf('工价') >= 0 ? '元/(亩·日)' : '元/公斤') + "<br/>"
+              if (params[index].seriesName.indexOf('天数') >= 0 || params[index].seriesName.indexOf('工价') >= 0) {
+                tooltip += `${params[index].marker}${params[index].seriesName}：${params[index].value === '-' ? 0 : params[index].value.toFixed(2)} ${(params[index].seriesName.indexOf('天数') >= 0 ? '天' : params[index].seriesName.indexOf('工价') >= 0 ? '元/(亩·日)' : '')}<br/>`
+              } else {
+                tooltip += `${params[index].marker}${params[index].seriesName}：${params[index].value === '-' ? 0 : (params[index].value * 50).toFixed(2)} 元/50公斤<br/>`
+              }
             }
           }
-
-
-          return a1 + "</div>"
+          return tooltip + "</div>"
         }
-        this.option.series = newSeries
-        this.option.legend.data = legendData
-        this.option.xAxis.data = this.lcChartData.timeData
-        this.myChart.setOption(this.option, true);
-//          	console.log(this.lcChartData.data)
+
+        this.option.yAxis.name = this.uniqArr(axisName).join(' ')   // 设置Y轴名称
+        this.option.series = newSeries                              // 设置系列
+        this.option.legend.data = legendData                        // 设置legend
+        this.option.xAxis.data = this.lcChartData.timeData          // 设置X轴
+        this.myChart.setOption(this.option, true);                  // 向图表中添加配置
       },
-      _windowResizeHandler(){
+
+      // 去除多余的单位
+      uniqArr(array) {
+        var r = [];
+        for (var i = 0, l = array.length; i < l; i++) {
+          for (var j = i + 1; j < l; j++)
+            if (array[i] === array[j]) j = ++i;
+          r.push(array[i]);
+        }
+        return r;
+      },
+
+      _windowResizeHandler() {
         this.myChart.resize()
       },
-      _destroyEchart(){
+      _destroyEchart() {
         this.myChart.dispose()
       }
     },
-//      components: {},
 
   };
 </script>

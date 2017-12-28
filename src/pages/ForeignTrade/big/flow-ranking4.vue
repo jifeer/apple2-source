@@ -47,7 +47,8 @@
 
         let option = {
           grid: {
-            left: 100,
+            left: 150,
+            right: 80,
             top: 0,
             bottom: 0
           },
@@ -61,9 +62,10 @@
               margin: 10,
               textStyle: {
                 fontSize: echartOpt.fz,
-                color: function(value, index) {
-                  return index >= 7 ? '#eeeff1' : '#63676e';
-                }
+                color: '#fff'
+                // color: function(value, index) {
+                //   return index >= 7 ? '#eeeff1' : '#63676e';
+                // }
 
               }
             },

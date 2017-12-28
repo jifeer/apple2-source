@@ -139,9 +139,9 @@
               itemGap: 0,
               itemWidth: 7,
               itemHeight: 13,
-              inRange: {
-                symbol: 'rect',
-              },
+//            inRange: {
+//              symbol: 'rect',
+//            },
               textStyle: {
                 color: '#fff'
               }

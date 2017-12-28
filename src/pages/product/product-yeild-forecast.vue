@@ -1,7 +1,7 @@
 <template>
   <div class="product-yeild-wrapper big-wrapper">
     <div class="bigW-intro">
-      根据<span>{{params.area}}</span>苹果主产区气象要素，<span>{{titleInfo.desYear}}</span>年单产预测为<span>{{titleInfo.value}}</span>公斤/亩，同比{{titleInfo.desResult}}<span
+      根据<span>{{params.area}}</span>苹果主产区气象条件，<span>{{titleInfo.desYear}}</span>年单产预测为<span>{{titleInfo.value}}</span>公斤/亩，同比{{titleInfo.desResult}}<span
       class="title-num">{{titleInfo.desPercent}}</span>。</div>
     <div class="bigW-option">
       <selectTime @chooseTime="_chooseTime" url="apple/production/getDcycTime" defaultTimeType="年度"
@@ -27,7 +27,7 @@
     name: 'line',
     data() {
       return {
-        eText: `使用岭回归、LASSO回归法，依据2000年以来主产县的历史单产、气象条件预测单产数据。数据来源为农业部，级别为全国、省级、县级。`,
+        eText: `使用岭回归、LASSO回归法，依据2000年以来主产县的历史单产、气象条件预测单产数据。数据级别为全国、省级、县级，来源为农业部。`,
         timeTypeData: [],
         areaId: '370000',
         echartsData: {
@@ -140,7 +140,7 @@
     }
 
     .title-num {
-      color: #00af67;
+      color: #fff;
     }
     .bigW-option {
       p {

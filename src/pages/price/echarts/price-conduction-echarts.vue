@@ -121,6 +121,8 @@
                 label: {
                   normal: {
                     show: true,
+                   // color:'#20508a',
+                    fontSize:'16',
                     position: 'top',
                     formatter: function (params) {
                       //console.log(params)
@@ -214,7 +216,8 @@
             },
             geo: {
               map: 'china',
-              zoom: 1,
+              zoom: 1.2,
+              left:'20%',
               label: {
                 normal: {
                   show: false

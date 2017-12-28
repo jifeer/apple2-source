@@ -13,7 +13,7 @@
     </div>
     <div class="forecast-wrapper">
       <div class="forecast-title bottom-title">
-        <div class="title-con">批发价格与{{selectType}}</div>
+        <div class="title-con">{{selectType}}</div>
         <selectDiy :data="selectData" @change="_changePriceType"></selectDiy>
       </div>
       <div class="echats-box">
@@ -37,8 +37,8 @@
     data() {
       return {
         chooseToggle: true,
-        eText: '模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果价格对该变量弹性。弹性系数表示自变量变化1%导致价格变化Y%。数据来源于农业部。',
-        selectData: ['产量变化率', '总净出口变化率', '食品类居民消费价格指数变化率', '国内生产总值变化率'],
+        eText: '模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果价格对该变量弹性。弹性系数表示自变量变化1%导致价格变化Y%。数据来源于农业部。 变化率数据为年度数据',
+        selectData: ['产量变化率', '国内生产总值变化率', '食品类居民消费价格指数变化率', '总净出口变化率'],
         priceType: 1,
         chartBarData: {
           Xdata: [],
@@ -57,11 +57,11 @@
           data2: [],
           option: {
             xAxis: {
-              name:'年度',
+              // name:'年度',
               nameTextStyle: {
                 fontSize: 16,
                 color: '#fff',
-               padding: [150, 20, 0, 0]
+               padding: [170, 20, 0, 0]
               }
             },
            dataZoom: [],
@@ -99,19 +99,19 @@
         let _priceType = ''
         if (item == "产量变化率") {
           _priceType = 1
-          this.selectType = "产量变化率"
+          this.selectType = "批发价格与苹果产量呈负相关"
         }
         if (item == "总净出口变化率") {
           _priceType = 2
-          this.selectType = "总净出口变化率"
+          this.selectType = "批发价格与总净出口量相关性不明显"
         }
         if (item == "食品类居民消费价格指数变化率") {
           _priceType = 3
-          this.selectType = "食品类居民消费价格指数变化率"
+          this.selectType = "批发价格与居民消费价格相关性不明显"
         }
         if (item == "国内生产总值变化率") {
           _priceType = 4
-          this.selectType = "国内生产总值变化率"
+          this.selectType = "批发价格与国内生产总值呈弱正相关"
         }
         this.priceType = _priceType
       },

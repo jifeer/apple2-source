@@ -149,8 +149,7 @@
                 margin: 18,
               },
               //splitNumber: 20,
-              min: 'dataMin',
-              max: 'dataMax'
+
             },
             yAxis: {
               name: '价格(元/公斤)',
@@ -189,6 +188,14 @@
                 },
                 margin: 18,
               },
+              // min:this.echartsData.minData,
+              // max:this.echartsData.maxData
+              min: function(value) {
+                return (value.min*0.9).toFixed(1);
+              },
+              max: function(value) {
+                return (value.max*1.1).toFixed(1);
+              }
             },
             series: [
               {
@@ -213,7 +220,7 @@
                 smooth: true,
                 lineStyle: {
                   normal: {
-                    color: '#19b776',
+                    color: '#fdff1b',
                   }
                 },
                 itemStyle: {

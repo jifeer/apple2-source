@@ -11,6 +11,10 @@
     <selectBtn :btnData="btnData" :btnIndex.sync="btnIndex" @changeBtn="_changeBtn"></selectBtn>
     <button @click="changeTimeScroll">click</button>
 
+    <br>
+    <br>
+    <br>
+
     <div class="timeScroll-wrapper"  v-if="timeScrollData == 1">
       <timeScroll v-if="Object.keys(scorllOption).length" :scorllOption="scorllOption" @scorllTime="scorllTime" :url="url"></timeScroll>
     </div>

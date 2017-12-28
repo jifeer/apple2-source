@@ -21,8 +21,9 @@
   import selectArea from 'components/selectArea/selectArea';
   import selectBtn from 'components/selectBtn/selectBtn';
   import selectTime from 'components/selectTime/selectTime';
-  import selectTree from 'components/selectTree/selectTree';
+  import selectTree from 'components/selectTree/selectTreeSpecial';
   import explain from 'components/explain/explain';
+
   export default {
     name: 'landCost',
     data() {
@@ -30,18 +31,6 @@
         myowndata: "我国苹果种植成本收益评估",
         timeType: "year",
         btnIndex: 0,
-        selectData: [{
-          label: '土地成本',
-          children: [
-            {
-              label: '流转地租金',
-            },
-            {
-              label: '自营地折租',
-            },
-
-          ],
-        }],
         btnData: [{                             // selectBtn 组件
           name: '单位面积',
           value: 0
@@ -49,14 +38,14 @@
           name: '单位产品',
           value: 1
         }],
-        eText: "数据来源于农业部，土地成本起始于1998年，流转地租金和自营地折租起始于2004年。级别为全国、省级。",
+        eText: "数据起始于1998年，级别为全国、省级，来源于农业部。其中，北京2001-2003年及2005年、山东的2002年、宁夏1999年及2008-2011年、甘肃2002及2003年、辽宁2001-2003年、河南2003年的数据为估算值。",
         selectArea: "人工成本",
         landChartData: {
           data: [],
           timeData: [],
           option: {
             yAxis: {
-              name: '元/亩        ',
+              name: '元/亩',
             }
           },
         },
@@ -83,7 +72,7 @@
       },
     },
     methods: {
-      _chooseTime(time){
+      _chooseTime(time) {
         this.time = time.time
 
       },
@@ -91,33 +80,34 @@
       _changeBtn(val) {
         if (val == 0) {
           this.type = 101002
-          this.landChartData.option.yAxis.name = '元/亩       '
+          this.landChartData.option.yAxis.name = '元/亩'
           this.item = true
         }
         else {
           this.type = 101018
-          this.landChartData.option.yAxis.name = '元/公斤    '
+          this.landChartData.option.yAxis.name = '元/公斤'
           this.item = false
         }
       },
-      _chooseArea(area){
+      _chooseArea(area) {
         if (this.i == 1) {
           area = [101, 116, 128]
           this.i++
         }
         this.area = area.toString()
       },
-      _treeAsync(val){
+      _treeAsync(val) {
 //    	alert(val)    //101011,101012,101013
-        if (val.toString().indexOf("101012") != -1 && val.toString().indexOf("101013") != -1) {
+        /*if (val.toString().indexOf("101012") != -1 && val.toString().indexOf("101013") != -1) {
           this.itemId = "101011"
         }
         else {
           this.itemId = val.toString()
-        }
+        }*/
+        this.itemId = val[0]
       },
       //获取数据
-      getlandChartData(){
+      getlandChartData() {
         this.$xhr.get('/apple/income/getLandCostData', {
           params: {
             ...this.ApilandChartParms
@@ -132,7 +122,7 @@
 
     },
     watch: {
-      ApilandChartParms(newVal){
+      ApilandChartParms(newVal) {
         if (newVal.area && newVal.time && newVal.type && newVal.itemId) {
           this.getlandChartData()
         }
@@ -167,6 +157,9 @@
 
   .select-wrapper {
     margin-right: 0.2rem;
+    &:nth-child(2) {
+      width: auto;
+    }
   }
 
   .select-cost-wrapper {

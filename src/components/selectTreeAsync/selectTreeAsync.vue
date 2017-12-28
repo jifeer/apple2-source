@@ -40,8 +40,10 @@
 <script>
   export default {
     props: {
-      url: String,
-      default: ''
+      url: {
+        type: String,
+        default: ''
+      },
     },
     data() {
       return {

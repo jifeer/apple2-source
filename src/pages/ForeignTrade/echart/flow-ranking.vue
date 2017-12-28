@@ -58,10 +58,7 @@
               margin: 10,
               textStyle: {
                 fontSize: echartOpt.fz,
-                color: function(value, index) {
-                  return index >= 7 ? '#eeeff1' : '#63676e';
-                }
-
+                color: '#fff'
               }
             },
             splitLine: {
@@ -132,6 +129,7 @@
             label: {
               normal: {
                 position: 'right',
+                padding: [0, 0, 0, 10],
                 show: true,
                 textStyle: {
                   fontSize: echartOpt.fz,

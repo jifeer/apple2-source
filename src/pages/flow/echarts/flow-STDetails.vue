@@ -98,6 +98,9 @@
                 show: false,
               },
               axisLabel: {    //坐标轴刻度标签的相关设置。
+                formatter:(params)=>{
+                  return params
+                },
                 margin: 10,
                 textStyle: {
                   color: '#fff'

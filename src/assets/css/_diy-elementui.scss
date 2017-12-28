@@ -102,3 +102,13 @@
 .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
   background-color: #0E335B;
 }
+
+// 弹出消息
+.el-message {
+  .el-message__group {
+    justify-content: center;
+  }
+  > img {
+    display: none;
+  }
+}

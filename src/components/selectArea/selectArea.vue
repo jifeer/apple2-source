@@ -116,7 +116,10 @@
       },
       emitArea() {
         if (this.checkNames.length > 3) {
-          alert('最多选择3个')
+          this.$message({
+            message: '最多选择三个地区',
+            center: true
+          })
           return
         }
         if (this.dataType) {
@@ -149,6 +152,13 @@
     },
     beforeDestroy() {
       document.removeEventListener('click', this.controlShow)
+    },
+    watch: {
+      url(newVal) {
+        if (newVal) {
+          this._getSelectArea()
+        }
+      }
     }
   }
 
@@ -163,25 +173,33 @@
     height: 0.3rem;
     line-height: 0.3rem;
     box-sizing: border-box;
+    display: inline-block;
     .selectArea {
-      position: absolute;
-      right: 0;
-      display: flex;
-      width: 100%;
-      height: 0.3rem;
+      width: auto;
+      display: inline-block;
+      max-height: 0.3rem;
       line-height: 0.3rem;
       border: 1px solid #1A5484;
       font-size: .18rem;
       color: $blue;
       cursor: pointer;
       box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
       .selectArea-title {
-        flex: 1;
-        border-right: 1px solid #1A5484;
+        // flex: 1;
+        // width: calc(100% - 0.35rem);
+        display: inline-block;
+        white-space: nowrap;
+        padding: 0 3px;
+        min-width: 1rem;
         text-align: center;
       }
       .selectArea-select {
-        flex: 0 0 35px;
+        // flex: 0 0 0.35rem;
+         display: inline-block;
+         border-left: 1px solid #1A5484;
+         width: 0.35rem;
         text-align: center;
       }
     }
@@ -196,7 +214,7 @@
       box-sizing: border-box;
       z-index: 100;
       @include arrow-top;
-      > div {
+      >div {
         height: 100%;
         box-sizing: border-box;
       }

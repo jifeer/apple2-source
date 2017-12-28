@@ -14,14 +14,14 @@
             </label>
           </li>
         </ul>
-        <div class="btnGroup">
+        <!--<div class="btnGroup">
           <div class="btnSure" @click="emitTime">
             确定
           </div>
           <div class="btnSure" @click="closeTime">
             取消
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -59,6 +59,7 @@
       getTime(item, index) {
         this.activeIndex = index
         this.selectYear = item
+        this.emitTime()
       },
 
       // 确认一个时间
@@ -110,6 +111,7 @@
     overflow-y: auto;
     margin-top: 15px;
     padding-right: 15px;
+    font-weight: 200;
   }
 
   .selectTime-wrapper {
@@ -133,7 +135,7 @@
       height: 3rem;
       // overflow: visable;
 
-      padding-bottom: .3rem;
+      padding-bottom: 15px;
       box-sizing: border-box;
       @include arrow-top(0.1rem !important, '');
       &.timeArea0 {
@@ -148,7 +150,7 @@
 
       ul {
         li {
-          line-height: 0.5rem;
+          line-height: 0.31rem;
           padding-left: 0.15rem;
           cursor: pointer;
           span {

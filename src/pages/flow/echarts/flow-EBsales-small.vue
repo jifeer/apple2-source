@@ -93,6 +93,9 @@
               },
               axisLabel: {
                 margin: 10,
+                formatter:(params)=>{
+                  return params
+                },
                 textStyle: {
                   color: '#fff',
                   fontSize: 12

@@ -127,7 +127,7 @@
       getJSON() {
         this.$xhr.get(`./static/json/${this.nameMap[this.params.area]}.json`)
           .then((res) => {
-            console.log(res)
+            // console.log(res)
             /*let newdata = []
             res.features.forEach((item, index) => {
               newdata.push({
@@ -182,6 +182,11 @@
       }
       .select-wrapper {
         margin-right: 0.2rem;
+        /*.arrow-cont {
+          li {
+            height: 0.36rem !important;
+          }
+        }*/
       }
       p {
         margin-right: 0.2rem;

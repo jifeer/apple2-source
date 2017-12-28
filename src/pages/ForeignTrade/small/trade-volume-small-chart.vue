@@ -102,7 +102,9 @@
               }
             },
             axisLabel: {
-              formatter: '{value}',
+              formatter:(params)=>{
+                return params
+              },
               textStyle: {
                 color: "#fff",
                 fontSize: 12
@@ -133,7 +135,9 @@
               }
             },
             axisLabel: {
-              formatter: '{value}',
+              formatter:(params)=>{
+                return params
+              },
               textStyle: {
                 color: "#fff",
                 fontSize: 12

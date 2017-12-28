@@ -7,13 +7,14 @@
 <script>
   import {extend, datazoom, $} from 'assets/js/common'
   import {resizeMixin} from 'assets/js/common'
+
   export default {
     name: 'cbchart',
     mixins: [resizeMixin],
     props: {
       exportDate: {
         type: Object,
-        default(){
+        default() {
           return {}
         }
       },
@@ -32,10 +33,9 @@
     },
     mounted() {
       this.myChart = this.$echarts.init(this.$refs.cbchart)
-      this.initChart()
     },
     methods: {
-      initChart(){
+      initChart() {
         if (Object.keys(this.exportDate).length) {
           let option = {
             tooltip: {
@@ -150,10 +150,10 @@
 
         }
       },
-      _windowResizeHandler(){
+      _windowResizeHandler() {
         this.myChart.resize()
       },
-      _destroyEchart(){
+      _destroyEchart() {
         this.myChart.dispose()
       }
     },

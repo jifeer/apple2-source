@@ -141,7 +141,7 @@
               }, {
                 name: '辅助颜色',
                 type: 'map',
-                zoom: 1,
+                zoom: 1.2,
                 geoIndex: 0,
                 label: {
                   normal: {
@@ -211,7 +211,7 @@
             },
             geo: {
               map: 'china',
-              zoom: 1,
+              zoom: 1.2,
               label: {
                 normal: {
                   show: false

@@ -141,38 +141,39 @@
                   }
                 }
               })
-            }, {
-              name: '全球鲜苹果出口贸易分布',
-              type: 'map',
-              geoIndex: 1,
-              zlevel: 1,
-              showLegendSymbol: false,
-              zoom: 1.25,
-              roam: false,
-              itemStyle: {
-                normal: {
-                  // areaColor: 'rgba(122, 247, 179, 0.9)',
-                  areaColor: '#fff',
-                  borderColor: '#20508a'
-                },
-                emphasis: {
-                  areaColor: '#3952ca'
-                }
-              },
-              mapType: 'world',
-              label: {
-                normal: {
-                  show: false
-                },
-                emphasis: {
-                  show: true,
-                  formatter: function(d) {
-                    return nameMap[d.name]
-                  }
-                }
-              },
-              data: areaData
             });
+          });
+          series.push({
+            name: '全球鲜苹果出口贸易分布',
+            type: 'map',
+            geoIndex: 1,
+            zlevel: 1,
+            showLegendSymbol: false,
+            zoom: 1.25,
+            roam: false,
+            itemStyle: {
+              normal: {
+                // areaColor: 'rgba(122, 247, 179, 0.9)',
+                areaColor: '#fff',
+                borderColor: '#20508a'
+              },
+              emphasis: {
+                areaColor: '#3952ca'
+              }
+            },
+            mapType: 'world',
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: true,
+                formatter: function(d) {
+                  return nameMap[d.name]
+                }
+              }
+            },
+            data: areaData
           });
           return series
         }
@@ -224,54 +225,99 @@
           },
           visualMap: {
             show: false,
-            type: 'piecewise', //分段型。
+            type: 'piecewise',
+            min: 0,
+            max: 2500,
+            color: ['#ff3000', '#ff7800', '#ffc000', '#eaff00', '#4ad9c6', '#007acf'],
             splitNumber: 6,
-            inverse: false,
             pieces: [{
               min: 50,
               label: '>50',
-              color: '#00934E'
+              color: '#ff3000'
             }, {
               min: 30,
               max: 50,
               label: '30-50',
-              color: '#22AD6C',
-
+              color: '#ff7800'
             }, {
               min: 20,
               max: 30,
               label: '20-30',
-              color: '#10BD6C'
+              color: '#ffc000'
             }, {
               min: 10,
               max: 20,
               label: '10-20',
-              color: '#12CA6D'
-
+              color: '#eaff00'
             }, {
               min: 5,
               max: 10,
               label: '5-10',
-              color: '#41DA89'
-
+              color: '#007acf'
             }, {
               min: 1,
               max: 5,
               label: '1-5',
-              color: '#75F8B1'
+              color: '#4ad9c6'
             }],
-            left: '4%',
-            bottom: '6%',
-            itemGap: 0,
-            itemWidth: 20,
-            itemHeight: 30,
-            inRange: {
-              symbol: 'rect',
-            },
+            left: '0',
+            bottom: '20',
+            // text: ['高', '低'], // 文本，默认为数值文本
             textStyle: {
               color: '#fff'
-            }
+            },
+            calculable: true
           },
+          // visualMap: {
+          //   show: false,
+          //   type: 'piecewise', //分段型。
+          //   splitNumber: 6,
+          //   inverse: false,
+          //   pieces: [{
+          //     min: 50,
+          //     label: '>50',
+          //     color: '#00934E'
+          //   }, {
+          //     min: 30,
+          //     max: 50,
+          //     label: '30-50',
+          //     color: '#22AD6C',
+
+          //   }, {
+          //     min: 20,
+          //     max: 30,
+          //     label: '20-30',
+          //     color: '#10BD6C'
+          //   }, {
+          //     min: 10,
+          //     max: 20,
+          //     label: '10-20',
+          //     color: '#12CA6D'
+
+          //   }, {
+          //     min: 5,
+          //     max: 10,
+          //     label: '5-10',
+          //     color: '#41DA89'
+
+          //   }, {
+          //     min: 1,
+          //     max: 5,
+          //     label: '1-5',
+          //     color: '#75F8B1'
+          //   }],
+          //   left: '4%',
+          //   bottom: '6%',
+          //   itemGap: 0,
+          //   itemWidth: 20,
+          //   itemHeight: 30,
+          //   inRange: {
+          //     symbol: 'rect',
+          //   },
+          //   textStyle: {
+          //     color: '#fff'
+          //   }
+          // },
           series: handleResData(this.flowData)
         }
 

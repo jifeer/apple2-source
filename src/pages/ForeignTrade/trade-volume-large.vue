@@ -2,10 +2,10 @@
   <div class="product-historical-wrapper big-wrapper trade-large-wrapper">
     <div class="bigW-option">
       <selectDiy :data="selectData" @change="_changeAppleType" class="marginRight"></selectDiy>
-      <selectTime @chooseTime="_chooseTime" url="apple/trade/history/getTime" :timeTypeData="timeTypeData" defaultTimeType="年度" :areaId="area"  class="marginRight"></selectTime>
       <selectArea url="apple/trade/history/getArea" @change="_changeArea" class="marginRight" num="2"></selectArea>
       <selectBtn :btnData="btnData" :btnIndex.sync="btnIndex" @changeBtn="_changeExport" class="marginRight"></selectBtn>
-      <explain>数据来源于联合国商品贸易统计数据库，年度起始于1990年，月度数据起始于2010年1月。</explain>
+      <selectTime @chooseTime="_chooseTime" url="apple/trade/history/getTime" :timeTypeData="timeTypeData" defaultTimeType="年度" :areaId="area"  class="marginRight"></selectTime>
+      <explain>月度年度数据起始于1994年，来源于联合国商品贸易统计数据库；</explain>
     </div>
     <div class="large-chart">
       <tradeVolumeChart :data="echartsData" v-if="echartsData.length && time.length" class="world-chart" :time="time" :timeType="timeType"></tradeVolumeChart>
@@ -31,7 +31,7 @@
         btnIndex: 0,
         title: '',
         timeTypeData: ['月度', '年度'],
-        selectData: ['鲜苹果', '苹果汁', '苹果干'],
+        selectData: ['鲜苹果', '苹果干', '苹果汁'],
         btnData: ['出口', '进口'],
 
         appleType: '', // 苹果类型
@@ -93,6 +93,7 @@
     watch: {
       ApiParams(val) {
         if (val['TIME_ID'] && val['NAME'] && val['AREA'] && val['PRODUCT']) {
+          this.$emit('bigSixTitle', val)
           this.getData()
         }
       }

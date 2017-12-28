@@ -3,8 +3,8 @@
     <h3 class="big-title">{{arearank}}{{title}}</h3>
     <div class="bigW-option">
       <selectBtn :btnIndex.sync="btnIndex" :btnData="btnData" @changeBtn="changeBtn"></selectBtn>
-      <div class="btn-into">{{areaType}}:</div>
-      <selectDiy @change="changeDiy" :url="url" v-if="url"></selectDiy>
+      <!--<div class="btn-into">{{areaType}}:</div>-->
+      <selectDiy @change="changeDiy" :url="url" v-if="url" :defaultOption="defaultArea"></selectDiy>
       <explain :eText="eText"></explain>
     </div>
     <div class="bigW-chart">
@@ -41,7 +41,7 @@
       return {
         btnData: ['主产区', '主销区'],
         // title:'2016年我国鲜苹果出口前三国家为孟加拉国、印度、泰国，第一进口来源为美国。',
-        eText: '数据来源于农业部，主产区数据起始于2016年1月，主销区数据起始于2008年1月，级别为全国、省级。',
+        eText: '数据起始于2008年1月，级别为全国、省级，来源于农业部。',
         myowndata: '这里可以定义自己的属性 生产1111',
         screenWidth: document.body.clientWidth,
         btnIndex: 0,
@@ -61,7 +61,7 @@
           option: {}
         },
         areas: '',
-        marketclass: 1,
+        marketclass: '',
         year: '',
         title: '',
         scorllOption: {
@@ -120,9 +120,11 @@
           marketclass: this.marketclass,
           year: this.year,
         }
+      },
+      defaultArea() {
+        return this.areaType === '主产区' ? '陕西省' : '浙江省'
       }
     },
-
     methods: {
       changeBtn(name) {
         if (name == '主产区') {
@@ -211,7 +213,7 @@
         this.getAearRank()
         this.getYearRank()
         this.title = this.areas + '富士苹果' + this.marketName
-        this.scorllOption.url = 'apple/circulation/getDetectTimes?marketclass=' + this.marketclass + '&areas=' + this.areas
+        this.scorllOption.url = 'apple/circulation/getDetectTimes?marketclass=' + this.marketclass + '&areas=' + encodeURI(this.areas)
 
       }
     }
@@ -235,7 +237,7 @@
     display: flex;
     justify-content: flex-end;
     .option-right-wrapper > div {
-      margin-right: 0.4rem;
+      margin-right: 0.2rem;
     }
 
     .btn-into {
@@ -246,7 +248,7 @@
   }
 
   .bigW-option > div {
-    margin-left: 0.4rem;
+    margin-left: 0.2rem;
   }
 
   .bigW-chart {

@@ -98,17 +98,17 @@
                 if (dateName == '日') {
                   times = times[0] + '年' + times[1] + '月' + times[2] + '日'
                 }
-                  let  addWord =  dateName == '年' ? '月' : ''
+                let addWord = dateName == '年' ? '月' : ''
 
                 if (params.length > 1) {
-                  times += '<br/>' + dateName + '初'+addWord+'均价 : ' + params[0].value[1] + '<br/>' + dateName + '最高'+addWord+'均价 : ' + params[0].value[4];
-                  times += '<br/>' + dateName + '末'+addWord+'均价 : ' + params[0].value[2] + '<br/>' + dateName + '最低'+addWord+'均价 : ' + params[0].value[3];
+                  times += '<br/>' + dateName + '初' + addWord + '均价 : ' + params[0].value[1] + '<br/>' + dateName + '最高' + addWord + '均价 : ' + params[0].value[4];
+                  times += '<br/>' + dateName + '末' + addWord + '均价 : ' + params[0].value[2] + '<br/>' + dateName + '最低' + addWord + '均价 : ' + params[0].value[3];
                   times += '<br/>  均价 : ' + params[1].value;
                   return times;
                 } else {
                   if (params[0].seriesName == "K线图") {
-                    times += '<br/>' + dateName + '初'+addWord+'均价 : ' + params[0].value[1] + '<br/>' + dateName + '最高'+addWord+'均价 : ' + params[0].value[4];
-                    times += '<br/>' + dateName + '末'+addWord+'均价 : ' + params[0].value[2] + '<br/>' + dateName + '最低'+addWord+'均价 : ' + params[0].value[3];
+                    times += '<br/>' + dateName + '初' + addWord + '均价 : ' + params[0].value[1] + '<br/>' + dateName + '最高' + addWord + '均价 : ' + params[0].value[4];
+                    times += '<br/>' + dateName + '末' + addWord + '均价 : ' + params[0].value[2] + '<br/>' + dateName + '最低' + addWord + '均价 : ' + params[0].value[3];
                     return times;
                   } else {
                     times += '<br/>  均价 : ' + params[0].value;
@@ -147,15 +147,15 @@
                 margin: 18,
               },
               //splitNumber: 20,
-              min: 'dataMin',
-              max: 'dataMax'
+              /*min: 'dataMin',
+              max: 'dataMax'*/
             },
             yAxis: {
               name: '价格(元/公斤)',
               nameTextStyle: {
                 fontSize: 16,
                 color: '#fff',
-                padding: [40, 0, 15, 40]
+                padding: [40, 0, 10, 40]
               },
               scale: true,
               splitArea: {
@@ -187,6 +187,14 @@
                 },
                 margin: 18,
               },
+              // min: this.echartsData.minData,
+              // max: this.echartsData.maxData
+              min: function(value) {
+                return (value.min*0.9).toFixed(1);
+              },
+              max: function(value) {
+                return (value.max*1.1).toFixed(1);
+              }
             },
             dataZoom: [{
               "show": true,
@@ -235,7 +243,7 @@
               {
                 name: 'K线图',
                 type: 'candlestick',
-                barWidth:'20%',
+                barWidth: '20%',
                 data: data0.values,
                 itemStyle: {
                   normal: {
@@ -243,7 +251,7 @@
                     color0: downColor,
                     borderColor: upBorderColor,
                     borderColor0: downBorderColor,
-                    borderWidth:3
+                    borderWidth: 3
                   }
                 }
               },
@@ -252,19 +260,25 @@
                 type: 'line',
                 data: this.echartsData.data1,
                 smooth: true,
+                symbolSize: 10,
+                symbol: 'circle',
                 lineStyle: {
                   normal: {
-                    color: '#19b776',
+                    color: '#fdff1b'
                   }
                 },
                 itemStyle: {
                   normal: {
                     color: 'rgb(228, 74, 99)',
-                    opacity: 0
+                    borderColor: 'rgb(254, 253, 56)',
+                    opacity: 1,
+                    symbolSize: 15,
+                    symbol: 'circle',
+                    borderWidth: 2
                   },
                   emphasis: {
                     color: 'rgb(228, 74, 99)',
-                    opacity: 1,
+                    // opacity: 1,
                     borderColor: 'rgb(254, 253, 56)',
                     borderWidth: 2
                   }

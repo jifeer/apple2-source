@@ -48,7 +48,11 @@
       },
       data: {
         type: Array,
-        data: () => []
+        default: () => []
+      },
+      fixArea: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -100,16 +104,25 @@
               return item === this.defaultOption
             })
             if (this.dataType) {
-              // 如果存在 默认地区选项。 不支持多选！
-              if (this.defaultOption && index !== -1) {
-                this.defaultValue = res.data[index]
-                this.activeIndex = index
-                this.$emit('change', this.defaultValue)
+              // 更改条件时，默认地区不变化
+              let fixAreaIndex = res.data.findIndex((item, index) => item.value === this.fixArea)
+              if (this.fixArea && fixAreaIndex > -1) {
+                this.defaultValue = res.data[fixAreaIndex].name
+                this.activeIndex = fixAreaIndex
+                this.$emit('change', res.data[fixAreaIndex])
+                // return
               } else {
-                this.defaultValue = this.selectData[0].name
-                // this.$emit('change', this.selectData.slice(0, parseInt(this.num)).map(item => item.name).join(','))
-                // 如此默认只传出一个值来
-                this.$emit('change', this.selectData.slice(0, parseInt(this.num))[0])
+                // 如果存在 默认地区选项。 不支持多选！
+                if (this.defaultOption && index !== -1) {
+                  this.defaultValue = res.data[index]
+                  this.activeIndex = index
+                  this.$emit('change', this.defaultValue)
+                } else {
+                  this.defaultValue = this.selectData[0].name
+                  // this.$emit('change', this.selectData.slice(0, parseInt(this.num)).map(item => item.name).join(','))
+                  // 如此默认只传出一个值来
+                  this.$emit('change', this.selectData.slice(0, parseInt(this.num))[0])
+                }
               }
             } else {
               if (this.defaultOption  && index !== -1) {
@@ -164,12 +177,14 @@
 
   .select-wrapper {
     position: relative;
-    width: 1.5rem;
+    display: inline-block;
     .selectArea {
-      display: flex;
-      width: 100%;
+      // display: flex;
+      // width: 100%;
       // min-width: 1.4rem;
       // max-width: 2rem;
+      width: auto;
+      display: inline-block;
       max-height: 0.3rem;
       line-height: 0.3rem;
       border: 1px solid #1A5484;
@@ -177,16 +192,22 @@
       color: $blue;
       cursor: pointer;
       box-sizing: border-box;
-
+      white-space: nowrap;
+      overflow: hidden;
       .selectArea-title {
-        flex: 1;
+        // flex: 1;
         // width: calc(100% - 0.35rem);
-        @extend %no-wrap;
-        border-right: 1px solid #1A5484;
+        display: inline-block;
+        white-space: nowrap;
+        padding: 0 3px;
+        min-width: 1rem;
         text-align: center;
       }
       .selectArea-select {
-        flex: 0 0 0.35rem;
+        // flex: 0 0 0.35rem;
+         display: inline-block;
+         border-left: 1px solid #1A5484;
+         width: 0.35rem;
         text-align: center;
       }
     }

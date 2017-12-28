@@ -1,5 +1,5 @@
 <template>
-  
+
   	<div class="plantingCostSM-box">
   		<PCchart :cbchartData="cbchartData"></PCchart>
   	</div>
@@ -57,7 +57,7 @@ export default {
 						                borderColor:"#FFF500",
 						                borderWidth:1,
 						            },
-	
+
 						        },
                  },
                     {
@@ -86,11 +86,11 @@ export default {
 						                borderColor:"#FFF500",
 						                borderWidth:1,
 						            },
-	
+
 						        },
                  }
              ],
-             legend:{show:false}           
+             legend:{show:false}
 	          },
 				},
     }
@@ -100,7 +100,6 @@ export default {
   },
   methods:{
 	        changeBtn(name){
-	            console.log(name)
 	        },
 	        myownEvent(){
 	            this.changeBar()
@@ -112,7 +111,7 @@ export default {
 	                this.cbchartData.datab =  [5402, 7402, 4402, 9802, 6402, 12402, 14102];
 	                this.cbchartData.datac =  [5402, 3402, 6402, 10402, 8402, 11402, 11402];
 	            },200)
-	
+
 	        },
 	        changeBar(){
 	            // 在这里发送请求
@@ -130,7 +129,7 @@ export default {
 	            },500)
 	        }
 
-		
+
   },
   components:{
   	PCchart,

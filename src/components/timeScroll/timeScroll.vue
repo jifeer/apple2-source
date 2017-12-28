@@ -71,6 +71,7 @@
           url: this.scorllOption.url
         }).then((res) => {
           //let timeData = this.handleTimeData(res.data);
+          // console.log(res)
           let timeData = this.getLastTime(res.data)
          // console.log(`初始化：${timeData}`)
 
@@ -96,8 +97,8 @@
 
       },
     },
-    computed: {
-
+    beforeDestroy() {
+      this.scale = null
     },
     watch: {
       'scorllOption': {

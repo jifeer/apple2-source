@@ -25,16 +25,7 @@
     mounted(){
       this.getlcChartData()
     },
-//computed: {
-//  	ApiLCchartParms() {
-//		        return {
-//		              area: "101,116,128",
-//	                time: "2010,2011,2012,2013,2014",
-//	                type: "101002",
-//	                itemId: "101011",
-//		        }
-//		      },
-//  },
+
     methods: {
       //获取数据
       getlcChartData(){
@@ -71,8 +62,7 @@
       height: 100%;
       flex: 1;
       .LCchart-wrapper {
-        height: 85%;
-        /*width: 90%;*/
+        height: 100%;
         margin: 0 auto;
       }
     }

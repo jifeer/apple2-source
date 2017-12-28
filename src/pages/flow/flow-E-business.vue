@@ -12,7 +12,7 @@
         <Businesecharts :echartsData="echartsData"></Businesecharts>
       </div>
       <div class="rank-echarts-wrapper">
-        <div class="rank-title">{{months}}全国网点分布排名（家）</div>
+        <div class="rank-title">全国网点分布排名（家）</div>
         <div class="rankingEchart-box" v-if="rankingEchartToggle">
           <rankingEchart :rankingEchart="rankingEchart"></rankingEchart>
         </div>
@@ -40,7 +40,7 @@
         date: '',
         sum: 0,
         months: '',
-        eText: '数据来源于电商平台（天猫、淘宝），起始于2017年5月，级别为全国、市级。',
+        eText: '数据起始于2017年5月，级别为全国、市级，来源于电商平台（天猫、淘宝）。',
         scorllOption: {
           width: '100%', //宽
           height: '50px', //高
@@ -67,7 +67,7 @@
             }
           }
         },
-        rankingEchartToggle: false
+        rankingEchartToggle: true
       }
     },
     mounted() {
@@ -91,6 +91,7 @@
 
       scorllTime(time) {
         this.date = time
+        //标题上的时间处理
         let newYear = this.date.substr(0, 4)
         let newMonth = (this.date.substr(4, 2)).replace(/\b(0+)/gi,"");
         let titleParams = newYear + '年' + newMonth + '月'
@@ -258,8 +259,8 @@
   }
 
   .Businesecharts-box {
-    width: 12rem;
-    height: 6rem;
+    height:calc(100% - 0.5rem);
+    width:100%;
   }
 
   .rankingEchart-box {
@@ -271,12 +272,13 @@
     width: 100%;
     height: 97%;
     display: flex;
-    .flow-E-business-wrapper {
+  .flow-E-business-wrapper {
       height:100%;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       .map-echarts-wrapper {
+        width: 100%;
         flex: 1;
         position: relative;
         z-index: 0;

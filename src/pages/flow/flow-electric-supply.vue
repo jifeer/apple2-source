@@ -3,6 +3,7 @@
     <div class="bigW-intro">
       <h2>{{title}}</h2>
       <div class="bigW-option">
+        <selectDiy @change="_changeDiyType" :data="typeData" class="typeData"></selectDiy>
         <selectTime @chooseTime="_chooseTime" :timeTypeData="timeTypeData" defaultTimeType="月度" url="apple/circulation/getDsChannelDropTime"></selectTime>
         <explain :eText="eText"></explain>
       </div>
@@ -27,12 +28,14 @@
   import rankingEchart from 'pages/flow/echarts/flow-ranking';
   import supplyPie from 'pages/flow/echarts/flow-supplypie';
   import timeScroll from 'components/timeScroll/timeScroll'
+  import selectDiy from '../../components/selectDiy/selectDiy.vue'
 
   export default {
     data() {
       return {
         timeTypeData: ['月度', '年度'],
-        eText: '数据来源于电商平台（天猫、淘宝），起始于2017年5月，级别为全国、市级。',
+        eText: '数据起始于2017年5月，级别为全国、市级，来源于电商平台（天猫、淘宝）。',
+        typeData:['全部', '红富士', '冰糖心'],
         btnIndex: 0,
         timeType: 'month',
         years: '',
@@ -40,6 +43,7 @@
         date: '',
         isShow: true,
         saleType: 1,
+        appleType:'',
         rankName: '产地配送',
         scorllOption: {
           width: '100%', //宽
@@ -88,31 +92,19 @@
         return {
           timeType: this.timeType,
           date: this.years ? this.years : this.date,
+          appleType: this.appleType
         }
       },
       FeaturesOrderParms() {
         return {
           timeType: this.timeType,
           date: this.years ? this.years : this.date,
-          saleType: this.saleType
+          saleType: this.saleType,
+          appleType: this.appleType
         }
       }
     },
-    watch: {
-      supplyPieParms(newVal) {
-        if (newVal.timeType && newVal.date) {
 
-          this.supplyPie()
-          this.supplyTitle()
-        }
-      },
-      FeaturesOrderParms(newVal) {
-        if (newVal.timeType && newVal.date && newVal.saleType) {
-          this.renderChart()
-
-        }
-      }
-    },
     mounted() {
       this.renderChart()
       this.supplyPie()//饼图
@@ -122,7 +114,7 @@
 
       /*饼图点击*/
       _changePie(name) {
-//      console.log(name)
+      console.log(name)
         name == '产地配送' ? this.saleType = 1 : this.saleType = 2;
         this.rankName = name;
       },
@@ -134,9 +126,12 @@
           this.isShow = true;
           this.years = ''
         }
-//      console.log(this.date)
-//      console.log(this.years)
         this.timeType = val.timeType
+      },
+      //查询苹果类型的下拉框
+      _changeDiyType(type){
+        this.appleType = type
+        this.$emit('changeSupplytype', type)
       },
       scorllTime(time) {
         this.date = time;
@@ -152,7 +147,6 @@
 //        console.log(res)
         })
 
-
       },
       supplyTitle() {
 
@@ -161,8 +155,9 @@
             ...this.supplyPieParms
           }
         }).then((res) => {
-          this.title = res.data.showTime + '苹果电商销量产地配送占比' + res.data.showValue
-
+          //console.log(this.saleType)
+          let appleTitle = this.appleType == '全部' ? '鲜' : this.appleType
+          this.title = res.data.showTime + appleTitle + '苹果电商销量产地配送占比' + res.data.showValue
         })
 
 
@@ -186,7 +181,23 @@
       explain,
       supplyPie,
       timeScroll,
-      rankingEchart
+      rankingEchart,
+      selectDiy
+    },
+    watch: {
+      supplyPieParms(newVal) {
+        if (newVal.timeType && newVal.date && newVal.appleType) {
+          this.supplyPie()
+          this.supplyTitle()
+        }
+      },
+      FeaturesOrderParms(newVal) {
+        console.log(newVal)
+        if (newVal.timeType && newVal.date && newVal.saleType && newVal.appleType) {
+          this.renderChart()
+
+        }
+      }
     }
 
   }
@@ -221,11 +232,14 @@
     .chart-left {
       flex: 1;
     }
-  ;
+
     .chart-right {
       flex: 1;
     }
   }
-
-
+  .bigW-option .typeData {
+    margin-right: 0.2rem;
+    padding-top: 0.14rem;
+    box-sizing: border-box;
+  }
 </style>

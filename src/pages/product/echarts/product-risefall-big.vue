@@ -95,16 +95,16 @@
                     str = `<ul style="list-style: none;text-align: left;padding: 6px;">
                           <li>${val.name}</li>
                           <li>${val.data.name}：${val.data.typeVal.toFixed(2)}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
-                          <li>${val.data.name === '产量' ? '减产' : '减少'}：${val.data.riseorfall ? val.data.riseorfall.toFixed(2) : "-"}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
-                          <li>变化率：<span style='color:#fff;font-weight:bold;'>${-val.data.value.toFixed(2)}</span>%↓</li>
+                          <li>${val.data.name === '产量' ? '减产' : '减少'}：${val.data.riseorfall || val.data.riseorfall === 0 ? val.data.riseorfall.toFixed(2) : "-"}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
+                          <li>变化率：<span style='color:#fff;font-weight:bold;'>${val.data.value ? -val.data.value.toFixed(2) : val.data.value.toFixed(2)}</span>%↓</li>
                         </ul>`;
                   }
                 } else if (val.seriesIndex == 1 && (val.data.typeVal || val.data.name)) {
-                  if (this.echartsData.data.length > 0 && this.echartsData.data[val.dataIndex].value > 0) {
+                  if (this.echartsData.data.length > 0 && this.echartsData.data[val.dataIndex].value >= 0) {
                     str = `<ul style="list-style: none;text-align: left;padding: 6px;">
                           <li>${val.name}</li>
                           <li>${val.data.name}：${val.data.typeVal.toFixed(2)}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
-                          <li>${val.data.name === '产量' ? '增产' : '增加'}：${val.data.riseorfall ? val.data.riseorfall.toFixed(2) : "-"}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
+                          <li>${val.data.name === '产量' ? '增产' : '增加'}：${val.data.riseorfall || val.data.riseorfall === 0 ? val.data.riseorfall.toFixed(2) : "-"}${val.data.name === '种植面积' ? '万亩' : val.data.name === '产量' ? '万吨' : '公斤/亩'}</li>
                           <li>变化率：<span style="color:#fff;font-weight: bold;">${val.data.value.toFixed(2)}</span>%↑</li>
                         </ul>`;
                   }
@@ -154,6 +154,7 @@
 
             }
           },
+          color: ['#9c3950', '#03714e'],
           legend: {
             top: 0,
             right: 'center',
@@ -169,7 +170,7 @@
               name: '减幅',
               textStyle: {
                 fontWeight: 'lighter'
-              }
+              },
             }, {
               name: '增幅',
               textStyle: {
@@ -249,14 +250,14 @@
               },
               itemStyle: {
                 normal: {
-                  color: (params) => {
-                    if (this.echartsData.data.length > 0 && this.echartsData.data[params.dataIndex].value >= 0) {
-                      return '#9c3950'
-                    } else {
-                      return '#03714e'
-                    }
-                  }
-
+                  color: '#03714e'
+                  /*color: (params) => {
+                   if (this.echartsData.data.length > 0 && this.echartsData.data[params.dataIndex].value >= 0) {
+                   return '#9c3950'
+                   } else {
+                   return '#03714e'
+                   }
+                   }*/
                 },
                 emphasis: {}
               },
@@ -307,18 +308,18 @@
           let s2 = []
 
           this.echartsData.data.forEach((val, index) => {
-            if (val.value <= 0) {
+            if (val.type == '下降') {
               s1.push({
-                name: val.name,
-                value: Math.abs(val.value), // 后台传回来的负值转换为正值
-                typeVal: val.typeVal,
-                type: val.type,
-                riseorfall: val.riseorfall
+                name: val.name,             // 类型 产量、单产、种植面积
+                value: Math.abs(val.value), // 变化率， 后台传回来的负值转换为正值
+                typeVal: val.typeVal,       // 类型所对应的值
+                type: val.type,             // 增加or减少
+                riseorfall: val.riseorfall  // 增加or减少的值
               })
-            } else {
+            } else if (val.type == '增加') {
               s2.push({
                 name: val.name,
-                value: val.value, // 后台传回来的负值转换为正值
+                value: val.value,
                 typeVal: val.typeVal,
                 type: val.type,
                 riseorfall: val.riseorfall

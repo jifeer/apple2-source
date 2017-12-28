@@ -4,9 +4,10 @@
 <script type="text/javascript">
   // **** 组件名称 大驼峰 *****
   // ** 本地公用变量 公用函数 **
+  import deepcopy from 'deepcopy'
   // ***** 第三方 组件库 *****
   // ***** 本地 公用组件 *****
-  import { resizeMixin, $ } from 'assets/js/common'
+  import { resizeMixin, $, distinct } from 'assets/js/common'
   import { dataZoom, tooltipStyle, axisLabel } from 'assets/js/echarts-style'
   // ** 当前组件的 子组件等 ***
 
@@ -19,8 +20,8 @@
         default: ''
       },
       data: {
-        type: Object,
-        default: () => {}
+        type: Array,
+        default: () => []
       }
     },
     data() {
@@ -66,20 +67,13 @@
               color: "#fff",
               padding: [0, 5]
             },
-            data: [{
-              name: "鲜苹果出口量变化率",
-              icon: 'line',
-
-            }, {
-              name: "目标国产量变化率",
-              icon: 'line',
-            }]
+            data: []
           },
           color: ["#00B874", "#FF8000"],
           xAxis: {
             // name: 'hehe',
             nameTextStyle: {
-              verticalAlign:'bottom'
+              verticalAlign: 'bottom'
             },
             type: 'category',
             nameTextStyle: {
@@ -110,11 +104,11 @@
           },
           yAxis: [{
             type: 'value',
-            name: '鲜苹果出口量变化率（%）',
+            name: '中国贸易出口变化率（%）',
             nameTextStyle: {
               fontSize: 16,
               color: "#fff",
-              padding: [0, -100, 10, 0]
+              padding: [0, -80, 10, 0]
             },
             axisLabel: axisLabel,
             axisTick: {
@@ -131,15 +125,13 @@
               }
             },
           }, {
-            show: false,
             type: 'value',
             name: '（%）',
             nameTextStyle: {
               fontSize: 16,
               color: "#fff",
-              padding: [0, 0, 10, 0]
+              padding: [0, 40, 10, 0]
             },
-           // interval: 4,
             axisLabel: axisLabel,
             axisTick: {
               show: false
@@ -155,30 +147,85 @@
               }
             },
           }],
-          series: [{
-              name: '鲜苹果出口量变化率',
-              type: 'line',
-              data: [],
-              symbol: 'circle',
-              symbolSize: 15,
-              itemStyle: {
-                normal: {
-                  color: '#00B874',
-                  borderColor: '#FEFB00',
-                }
-              }
-            }
-          ]
+          series: []
         }
       },
       initChart() {
-        // 合并数据
-        this.option.xAxis.data = this.data.data.map(item => item.time)
-        this.option.series[0].data = this.data.data.map(item => item.rate)
-        this.option.series[0].name = this.data.factor
-        this.option.legend.data = [this.data.factor]
+        let resData = deepcopy(this.data)
+        // 单独提出 时间数组来
+        let timeArr = resData.map(item => item.data.map(v => v.time))
+        // 合并时间
+        let timeConcat = timeArr.reduce((a, b) => a.concat(b))
+        // 去重时间 排序时间
+        let timeDistinct = distinct(timeConcat).sort((a, b) => parseInt(a) - parseInt(b))
 
-        this.myChart.setOption(this.option);
+        // 整理后台返回的数据，特定时间下如果没有数据，那么 填充为 空值
+        timeArr.forEach((item, index) => {
+          timeDistinct.forEach((v, i) => {
+            if (item.indexOf(v) === -1) {
+              resData[index].data.splice(i, 0, {
+                rate: '-',
+                time: v
+              })
+            }
+          })
+        })
+
+        this.option.xAxis.data = timeDistinct
+        this.option.legend.data = resData.map(v => v.factor)
+
+        // 提炼数据为 echats 所需格式
+        let seriesData = resData.map((item, index) => {
+          return {
+            data: item.data.map(v => v.rate),
+            name: item.factor
+          }
+        })
+
+        let lineStyle = [{
+          yAxisIndex: 1,
+          type: 'line',
+          data: [],
+          symbol: 'circle',
+          symbolSize: 10,
+          itemStyle: {
+            normal: {
+              color: '#ff7200',
+              borderWidth: 2,
+              borderColor: '#fff300'
+            }
+          },
+        }, {
+          type: 'line',
+          data: [],
+          symbol: 'circle',
+          symbolSize: 10,
+          itemStyle: {
+            normal: {
+              color: '#099d4f',
+              borderWidth: 2,
+              borderColor: '#fff300'
+            },
+            emphasis: {
+              borderColor: '#75f908'
+            }
+          }
+        }]
+
+        // 混合数据与样式
+        seriesData.forEach((item, index) => {
+          $.extend(true, item, lineStyle[index])
+        })
+
+        this.option.series = seriesData
+
+        // this.option.series[0].data = resData[0].data.map(item => item.rate)
+        // this.option.series[0].name = resData[0].factor
+
+        // this.option.series[1].data = resData[1].data.map(item => item.rate)
+        // this.option.series[1].name = resData[1].factor
+
+        this.myChart.setOption(this.option, true);
       },
       // echats 图表自适应
       _windowResizeHandler() {

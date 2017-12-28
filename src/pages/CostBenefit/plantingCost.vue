@@ -8,7 +8,7 @@
       <selectDiy class="select-cost-wrapper" :selectData="selectDatab" ></selectDiy>
       <explain :eText="eText"></explain>
     </div>
-    
+
   	<div class="pcchart-box">
   		<PCchart :cbchartData="cbchartData"></PCchart>
   	</div>
@@ -23,7 +23,7 @@
   import explain from 'components/explain/explain';
 export default {
   name: 'plantingCost',
-  
+
   data() {
     return {
     	myowndata:"我国苹果种植成本收益评估",
@@ -66,7 +66,6 @@ export default {
   },
   methods:{
 	        changeBtn(name){
-	            console.log(name)
 	        },
 	        myownEvent(){
 	            this.changeBar()
@@ -79,7 +78,7 @@ export default {
 	                this.cbchartData.datac =  [10402, 3402, 6402, 5402, 8402, 11402, 11402];
 
 	            },200)
-	
+
 	        },
 	        changeBar(){
 	            // 在这里发送请求
@@ -97,7 +96,7 @@ export default {
 	            },500)
 	        }
 
-		
+
   },
   components:{
   	PCchart,
@@ -117,7 +116,7 @@ export default {
 	}
 	.bigW-option{
 		color:#0164A0;
-		
+
 	}
 	.bigW-intro{
 		span{

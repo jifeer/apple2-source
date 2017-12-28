@@ -112,7 +112,10 @@
                   normal: {
                     show: true,
                     position: 'right',
-                    formatter: '{b}'
+                    formatter: '{b}',
+                    fontSize: '16',
+                    /*textBorderColor: '#38378a',
+                    textBorderWidth: 1*/
                   }
                 },
                 symbolSize: 10,
@@ -124,13 +127,33 @@
                 data: item.data.map(function (dataItem) {
                   return {
                     name: dataItem[1].name,
-                    value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                    value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value]),
+                    tooltip: {
+                      ...tooltipStyle,
+                      formatter: function (params) {
+                        let psername = dataItem[1].name == '黑龙江省' || dataItem[1].name == '内蒙古自治区' ? dataItem[1].name.substring(0, 3) : dataItem[1].name.substring(0, 2)
+                        let seriesName = dataItem[0].name.substring(0, 2)
+                        //判断主销区的北京单位用%其它用吨
+                        let unit = seriesName == '北京' ? '%' : '吨'
+                        // 判断如果 是自己对自己的数据则 不显示 提示框，其 flag 为 fakedata
+                        if (params.data && params.data.value && params.data.value[2] === 'fakedata') {
+                          return ''
+                        }
+                        //判断主产区
+                        if (psername != params.seriesName && that.flowType == 1) {
+                          return seriesName + '>' + psername + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + dataItem[1].value + '</b>吨';
+
+                        } else if (psername != params.seriesName && that.flowType == 2) {//判断主销区
+                          return psername + '>' + seriesName + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + dataItem[1].value + '</b>' + unit;
+                        }
+                      }
+                    }
                   };
                 })
               }, {
                 name: '辅助颜色',
                 type: 'map',
-                zoom: 1,
+                zoom: 1.2,
                 geoIndex: 0,
                 label: {
                   normal: {
@@ -164,45 +187,16 @@
           let option = {
             tooltip: {
               trigger: 'item',
-              ...tooltipStyle,
               formatter: function (params) {
-                let psername = params.name == '黑龙江省' || params.name == '内蒙古自治区' ? params.name.substring(0, 3) : params.name.substring(0, 2)
-                let seriesName = params.seriesName.substring(0, 2)
-                //判断主销区的北京单位用%其它用吨
-                let unit = seriesName == '北京' ? '%' : '吨'
-                let showAare = [];
-                that.auxiliary.forEach((v) => {
-                  showAare.push(v.name)
-                })
-                let num = showAare.indexOf(psername) == 0 ? 'y' : 'n';
-
                 // 判断如果 是自己对自己的数据则 不显示 提示框，其 flag 为 fakedata
                 if (params.data && params.data.value && params.data.value[2] === 'fakedata') {
                   return ''
-                }
-
-                if (params.seriesType == 'effectScatter') {
-                  if (psername != params.seriesName && that.flowType == 1) {
-                    if (num == 'y') {
-                      return psername + '>' + seriesName + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + params.data.value[2] + '</b>吨';
-                    } else {
-                      return seriesName + '>' + psername + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + params.data.value[2] + '</b>吨';
-                    }
-
-                  } else if (psername != params.seriesName && that.flowType == 2) {
-                    if (num == 'n') {
-                      return psername + '>' + seriesName + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + params.data.value[2] + '</b>' + unit;
-                    } else {
-                      return seriesName + '>' + psername + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + params.data.value[2] + '</b>' + unit;
-                    }
-                  }
-
                 }
               }
             },
             geo: {
               map: 'china',
-              zoom: 1,
+              zoom: 1.2,
               label: {
                 normal: {
                   show: false
@@ -237,35 +231,39 @@
                 min: 0.00001,
                 max: 500,
                 label: '0-500',
-                color: '#fdff1b'
+                color: '#70ffd8'
               }, {
                 min: 500,
                 max: 1000,
                 label: '500-1000',
-                color: '#c9e110'
+                color: '#68fd4f'
               }, {
                 min: 1000,
                 max: 2000,
                 label: '1000-2000',
-                color: '#c6a510'
+                color: '#ccff00'
               }, {
                 min: 2000,
                 max: 3000,
                 label: '2000-3000',
-                color: '#e48a13'
+                color: '#ffd200'
               }, {
                 min: 3000,
                 max: 4000,
                 label: '3000-4000',
-                color: '#db590e'
+                color: '#ff806b'
               }, {
                 min: 4000,
                 label: '>4000',
-                color: '#a93033'
+                color: '#ec2d2d'
               }],
               left: '10%',
               bottom: '6%',
               /*text: ['交易量：吨'],*/
+              // 关键所在
+              /*outOfRange: {
+                color: '#fff'
+              },*/
               textStyle: {
                 color: '#fff'
               }

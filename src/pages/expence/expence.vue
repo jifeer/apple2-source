@@ -7,7 +7,7 @@
         <div class="body-filter">
           <selectTime class="selectTime" :timeTypeData="timeTypeData" @chooseTime="_bdChooseTime" url="apple/consume/status/consumeTotalTimes" defaultTimeType="年度"></selectTime>
           <selectDiy @change="_bdChangeDiy" url="apple/consume/status/getArea?requestNum=20" defaultOption="中国"></selectDiy>
-          <explain>中国消费量=产量-净出口-损耗，净出口量=鲜苹果出口量-鲜苹果进口量+苹果汁出口量*8，损耗=产量*8%；数据来源农业部。全球消费数据来源FAO，*年份表示预测数据</explain>
+          <explain>中国消费总量=产量-净出口-损耗，净出口=鲜苹果出口量-鲜苹果进口量+苹果汁出口量*8，损耗=产量*8%，数据起始于1993年，来源于农业部；全球数据来源FAO，起始于1993年。*年份表示预测数据</explain>
         </div>
         <div class="body-cont">
           <div class="bar">
@@ -22,7 +22,7 @@
         <p class="trade-bottom-title"></p>
         <div class="body-filter">
           <selectBtn :btnData="btnData" :btnIndex.sync="btnIndex" @changeBtn="_changeBtn"></selectBtn>
-          <explain>数据来源于FAO，起始于1993年，级别为全球、各国。</explain>
+          <explain>全球人均消费总量＝全球人均鲜食消费＋全球加工消费。数据起始于1993年，来源于FAO。</explain>
         </div>
         <div class="body-cont">
           <body-consumption-person :data="ApiDataDown" :selectType="selectType" v-if="Object.keys(ApiDataDown).length"></body-consumption-person>
@@ -42,9 +42,9 @@
     </div>
     <div class="right-bar-wrapper">
       <ul>
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-chandi"></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-shangpinzhonglei"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-gongqiu"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-xiaofei-chandipianhao"></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-xiaofei-dangcipianhao"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-xiaofei-xuqiuyingxiangyinsu"></i></li>
       </ul>
     </div>
     <bigWindow title="全国鲜苹果消费产地来源偏好" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
@@ -54,7 +54,7 @@
         </h3>
         <div class="big-filter">
           <selectBtn :btnData="monthOrYear" @changeBtn="_big1ChooseTime" :btnIndex.sync="bigBtn1" class="marginRight"></selectBtn>
-          <explain>数据来源于电商平台（天猫、淘宝），起始于2017年5月，级别为全国、省级。</explain>
+          <explain>数据起始于2017年5月，级别为全国、省级，来源于电商平台（天猫、淘宝）。</explain>
         </div>
         <big-bar-one class="echart" :data="largeBar1Data" v-if="largeBar1Data.length"></big-bar-one>
         <div class="timeScroll-wrapper">
@@ -70,7 +70,7 @@
         <div class="big-filter">
           <selectDiy @change="_big2ChangeDiy" url="apple/consume/feature/getCity"></selectDiy>
           <selectBtn :btnData="monthOrYear" @changeBtn="_big2ChooseTime" :btnIndex.sync="bigBtn2" class="marginRight"></selectBtn>
-          <explain>数据来源于电商平台（天猫、淘宝），起始于2017年5月，级别为全国、省级。</explain>
+          <explain>中国消费总量=产量-净出口-损耗，净出口=鲜苹果出口量-鲜苹果进口量+苹果汁出口量*8，损耗=产量*8%，数据起始于1993年，来源于农业部；全球数据起始于1993年，来源于FAO。*表示通过年均变化率计算的预测数据。</explain>
         </div>
         <div class="charts-container">
           <big-pie class="echart" title="0" :key="0" :data="ApiBig2Pie"></big-pie>
@@ -86,17 +86,17 @@
       <div class="big-three bigpop">
         <div class="item item-top">
           <div class="big-filter">
-            <explain>模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果消费需求量对该变量弹性。弹性系数表示自变量变化1%导致国内消费需求量变化Y%。</explain>
+            <explain>自变量变化1%，国内消费需求量相应变化Y%。模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果消费需求量对该变量弹性。</explain>
           </div>
           <big-bar-two class="echart" :data="largeBar5Data" v-if="Object.keys(largeBar5Data).length"></big-bar-two>
         </div>
         <div class="item item-bt">
-          <h3 class="desc">
-            <!--<span>2004年度后苹果消费需求增速小于收入增速</span>-->
+          <div class="big-filter down">
             <span>{{big3Title}}</span>
-          </h3>
-          <div class="big-filter">
-            <selectDiy :data="selectData" @change="_queryType" :btnIndex.sync="selectIndex"></selectDiy>
+            <div class="filter">
+              <selectDiy :data="selectData" @change="_queryType" :btnIndex.sync="selectIndex"></selectDiy>
+              <explain>苹果价格取的是富士苹果与国光苹果价格的平均值。因2003年苹果价格变化幅度很小，导致当年需求价格弹性出现异常值，所以舍弃该值。</explain>
+            </div>
           </div>
           <big-line class="echart" :data="largeLine6Data" v-if="Object.keys(largeLine6Data).length"></big-line>
         </div>
@@ -105,6 +105,7 @@
   </div>
 </template>
 <script>
+  import deepcopy from 'deepcopy'
   import selectBtn from 'components/selectBtn/selectBtn'
   import Explain from 'components/explain/explain'
   import SelectTree from 'components/selectTree/selectTree'
@@ -204,15 +205,14 @@
         timeTypeData1: ['年度'],
         timeTypeData: [],
         monthOrYear: [{ name: '月度', value: 'month' }, { name: '年度', value: 'year' }],
-        //areaId: '370000',
 
         selectIndex: 1,
         selectData: [{
-          name: '需求价格弹性',
-          value: 0
-        }, {
           name: '需求收入弹性',
           value: 1
+        }, {
+          name: '需求价格弹性',
+          value: 0
         }, {
           name: '需求交叉价格弹性',
           value: 2
@@ -254,13 +254,12 @@
       },
       //大弹窗3的标题
       big3Title() {
-        //console.log(typeof this.queryType);
         if (this.queryType === '0') {
-          return '2004年度后苹果消费需求增速小于收入增速'
+          return '2004年度之前需求价格弹性多为负值，2004年度之后多为正值，表明2004年度之后价格负效应小于收入正效应'
         } else if (this.queryType === '1') {
-          return '需求价格弹性多为负值，表明价格上涨需求下降'
+          return '2004年度之后需求弹性系数基本在0到1之间，表明收入对需求有稳定的正效应'
         } else {
-          return '替代品价格对苹果需求量有正向影响'
+          return '需求交叉弹性多为正值，表明替代品（香梨）价格对苹果需求量有正效应'
         }
       },
       //主图1参数
@@ -271,9 +270,11 @@
         }
       },
       echartsDataRightParms() {
+        let timeFlag = this.pieTime.indexOf('*') > -1
+        let time = timeFlag ? this.pieTime.slice(0, -1): this.pieTime
         return {
           area: this.bdArea,
-          year: this.pieTime
+          year: time
         }
       },
       //主图3参数
@@ -443,19 +444,20 @@
         }).then((res) => {
           this.largeBar1Data = res.data;
 
-          //山东苹果占比
-          let sdWeight = '';
-          let qgWeight = '';
-          for (let i = 0; i < this.largeBar1Data.length; i++) {
-            //console.log(this.largeBar1Data[i].province)
-            if (this.largeBar1Data[i].province == '全国') {
-              qgWeight = this.largeBar1Data[i].weight
-            } else if (this.largeBar1Data[i].province == '山东') {
-              sdWeight = this.largeBar1Data[i].weight
+          let qgWeight = res.data.find((item, index) => {
+            if (item.province === '全国') {
+              return true
             }
-          }
-          this.sdApple = (sdWeight / qgWeight).toFixed(2) * 100
-          //console.log(this.sdApple)
+          }).weight
+
+          let sdWeight = res.data.find((item, index) => {
+            if (item.province === '山东') {
+              return true
+            }
+          }).weight
+
+          let rate = (parseFloat(sdWeight) * 100 / parseFloat(qgWeight)).toFixed(2)
+          this.sdApple = rate
         })
       },
       // 小弹窗2 饼图的数据获取
@@ -833,6 +835,22 @@
       @include flex(flex-start, flex-start, column);
       >* {
         width: 100%;
+      }
+      .down {
+        justify-content: space-between !important;
+        font-size: 0.24rem;
+        .filter {
+          @include flex();
+          > div {
+            margin-right: 0.24rem;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+      .desc {
+        text-align: left;
       }
       .big-filter {
         @include flex(flex-end);

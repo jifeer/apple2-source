@@ -122,7 +122,10 @@
       emitArea() {
         // 被选中的地区不可超过3个
         if (this.checkNames.length > 3) {
-          alert('最多选择3个')
+          this.$message({
+            message: '最多选择三个地区',
+            center: true
+          })
           return
         }
         // 设置默认值用于显示

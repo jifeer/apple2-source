@@ -4,10 +4,8 @@
 </template>
 
 <script>
-  import {$} from 'assets/js/common'
-
-  import {convertData, geoCoordMap, resizeMixin} from 'assets/js/common'
-
+  import {$, convertData, geoCoordMap, resizeMixin} from 'assets/js/common'
+  import {dataZoom, tooltipStyle, axisLabel} from 'assets/js/echarts-style'
   require('echarts/lib/chart/map')
   require('echarts/map/js/china.js')
   require('echarts/map/json/china.json')
@@ -51,9 +49,6 @@
     mounted() {
       //this.flag = false;
       this.$emit('update:flag', true)
-      this.$nextTick(() => {
-        this.initChart()
-      })
       this.myChart = this.$echarts.init(this.$refs.mapChart)
     },
     computed: {},
@@ -87,7 +82,6 @@
                     color: color[i],
                     width: 0.6,
                     curveness: 0.2,
-
                   }
                 },
                 data: convertData(item.data, istrue)
@@ -126,11 +120,11 @@
                 },
                 label: {
                   show: false,
-//                              normal: {
-//                                  show: true,
-//                                  position: 'right',
-//                                  formatter: '{b}'
-//                              }
+                  /*normal: {
+                      show: true,
+                      position: 'right',
+                      formatter: '{b}'
+                  }*/
                 },
                 symbolSize: 3,
                 itemStyle: {
@@ -141,7 +135,24 @@
                 data: item.data.map(function (dataItem) {
                   return {
                     name: dataItem[1].name,
-                    value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                    value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value]),
+                    tooltip: {
+                      backgroundColor: "#099d4f",
+                      formatter: function (params) {
+                        let psername = dataItem[1].name == '黑龙江省' || dataItem[1].name == '内蒙古自治区' ? dataItem[1].name.substring(0, 3) : dataItem[1].name.substring(0, 2)
+                        let seriesName = dataItem[0].name.substring(0, 2)
+                        //判断主销区的北京单位用%其它用吨
+                        let unit = seriesName == '北京' ? '%' : '吨'
+                        // 判断如果 是自己对自己的数据则 不显示 提示框，其 flag 为 fakedata
+                        if (params.data && params.data.value && params.data.value[2] === 'fakedata') {
+                          return ''
+                        }
+                        //判断主产区
+                        if (psername != params.seriesName) {
+                          return seriesName + '>' + psername + '<br>' + '交易量:<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + dataItem[1].value + '</b>吨';
+                        }
+                      }
+                    }
                   };
                 })
               }, {
@@ -183,13 +194,9 @@
               trigger: 'item',
               backgroundColor: '#099d4f',
               formatter: function (params) {
-                let psername = params.name.substring(0, 2)
-                let seriesName = params.seriesName.substring(0, 2)
-                if (params.seriesType == 'effectScatter') {
-                  if (psername != params.seriesName) {
-                    return seriesName + '>' + psername + '<br>' + '交易量：<b style="color:#ffa600;font-weight:blod;font-size:18px;">' + params.data.value[2] + '</b>吨';
-                  }
-
+                // 判断如果 是自己对自己的数据则 不显示 提示框，其 flag 为 fakedata
+                if (params.data && params.data.value && params.data.value[2] === 'fakedata') {
+                  return ''
                 }
               }
             },
@@ -234,9 +241,10 @@
               type: 'piecewise', //分段型。
               splitNumber: 6,
               inverse: false,
-              inRange: {
-                symbol: 'rect',
-              },
+//            inRange: {
+//              symbol: 'rect',
+//            },
+
               pieces: [{
                 min: 0,
                 max: 0,

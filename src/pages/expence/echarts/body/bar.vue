@@ -111,12 +111,14 @@
           },
           yAxis: [{
             name: "消费量（万吨）",
+            // min: 1000,
             nameTextStyle: {
               fontSize: 18,
               padding: [0, 0, 15, 0],
             },
             type: 'value',
-            //interval: 700,
+            // interval: 500,
+            splitNumber: 3,
             axisTick: {
               show: false,
             },
@@ -133,7 +135,8 @@
           }, {
             type: 'value',
             name: "变化率（%）",
-            //interval: 6,
+            // interval: 6,
+            splitNumber: 3,
             nameTextStyle: {
               fontSize: 18,
               padding: [0, 30, 15, 0]
@@ -204,6 +207,11 @@
               }
             },
             markLine: {
+              label: {
+                normal: {
+                  show: false
+                }
+              },
               symbolSize: 0,
               lineStyle: {
                 normal: {
@@ -213,7 +221,7 @@
                 }
               },
               data: [{
-                yAxis: 0
+                yAxis: 0,
               }]
             },
             data: []

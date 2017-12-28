@@ -15,11 +15,7 @@
       echartsData: {
         type: Object,
         default: null
-      },
-
-      symbolSize: function (val) {
-        return Math.max(val[2] / 30, 8);
-      },
+      }
     },
     watch: {
       echartsData: {
@@ -42,11 +38,6 @@
 
           //图表处理数据部分
           let option = {
-            animation: true,
-            animationDuration: 1000,
-            animationEasing: 'cubicInOut',
-            animationDurationUpdate: 1000,
-            animationEasingUpdate: 'cubicInOut',
             geo: {
               map: 'china',
               label: {
@@ -54,8 +45,9 @@
                   show: false
                 }
               },
-              zoom: 1,
+              zoom: 1.2,
               roam: true,
+              left:'20%',
               itemStyle: {
                 normal: {
                   //areaColor: 'rgba(76, 159, 129,0.9)',
@@ -76,37 +68,13 @@
                 return str
               }
             },
-
             series: [{
-              // name: 'pm2.5',
+              //type: 'effectScatter',
               type: 'scatter',
               coordinateSystem: 'geo',
               data: this.echartsData.series,
-              symbolSize: this.echartsData.symbolSize,
-              label: {
-                normal: {
-                  formatter: '{b}',
-                  position: 'right',
-                  show: false
-                },
-                emphasis: {
-                  show: true
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: '#FF8C00',
-                  position: 'right',
-                  show: true
-                }
-              }
-            }, {
-              //  name: 'Top 5',
-              type: 'effectScatter',
-              coordinateSystem: 'geo',
-              data: this.echartsData.series,
               symbolSize: function (val) {
-                return Math.max(val[2] / 100, 8);
+                return Math.max(val[2] / 30, 10);
               },
               showEffectOn: 'render',
               rippleEffect: {

@@ -60,8 +60,7 @@
       height: 100%;
       flex: 1;
       .FCchart-wrapper {
-        height: 85%;
-        /*width: 90%;*/
+        height: 100%;
         margin: 0 auto;
       }
     }

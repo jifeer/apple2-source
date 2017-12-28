@@ -19,8 +19,8 @@
         default: ''
       },
       data: {
-        type: Object,
-        default: () => {}
+        type: Array,
+        default: () => []
       }
     },
     data() {

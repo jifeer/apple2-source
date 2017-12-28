@@ -6,10 +6,11 @@
 
 <script>
   import {extend, $, resizeMixin} from 'assets/js/common'
-  export default{
+
+  export default {
     name: "costStructure",
     mixins: [resizeMixin],
-    data(){
+    data() {
       return {
         option: null
       }
@@ -17,17 +18,17 @@
     props: {
       csPieData: {
         type: Object,
-        default: ()=>{
+        default: () => {
 
         }
       },
-      aa: {
+      units: {
         type: Boolean,
         default: true
       },
       pieTitleInfo: {
         type: Object,
-        default: ()=>{
+        default: () => {
 
         }
       }
@@ -47,12 +48,10 @@
       this.initOption()
     },
 
-    computed: {
-
-    },
+    computed: {},
 
     methods: {
-      initOption(){
+      initOption() {
         if (Object.keys(this.csPieData).length) {
           this.option = {
             tooltip: {
@@ -66,7 +65,7 @@
               backgroundColor: '#099d4f',
               formatter: (params) => {
                 return `<div style='text-align:left'>${params.marker}${params.name}<br/>
-			                	        ${params.value}${this.aa ? "元/亩" : "元/公斤"}<br/>
+			                	        ${params.value}${this.units ? "元/亩" : "元/公斤"}<br/>
 			                	        ${params.percent}%</div>`
               }
             },
@@ -124,7 +123,7 @@
 
         }
       },
-      initChart(){
+      initChart() {
 
         //如果有新的配置项的变化 深度拷贝
         /*if (Object.keys(this.csPieData.option).length) {
@@ -144,10 +143,10 @@
 //          toCostBenefit(){
 //          	this.$emit("")
 //          },
-      _windowResizeHandler(){
+      _windowResizeHandler() {
         this.myChart.resize()
       },
-      _destroyEchart(){
+      _destroyEchart() {
         this.myChart.dispose()
       }
 

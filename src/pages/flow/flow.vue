@@ -43,27 +43,34 @@
         <smallWindow class="window4" @closeWindow="closeWindow" :isShow="window4" whichWindow="window4" title="全国鲜苹果电商渠道销售特点" @openBigWindow="openBigWindow">
           <flowWlectricSupplySmall></flowWlectricSupplySmall>
         </smallWindow>
+        <smallWindow class="window5" @closeWindow="closeWindow" :isShow="window5" whichWindow="window5" title="全国苹果主产区库存监测" @openBigWindow="openBigWindow">
+          <flowStockMonitorsmall></flowStockMonitorsmall>
+        </smallWindow>
       </div>
     </div>
     <div class="right-bar-wrapper">
       <ul>
-        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-xianlu"></i></li>
-        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-dingwei"></i></li>
-        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-qushitu"></i></li>
-        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-tezhengxuanze-"></i></li>
+        <li :class="{'active':active1}" @click="showSmall('window1')"><i class="iconfont icon-liutong-liuxiangfenxi"></i></li>
+        <li :class="{'active':active2}" @click="showSmall('window2')"><i class="iconfont icon-liutong-dianshangfenbu"></i></li>
+        <li :class="{'active':active3}" @click="showSmall('window3')"><i class="iconfont icon-liutong-qudaoxiaoliang"></i></li>
+        <li :class="{'active':active4}" @click="showSmall('window4')"><i class="iconfont icon-liutong-qudaotezheng"></i></li>
+        <!-- <li :class="{'active':active5}" @click="showSmall('window5')"><i class="iconfont icon-liutong-kucunjiance"></i></li> -->
       </ul>
     </div>
     <bigWindow title="" :isShow="bigwindow1" whichWindow="bigwindow1" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <SalesTo ref="big1"></SalesTo>
     </bigWindow>
-    <bigWindow  :title="eBusinesstitle" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+    <bigWindow :title="eBusinesstitle" :isShow="bigwindow2" whichWindow="bigwindow2" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
       <flowEbusiness ref="big2" @eBusinessName="eBusinessName"></flowEbusiness>
     </bigWindow>
-    <bigWindow title="全国鲜苹果电商销量" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <EBsales ref="big3"></EBsales>
+    <bigWindow :title="appleTypetitle" :isShow="bigwindow3" whichWindow="bigwindow3" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <EBsales ref="big3" @changeAppletype="changeAppletype"></EBsales>
     </bigWindow>
-    <bigWindow title="全国鲜苹果电商销售特点" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
-      <flowElectricSupply ref="big4"></flowElectricSupply>
+    <bigWindow :title="supplyTitle" :isShow="bigwindow4" whichWindow="bigwindow4" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <flowElectricSupply ref="big4" @changeSupplytype="changeSupplytype"></flowElectricSupply>
+    </bigWindow>
+    <bigWindow title="全国苹果主产区库存监测" :isShow="bigwindow5" whichWindow="bigwindow5" @closeWindow="closeWindow" @closeBigWindow="closeBigWindow">
+      <flowStockMonitor ref="big5"></flowStockMonitor>
     </bigWindow>
   </div>
 </template>
@@ -81,7 +88,9 @@
   import SalesTosm from 'pages/flow/flow-SalesTosm.vue'
   import flowEbusinessSM from 'pages/flow/flow-E-businessSM.vue'
   import flowElectricSupply from './flow-electric-supply'
-  import flowWlectricSupplySmall from './flow-electric-supply-small.vue';
+  import flowWlectricSupplySmall from './flow-electric-supply-small.vue'
+  import flowStockMonitorsmall from './flow-stock-monitorsmall.vue'
+  import flowStockMonitor from './flow-stock-monitor.vue'
   import {rightBarMixin} from 'assets/js/common.js'
   import explain from 'components/explain/explain'
 
@@ -96,18 +105,20 @@
         marketclass: 1,
         rankName: '',
         ranktitleName: '',
-        eBusinesstitle:'',
+        eBusinesstitle: '',
+        supplyTitle: '',
         area: '',
+        appleTypetitle: '',
         marketName: '去向',
         scorllOption: {
           width: '14rem', //宽
           height: '100px', //高
           needDefault: true, //是否需要默认的时间来渲染图表
           id: 'flowIndex', //随便写ID  保证同一个页面ID不一样就可以
-          url: 'apple/circulation/getTimes?marketclass=1&areas=全国'
+          url: 'apple/circulation/getTimes?marketclass=1&areas='+encodeURI('全国')
         },
         screenWidth: document.body.clientWidth, // 这里是给到了一个默认值 （这个很重要）
-        eText: '数据来源于农业部，主产区数据起始于2016年1月，主销区数据起始于2008年1月，级别为全国、省级。',
+        eText: '数据起始于2008年1月，级别为全国、省级，来源于农业部。',
         echartsData: {
           id: "mapChart",
           xdata: [],
@@ -122,7 +133,7 @@
           data: [],
           option: {}
         },
-        rankingEchartToggle: false,
+        rankingEchartToggle: true,
         date: '',
         myowndata: '',
         btnData: ['主产区', '主销区']
@@ -151,8 +162,9 @@
           }
         }).then((res) => {
           let dataArr = [];
-          //console.log(res)
-          if (res.data.data.length > 0) {
+          if (this.area == '北京' && this.marketclass == 1) {
+            return;
+          } else {
             res.data.data.forEach(function (val, index, arr) {
               dataArr.push(...val.data);
             })
@@ -163,10 +175,8 @@
             }]
             this.rankingEchart.yAxisData = res.data.rankname
             this.rankingEchart.data = res.data.rankdata
-
             //处理标题部分
             this.myowndata = res.data.requestMonth + this.area + '富士苹果流向分析'
-
           }
         })
       },
@@ -176,11 +186,30 @@
       eBusinessName(name) {
         this.eBusinesstitle = name + '全国鲜苹果电商网店分布'
       },
+
+      changeSupplytype(apple) {
+       let  _apple = apple == '全部' ? '鲜苹果' : apple
+        this.supplyTitle = '全国' + _apple + '电商销售特点'
+      },
+
+      changeAppletype(type) {
+        if (type == '全部') {
+          this.appleTypetitle = '全国鲜苹果电商销量'
+        } else {
+          this.appleTypetitle = '全国' + type + '苹果电商销量'
+        }
+
+      },
       changeProvince(provinceName) {
         this.area = provinceName;
         //判断主销区的北京单位用%其它用吨
-        let unit = this.area  == '北京' && this.marketclass == 2 ? '%' : '吨'
-        this.ranktitleName = this.area + '苹果' + this.marketName + '排名('+ unit + ')'
+
+        if (this.area == '北京' && this.marketclass == 1) {
+          return;
+        } else {
+          let unit = this.area == '北京' && this.marketclass == 2 ? '%' : '吨'
+          this.ranktitleName = this.area + '苹果' + this.marketName + '排名(' + unit + ')'
+        }
       },
       hideRankecharts() {
         this.rankingEchartToggle = !this.rankingEchartToggle
@@ -223,6 +252,8 @@
       EBsalesSmall,
       flowElectricSupply,
       flowWlectricSupplySmall,
+      flowStockMonitor,
+      flowStockMonitorsmall,
       flowBig1,
       selectBtn,
       timeScroll,
@@ -285,6 +316,7 @@
     position: absolute;
     top: 2.6rem;
     right: 2rem;
+    height: 3.74rem;
     width: 3.13rem;
     .rank-title {
       height: 0.6rem;

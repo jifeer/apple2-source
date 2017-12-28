@@ -212,6 +212,11 @@
               }
             },
             markLine: {
+              label: {
+                normal: {
+                  show: false
+                }
+              },
               yAxisIndex: 1,
               symbolSize: 0,
               lineStyle: {
@@ -222,7 +227,6 @@
                 }
               },
               data: [{
-                name: 'Y 轴值为 100 的水平线',
                 yAxis: 0
               }]
             },
@@ -231,7 +235,7 @@
         }
       },
       initChart() {
-        let legend = this.tradeType === '贸易量' ? ['出口量', '出口量变化率', '进口量', '进口量变化率'] : ['出口额', '出口额变化率', '进口额', '进口额变化率']
+        let legend = this.tradeType === '贸易量' ? ['出口量', '出口量同比', '进口量', '进口量同比'] : ['出口额', '出口额同比', '进口额', '进口额同比']
         this.option.legend.data = legend
 
         let yUnite = ''

@@ -1,8 +1,8 @@
 <template>
   <div class="trade-big-wrapper">
     <div class="trade-title">
-      <h2>中国鲜苹果出口高峰在<span class="title-date">11</span>月,苹果汁出口高峰在<span class="title-date">12</span>月,鲜苹果进口高峰在<span class="title-date">4</span>月。</h2>
-      <explain>中国鲜苹果出口高峰在XX月，进口高峰在XX月，苹果汁进口高峰在XX月</explain>
+      <h2>中国鲜苹果出口高峰在11月，进口高峰在4月，苹果汁出口高峰在12月</h2>
+      <explain>根据近5年的月均贸易量，将时间序列分解成季节性规律，长期趋势和中短期波动，数值的大小表示该点与全年平均值之间相差多少个标准差，数据来源于海关总署。</explain>
     </div>
     <div class="trade-echarts-wrapper">
       <Linechart :echartsData="data" v-if="flag" class="line-chart"></Linechart>
@@ -67,6 +67,7 @@
     width: calc(100% - 120px) !important;
     box-sizing: border-box;
     h2 {
+      font-size: 20px;
       .title-date {
         color: #019159;
       }
@@ -77,7 +78,7 @@
     flex: 1 1 auto;
     height: 100%;
     width: 100%;
-    padding: 0.8rem 0;
+    padding: 0.4rem 0;
     .line-chart {
       width: 100%;
       height: 100%;

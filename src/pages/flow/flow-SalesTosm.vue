@@ -31,7 +31,7 @@
             },
             grid: {
               left: "15%",
-              top: "15%",
+              top: "18%",
               right: '5%',
               bottom: '25%'
             },
@@ -60,7 +60,6 @@
     },
     methods: {
       changeBtn(name) {
-        console.log(name)
       },
       myownEvent() {
         this.changeBar()

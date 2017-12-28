@@ -204,55 +204,51 @@
             },*/
             visualMap: {
               type: 'piecewise', //分段型。
-              splitNumber: 6,
               inverse: false,
               pieces: [{
                 min: 9,
-                label: '>9',
-                color: '#187242'
+                label: '>9'
               }, {
                 min: 8,
                 max: 9,
-                label: '8-9',
-                color: '#159847',
-
+                label: '8-9'
               }, {
                 min: 7,
                 max: 8,
-                label: '7-8',
-                color: '#27bf42'
+                label: '7-8'
               }, {
                 min: 6,
                 max: 7,
-                label: '6-7',
-                color: '#59da3b'
-
+                label: '6-7'
               }, {
                 min: 5,
                 max: 6,
-                label: '5-6',
-                color: '#c9f573'
-
+                label: '5-6'
               }, {
-                min: 3,
+                min: 0,
                 max: 5,
-                label: '3-5',
-                color: '#f2f7b3'
+                label: '0-5'
               }],
               left: '4%',
               bottom: '6%',
               itemGap: 0,
               itemWidth: 20,
               itemHeight: 30,
+              textStyle: {
+                color: '#fff'
+              },
               inRange: {
                 symbol: 'rect',
+                color: ['#f2f7b3', '#c9f573', '#59da3b', '#27bf42', '#159847', '#187242']
               },
-              textStyle: {
+              // 关键所在
+              outOfRange: {
                 color: '#fff'
               }
             },
             /*geo: {
               map: 'china',
+              zoom:'1.2',
               label: {
                 emphasis: {
                   show: false
@@ -266,6 +262,8 @@
                 name: '苹果平均价格',
                 type: 'map',
                 map: 'china',
+                zoom:'1.2',
+                left:'20%',
                 roam: true,
                 label: {
                   normal: {

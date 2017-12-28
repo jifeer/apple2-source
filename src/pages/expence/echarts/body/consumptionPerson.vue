@@ -143,7 +143,7 @@
           },
           yAxis: {
             type: 'value',
-            name: '（公斤）',
+            name: '公斤/人',
             nameTextStyle: {
               fontSize: 18,
               color: "#fff",
@@ -198,7 +198,7 @@
 
         // 处理数据
         //console.log(JSON.stringify(this.data))
-        let desc = this.selectType === '0' ? '消费总量' : this.selectType === '1' ? '鲜食消费' : this.selectType === '2' ? '加工消费' : '消费总量'
+        let desc = this.selectType === '0' ? '人均消费总量' : this.selectType === '1' ? '人均鲜食消费' : this.selectType === '2' ? '人均加工消费' : '人均消费总量'
         this.option.legend.data = this.data.areas.split(',').map((item, index) => {
           return item.slice(0, -4) + desc
         })

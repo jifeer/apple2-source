@@ -1,24 +1,19 @@
 <template>
-
-
   <div ref="cbchart" class="costBenefit-cbchart-wrapper">
-
   </div>
-
-
 </template>
 
 <script>
-
   import {extend, $, resizeMixin} from 'assets/js/common'
   import {axisLabel, dataZoom} from 'assets/js/echarts-style'
+
   export default {
     name: 'cbchart',
     mixins: [resizeMixin],
     props: {
       cbchartData: {
         type: Object,
-        default(){
+        default() {
           return {}
         }
       },
@@ -39,7 +34,7 @@
       this.initOption()
     },
     methods: {
-      initOption(){
+      initOption() {
         if (Object.keys(this.cbchartData).length) {
           this.option = {
             tooltip: {
@@ -91,7 +86,7 @@
                 nameTextStyle: {
                   color: '#fff',
                   fontSize: '12',
-                  padding: [0,0,0,-50]
+                  padding: [0, 0, 0, -50]
                 },
                 type: 'value',
                 show: true,
@@ -121,7 +116,7 @@
                 nameTextStyle: {
                   color: '#fff',
                   fontSize: '12',
-                  padding: [0,-30,0,0]
+                  padding: [0, -30, 0, 0]
                 },
                 type: 'value',
                 show: true,
@@ -190,7 +185,7 @@
           };
         }
       },
-      initChart(){
+      initChart() {
         //如果有新的配置项的变化 深度拷贝
         /*if (Object.keys(this.cbchartData.option).length) {
           this.option = $.extend(true, this.option, this.cbchartData.option)
@@ -205,10 +200,10 @@
           this.myChart.setOption(this.option);
 //        	  console.log(this.cbchartData.data[0])
       },
-      _windowResizeHandler(){
+      _windowResizeHandler() {
         this.myChart.resize()
       },
-      _destroyEchart(){
+      _destroyEchart() {
         this.myChart.dispose()
       }
     },

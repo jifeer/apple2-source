@@ -60,9 +60,10 @@
                 margin: 10,
                 textStyle: {
                   fontSize: 16,
-                  color: function (value, index) {
+                 /* color: function (value, index) {
                     return index >= (num - 3) ? '#eeeff1' : '#63676e';
-                  }
+                  }*/
+                 color:'#eeeff1'
                 }
               },
               splitLine: {

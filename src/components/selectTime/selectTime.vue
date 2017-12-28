@@ -10,7 +10,7 @@
         <div class="checkAll" v-if="this.timeType==='year'">
           <label>
             <input ref="checkAllBtn" type="checkbox" name="" value="all" @click="fncheckAll" v-model="checkAll">
-            <i class="iconfont icon-unchecked"></i>
+            <i class="iconfont checkbox"></i>
             <span>全选</span>
           </label>
         </div>
@@ -18,7 +18,7 @@
           <li v-for="(item, index) in timeData" @click="getTime(item,index)">
             <label>
               <input type="checkbox" name="" :value="item" v-model="checkNames">
-              <i class="iconfont icon-unchecked"></i>
+              <i class="iconfont checkbox"></i>
               <span> {{item}}</span>
             </label>
           </li>
@@ -40,7 +40,7 @@
             <li v-for="(item,index) in timeData" @click="getTime(item,index)">
               <label>
                 <input type="checkbox" name="" :value="item" v-model="checkNames">
-                <i class="iconfont icon-unchecked"></i>
+                <i class="iconfont checkbox"></i>
                 <span> {{item}}</span>
               </label>
             </li>
@@ -49,7 +49,7 @@
             <li v-for="(item,index) in monthData" @click="getTime(item,index)">
               <label>
                 <input type="checkbox" name="" :value="item" v-model="checkMonthNames">
-                <i class="iconfont icon-unchecked"></i>
+                <i class="iconfont checkbox"></i>
                 <span> {{item}}</span>
               </label>
             </li>
@@ -146,14 +146,15 @@
     },
     methods: {
       getTime() {
-        if (this.timeType === "year") {
-          console.log(this.checkNames)
-          if (this.timeData.length != this.checkNames.length) {
-            this.checkAll = false;
-          } else {
-            this.checkAll = true;
-          }
-        }
+        // console.log('timeData  ', this.timeData)
+        // console.log('checkNames', this.checkNames)
+        // if (this.timeType === "year") {
+        //   if (this.timeData.length != this.checkNames.length) {
+        //     this.checkAll = false;
+        //   } else {
+        //     this.checkAll = true;
+        //   }
+        // }
       },
       selectTime() {
         this.dateShow = !this.dateShow
@@ -162,7 +163,6 @@
         this.dateShow = false
       },
       fncheckAll() {
-        console.log("111")
         this.checkAll = !this.checkAll
         this.checkNames = []
         if (this.checkAll) {
@@ -193,7 +193,10 @@
             for (let i = 0; i < times.length - 1; i++) {
               let rt1 = times[i + 1].index - times[i].index;
               if (rt1 > 1) {
-                alert("请选取连续的时间段");
+                this.$message({
+                  message: '请选取连续的时间段',
+                  center: true
+                })
                 return;
               }
             }
@@ -394,6 +397,23 @@
           //重置此控件
           this.checkNames = [];
         }
+      },
+      productId(newValue, oldValue) {
+        if (newValue) {
+          this.initTime()
+          //重置此控件
+          this.checkNames = [];
+        }
+      },
+      checkNames(newValue) {
+        if (!this.timeData.length) {
+          return
+        }
+        if (this.timeData.length !== newValue.length) {
+          this.checkAll = false;
+        } else {
+          this.checkAll = true;
+        }
       }
     },
     beforeDestroy() {
@@ -413,7 +433,7 @@
 
   .checkAll {
     line-height: 0.5rem;
-    padding-left: 0.15rem;
+    padding-left: 0.22rem;
     text-align: left;
     label {
       display: inline-block;
@@ -548,6 +568,8 @@
     border: 1px solid #1A5484;
     border-right: none;
     min-width: 1.0rem;
+    height: 0.3rem;
+    line-height: 0.3rem;
     color: $blue;
     cursor: pointer;
     box-sizing: border-box;

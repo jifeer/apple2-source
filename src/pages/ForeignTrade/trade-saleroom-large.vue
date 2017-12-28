@@ -1,14 +1,15 @@
 <template>
   <div class="trade-salerroom-wrapper big-wrapper">
     <div class="bigW-option">
-      <selectBtn :btnData="btnData" @changeBtn="_changeTimeType" :btnIndex.sync="btnIndex0"></selectBtn>
       <selectDiy :data="selectDiyData" @change="_changeAppleType" class="marginRight"></selectDiy>
       <selectBtn :btnData="btnData1" @changeBtn="_changeTradeType" class="marginRight" :btnIndex.sync="btnIndex1"></selectBtn>
       <selectBtn :btnData="btnData2" @changeBtn="_changeExport" class="marginRight" :btnIndex.sync="btnIndex2"></selectBtn>
-      <explain>数据来源于海关总署，起始于1993年，级别为省级。</explain>
+      <selectBtn :btnData="btnData" @changeBtn="_changeTimeType" :btnIndex.sync="btnIndex0"></selectBtn>
+      <explain>起始于1993年，级别为省级，数据来源于海关总署</explain>
     </div>
     <div class="bigW-chart">
       <div class="chart-left">
+        <h3 class="rank-title">{{pieTitle}}</h3>
         <tradePie :data="pieData" @changeArea="_changeArea" :tradeType="tradeType" :timeType="timeType" v-if="pieData.length"></tradePie>
       </div>
       <div class="chart-right">
@@ -34,11 +35,11 @@
     data() {
       return {
         btnData: ['月度', '年度'],
-        btnData1: ['贸易额', '贸易量'],
+        btnData1: ['贸易量', '贸易额'],
         btnData2: ['出口', '进口'],
         timeType: 'year',
         selectAreaData: [],
-        selectDiyData: ['鲜苹果', '苹果汁', '苹果干'],
+        selectDiyData: ['鲜苹果', '苹果干', '苹果汁'],
         width: '6.8rem',
         height: '4.6rem',
 
@@ -63,7 +64,9 @@
 
         rankData: [], // 柱状图数据
         rankFlag: false,  // 排序数据获取到的flag
-        pieData: [] // 饼图数据
+        pieData: [], // 饼图数据
+
+        emitTitle: {}
       }
     },
     computed: {
@@ -90,6 +93,9 @@
         let desc = this.exportType === '出口' ? '出口去向' : '进口来源'
         let trade = this.tradeType === '贸易额' ? '万美元' : this.timeType === 'month' ? '吨' : '万吨'
         return `${this.area}${this.appleType}${this.tradeType}${desc}排名（${trade}）`
+      },
+      pieTitle() {
+        return `中国分省${this.tradeType}${this.exportType}流向`
       }
     },
     methods: {
@@ -157,6 +163,7 @@
         let flag2 = newVal.TIME_ID.length === 6 && newVal.TIME_TYPE === 'month'
         let flag = flag1 || flag2
         if (flag && newVal.NAME && newVal.PRODUCT) {
+          this.$emit('bigTwo', newVal)
           this.getData()
         }
       },
@@ -209,7 +216,11 @@
     width: 100%;
   }
 
-  .chart-right {
+  .chart-left {
+    margin-right: 1.0rem;
+  }
+
+  .chart-left, .chart-right {
     @include flex(flex-start, center, column);
     flex-flow: column !important;
     justify-content: flex-start !important;
@@ -219,9 +230,10 @@
       width: 100%;
       font-size: 18px;
     }
-    .rank-chart {
+     .trade-pie-wrapper, .rank-chart {
       flex: 1;
       width: 100%;
+      text-align: center;
     }
   }
 </style>

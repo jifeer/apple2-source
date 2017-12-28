@@ -60,10 +60,11 @@
               margin: 10,
               textStyle: {
                 fontSize: '12',
-//                  fontWeight: 'lighter',
-                color: function (value, index) {
+                fontWeight: 'lighter',
+                color: '#eeeff1',
+                /*color: function (value, index) {
                   return index <= 2 ? '#eeeff1' : '#63676e';
-                }
+                }*/
               },
               formatter: function (value, index) {
                 if (value.length > 4) {

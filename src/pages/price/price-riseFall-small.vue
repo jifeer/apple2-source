@@ -22,7 +22,10 @@
           data: [],
           data1: [],
           dateName: '',
-          option: {}
+          option: {
+            minData:'',
+            maxData:'',
+          }
         }
       }
 
@@ -84,6 +87,8 @@
           this.KlineData.data1 = res.data.data1
           this.KlineData.Xdata = res.data.Xdata
           this.dateName = '月'
+          this.KlineData.minData = (res.data.min*0.9).toFixed(1)
+          this.KlineData.maxData = (res.data.max*1.1).toFixed(1)
         })
 
       }

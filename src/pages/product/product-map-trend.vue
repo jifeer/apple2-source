@@ -5,7 +5,7 @@
       <div class="chart-option">
         <!--<div class="title-info">2002-2016年，<span class="title-num">{{popAreaInfo[0]}}</span>苹果产量年平均增长率<span class="title-num">11.70</span>%</div>-->
         <div class="center-assist"></div>
-        <selectTime @chooseTime="_chooseTime" url="apple/production/getChinaHistoryTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :areaId="areaId"></selectTime>
+        <selectTime @chooseTime="_chooseTime" url="apple/production/CountyTime" defaultTimeType="年度" :timeTypeData="timeTypeData" :areaId="areaId"></selectTime>
         <p>
           <selectBtn :btnIndex.sync='btnIndex' :btnData="btnData" @changeBtn="_changeBtn"></selectBtn>
         </p>
@@ -52,7 +52,7 @@
       return {
         btnData:['种植面积', '产量', '单产'],
         btnIndex: 0,
-        eTextUp:'数据来源于农业部，起始于1982年，级别为县级。',
+        eTextUp:'数据起始于1982年，级别为县级，来源于农业部。',
         timeTypeData: [],
         areaId: '370000',
         echartsDataUp:{

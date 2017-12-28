@@ -2,12 +2,13 @@
   <div class="trade-big7-wrapper">
     <div class="trade-big7-top">
       <div class="big-filter">
-        <explain>模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果需求量对该变量弹性。弹性系数表示自变量变化1%导致苹果出口量（折算鲜苹果）变化Y%</explain>
+        <explain>模型使用双对数多元线性回归（即固定弹性模型），回归系数即为苹果需求量对该变量弹性。弹性系数表示自变量变化1%导致苹果出口量（折算鲜苹果）变化Y%。其中，主要目标国为美国、俄罗斯、日本、荷兰、德国、加拿大、澳大利亚。</explain>
       </div>
       <tradeBig7top :data="echartsData1" v-if="echartsData1Flag"></tradeBig7top>
     </div>
     <div class="trade-big7-bt">
-      <div class="big-filter">
+      <div class="big-filter down">
+        <div class="title">{{downTitle}}</div>
         <selectDiy :data="selectData" @change="_changeFactors" class="marginRight radioDiy"></selectDiy>
       </div>
       <tradeBig7bt :data="echartsData2" v-if="echartsData2Flag"></tradeBig7bt>
@@ -26,7 +27,7 @@
     name: 'trade-small1',
     data() {
       return {
-        selectData: ['主要目标国苹果产量变化率', '鲜苹果出口价格变化率', '苹果汁出口价格变化率', '国内苹果产量变化率', '人民币对美元汇率变化率'],
+        selectData: ['主要目标国苹果产量变化率', '国内苹果产量变化率', '人民币对美元汇率变化率', '鲜苹果出口价格变化率', '苹果汁出口价格变化率'],
         ExplainText: '解释说明解释说明解释说明',
         rankingEchart: {
           id: "rankingEchart",
@@ -49,6 +50,29 @@
     mounted() {
       this.getEchartData1()
       this.getEchartData2()
+    },
+    computed: {
+      downTitle() {
+        switch(this.factors) {
+          case '主要目标国苹果产量变化率':
+            return '苹果贸易量与主要目标国苹果产量的相关性不明显'
+            break
+          case '鲜苹果出口价格变化率':
+            return '苹果贸易量与鲜苹果出口价格呈正相关'
+            break
+          case '苹果汁出口价格变化率':
+            return '苹果贸易量与苹果汁出口价格的相关性不明显'
+            break
+          case '国内苹果产量变化率':
+            return '苹果贸易量与国内苹果产量呈负相关'
+            break
+          case '人民币对美元汇率变化率':
+            return '苹果贸易量与人民币对美元汇率呈弱正相关'
+            break
+          default:
+            return '苹果贸易量与国内苹果产量呈负相关'
+        }
+      }
     },
     methods: {
       // 下拉参数捕获
@@ -108,6 +132,8 @@
       .big-filter {
         flex: 0 0 auto;
         @include flex(flex-end);
+        position: relative;
+        top: 15px;
         height: 0.6rem;
         padding: 0 .4rem;
         .marginRight {
@@ -121,5 +147,10 @@
 
   .radioDiy {
     width: 2.7rem;
+  }
+
+  .down {
+    justify-content: space-between !important;
+    font-size: 0.22rem;
   }
 </style>

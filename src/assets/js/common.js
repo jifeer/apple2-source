@@ -23,6 +23,7 @@ export const rightBarMixin = {
       bigwindow6: false,
       bigwindow7: false,
       bigwindow8: false,
+      bigwindow9: false,
 
       active1: false,
       active2: false,
@@ -84,9 +85,8 @@ export const rightBarMixin = {
 
     },
     closeWindow(whichWindow) {
-
       this[whichWindow] = false;
-      var smallWindow = whichWindow.substring(6, whichWindow.length);
+      var smallWindow = whichWindow.substring(3, whichWindow.length);
       this[smallWindow] = false;
       this.changeRightrBarCls(whichWindow)
 
@@ -325,7 +325,8 @@ export const $ = function() {
   return { extend: extend };
 }();
 
-export const provinceList = [{
+export const provinceList = [
+  {
   "id": "shanghai",
   "name": "上海"
 }, {

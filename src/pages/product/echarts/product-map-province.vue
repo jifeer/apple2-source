@@ -4,7 +4,9 @@
 
     </div>
     <ul class="list" ref="list">
-      <!--<li :class="{unchecked: item.active}" v-for="(item, index) in legendData" @click="_toggleDisaster(index)">{{item.name}}</li>-->
+      <li :class="{unchecked: item.active}" v-for="(item, index) in legendData" @click="_toggleDisaster(index)">
+        {{item.name}}
+      </li>
       <li v-for="item in degreeLabelData">{{item}}</li>
     </ul>
   </div>
@@ -12,18 +14,19 @@
 </template>
 <script>
 
-  import map from  '../gis/disasterMap.min'
+  import map from '../gis/disasterMap.min'
   import icon0 from 'assets/img/0.png';
   import icon1 from 'assets/img/1.png';
   import icon2 from 'assets/img/2.png';
+  import {resizeMixin} from 'assets/js/common'
 
-  //  console.log(map)
   export default {
     name: 'map-province',
+    mixins: [resizeMixin],
     props: {
       echartsData: {
         type: Object,
-        default: ()=>{
+        default: () => {
 
         }
       },
@@ -46,7 +49,7 @@
         legendData: [
           {
             active: false,
-            name: '低温灾害'
+            name: '低温冻害'
           },
           {
             active: false,
@@ -58,14 +61,15 @@
           }
         ],
         select: [true, true, true],
-        degreeLabelData:['轻度灾害','中度灾害','重度灾害'],
+        degreeLabelData: ['轻度灾害（影响产量5%-10%）', '中度灾害（影响产量10%-15%）', '重度灾害（影响产量超过15%）'],
 
       }
     },
+
     watch: {
       echartsData: {
         handler: function (val, oldVal) {
-
+          this._resetLegend()
           this.initData();
           this.showMap();
         },
@@ -80,9 +84,9 @@
     },
 
     computed: {},
-    methods: {
 
-      _toggleDisaster(index){
+    methods: {
+      _toggleDisaster(index) {
         // 修改图例的样式
         this.legendData[index].active = !this.legendData[index].active
         this.select[index] = !this.select[index]
@@ -99,25 +103,37 @@
         });
       },
 
+      // 重置选中的样式
+      _resetLegend() {
+        this.legendData.forEach((v, i) => {
+          v.active = false
+        })
+        this.select.forEach((v, i) => {
+          this.select[i] = true
+        })
+      },
+
       // 初始化数据
       initData() {
+        let newArr = this.echartsData.data.map((v, i) => {
+          let deg = v.degree == '轻度' ? 0 : v.degree == '中度' ? 1 :  v.degree == '重度' ? 2 : 3
+          let temp = {}
+          temp.deg = deg
+          temp.coord = v.coord
+          temp.degree = v.degree
+          temp.desc = v.desc
+          temp.level = v.level
+          temp.name = v.name
+          temp.time = v.time
+          return temp
+        })
+        // 降序排列 是为了保证后面的灾害程度始终比前面的小！
+        newArr.sort((a, b) => {
+          return b.deg - a.deg
+        })
+        this.chartData = newArr
         // console.log(this.echartsData.data)
-
-        this.chartData = this.echartsData.data
       },
-      /*initData() {
-        for (let item in this.dataMap) {
-          if (this.dataMap[item])
-            this.chartData.push({
-              name: item,
-              level: parseInt(Math.random() * (this.max - this.min + 1) + this.min, 10),
-              coord: this.dataMap[item],
-              time: '2017/6/2',
-              desc: '附加说明',
-              degree: '灾害程度'
-            })
-        }
-      },*/
 
       // 调用地图
       showMap() {
@@ -151,10 +167,10 @@
         this.map.init({
           dom: this.$refs.chart,
           disaster: ['低温冻害', '干旱灾害', '连阴雨灾害'],
-//          icon: [icon0, icon1, icon2],
+          icon: [icon0, icon1, icon2],
           // 隐藏icon
-          icon: [],
-          dataAreaColor: ['#071c96', '#f0ee25', '#e04c14'],
+          // icon: [],
+          dataAreaColor: ['#e7d32c', '#ec912f', '#ff603b', '#7BD655'],
           // 主图背景颜色
           areaColor: '#06594b',
           iconSize: [20, 20],
@@ -175,19 +191,35 @@
           tooltipExtraCssText: '',
 
           jsonUrl: './static/json/',
-          tooltipCallBack: function (d) {
-//            console.log(d)
-            if (d.data.degree) {
+          tooltipCallBack: (d) => {
+            if (d.data.degree === '无' || d.data.degree === '暂无数据') {
+              return
+            }
+            let disaster = []
+            this.map._option.series[1].data.forEach((v, i) => {
+              if (v.name === d.data.name) {
+                disaster.push(v)
+              }
+            })
+            if (d.data.degree && disaster.length < 2) {
               return `<div style="width: 200px;text-align: left;word-wrap:break-word">
                       <p>地区：${d.data.name}</p>
                       <p>时间：${d.data.time}</p>
                       <p>灾害类型：${d.data.message}</p>
                       <p>灾害程度：${d.data.degree}</p>
-                      <p style="width: 200px;white-space:pre-wrap">附加说明：${d.data.desc}</p>
                     </div>`
-              // return '地区 : ' + d.data.name + '<br />时间 : ' + d.data.time + '<br />灾害类型 : ' + d.data.message + '<br />灾害程度 : ' + d.data.degree + '<br />附加说明 : ' + d.data.desc
+              // <p style="width: 200px;white-space:pre-wrap">附加说明：${d.data.desc}</p>
+            } else if (d.data.degree) {
+              let text = `<div style="width: 200px;text-align: left;word-wrap:break-word">
+                      <p>地区：${d.data.name}</p>
+                      <p>时间：${d.data.time}</p>`
+              disaster.forEach((v, i) => {
+                text += `<p>灾害类型：${v.message}</p><p>灾害程度：${v.degree}</p>`
+              })
+              return text + `</div>`
             }
-          }
+          },
+          clickCallback: this.clickCallback
         });
 
         /*
@@ -203,6 +235,7 @@
           陕西: 610000,
           甘肃: 620000,
         };
+
 
         /*
          * 渲染数据
@@ -222,25 +255,47 @@
 
         // 模拟图例事件  测试---
         /*var select = {},
-          selectDom = $('li');
-        selectDom.each(function (i, item) {
-          select[i] = true;
-          $(item).on('click', function () {
-            var _i = $(this).index(),
-              selectData = [];
-            select[_i] = !select[_i];
-            for (var j = 0; j < chartData.length; j++) {
-              if (select[chartData[j].level]) {
-                selectData.push(chartData[j]);
-              }
-            }
-            map.show({
-              mapType: '山东',
-              data: selectData
-            });
-          })
-        });*/
+         selectDom = $('li');
+         selectDom.each(function (i, item) {
+         select[i] = true;
+         $(item).on('click', function () {
+         var _i = $(this).index(),
+         selectData = [];
+         select[_i] = !select[_i];
+         for (var j = 0; j < chartData.length; j++) {
+         if (select[chartData[j].level]) {
+         selectData.push(chartData[j]);
+         }
+         }
+         map.show({
+         mapType: '山东',
+         data: selectData
+         });
+         })
+         });*/
+      },
 
+      /**
+       * 点击灾害地图图标时候弹出新的层
+       * @param params obj 地图传回的参数
+       */
+      clickCallback(params) {
+        // 筛选有数据的区域
+        if(params.data.message && params.data.degree){
+            // do something
+          this.$parent.$parent.$parent.bigwindow9 = true
+          // let name = params.data.name === '文登区' ? '文登市' : params.data.name
+          this.$parent.$parent.$parent.paramsdata.name = params.data.name
+        }
+      },
+
+      // echats 图表自适应
+      _windowResizeHandler() {
+        this.map.resize()
+      },
+      // 销毁echats图表方法
+      _destroyEchart() {
+        this.map._dispose();
       },
 
     }
@@ -262,6 +317,10 @@
       left: 2%;
       .unchecked {
         color: #666;
+        &:before {
+          -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+          filter: grayscale(100%);
+        }
       }
       li {
         font-weight: lighter;
@@ -269,7 +328,7 @@
         line-height: 30px;
         text-align: left;
         cursor: pointer;
-        /*&:nth-child(1), &:nth-child(2), &:nth-child(3) {
+        &:nth-child(1), &:nth-child(2), &:nth-child(3) {
           &:before {
             content: '';
             width: 32px;
@@ -298,22 +357,22 @@
             margin: 0 7px;
             display: inline-block;
             vertical-align: middle;
-            background-color: #071c96;
+            background-color: #e7d32c;
           }
         }
         &:nth-child(5) {
           &:before {
-            background-color: #f0ee25;
+            background-color: #ec912f;
           }
         }
         &:nth-child(6) {
           &:before {
-            background-color: #e04c14;
+            background-color: #ff603b;
           }
-        }*/
+        }
 
         /*恢复以前的样式只需要删掉下面这一段，释放上面的注释*/
-        &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+        /*&:nth-child(1), &:nth-child(2), &:nth-child(3) {
           cursor: auto;
           &:before {
             content: '';
@@ -334,8 +393,7 @@
           &:before {
             background-color: #e04c14;
           }
-        }
-
+        }*/
 
       }
     }
@@ -351,7 +409,7 @@
           font-size: 12px;
           height: 24px;
           line-height: 24px;
-          /*&:nth-child(1), &:nth-child(2), &:nth-child(3) {
+          &:nth-child(1), &:nth-child(2), &:nth-child(3) {
             &:before {
               background-size: 100%;
               content: '';
@@ -367,16 +425,19 @@
               margin: 0 6px;
             }
           }
-          */
+          &:nth-child(4), &:nth-child(5), &:nth-child(6) {
+            width: 90px;
+            overflow: hidden;
+          }
           /*恢复以前的样式只需要删掉下面这一段，释放上面的注释*/
-          &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+          /*&:nth-child(1), &:nth-child(2), &:nth-child(3) {
             &:before {
               content: '';
               width: 12px;
               height: 7px;
               margin: 0 6px;
             }
-          }
+          }*/
         }
       }
     }

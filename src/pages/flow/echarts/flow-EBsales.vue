@@ -76,6 +76,7 @@
               data: this.echartsData.xdata
             },
             yAxis: {
+              name:'年销量(吨)',
               nameTextStyle: {
                 color: '#fff',
                 fontSize: 16,
@@ -93,6 +94,10 @@
               },
               axisLabel: {
                 margin: 10,
+               /* formatter: '{value}',*/
+                formatter:(params)=>{
+                  return params
+                },
                 textStyle: {
                   color: '#fff',
                   fontSize: 16

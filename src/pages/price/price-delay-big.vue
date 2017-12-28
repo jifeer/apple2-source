@@ -5,7 +5,7 @@
       <div class="forecast-title">
         <div class="price-title-info">
           <div class="area-select">
-            <selectDiy @change="changeDiy" url="apple/price/conduction/getDelayArea"></selectDiy>
+            <selectDiy @change="changeDiy" url="apple/price/conduction/getDelayArea" defaultOption="山东省"></selectDiy>
           </div>
           <explain :eText="eText"></explain>
         </div>
@@ -50,6 +50,7 @@
       changeDiy(name) {
         this.areaType = name
         this.selectedName = name
+        this.$emit('changeTitle', name)
       },
       getDelayData() {
         /*this.echartsData.xAxisData = ['上海', '内蒙', '贵州', '甘肃', '新疆', '安徽', '天津', '北京', '四川', '江西', '湖南', '重庆', '黑龙江', '湖北', '浙江', '江苏', '广西', '广东']

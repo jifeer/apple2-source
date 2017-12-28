@@ -186,8 +186,8 @@
       initChart() {
         let xData = this.timeType === 'month' ? handleTime(this.data[2].data) : this.data[2].data
         this.option.xAxis.data = xData
-        this.option.series[0].data = this.data[0].data
-        this.option.series[1].data = this.data[1].data
+        this.option.series[0].data = this.data[0].data.map(v=>parseFloat(v).toFixed(2))
+        this.option.series[1].data = this.data[1].data.map(v=>parseFloat(v).toFixed(2))
 
         this.myChart.setOption(this.option, true)
       },

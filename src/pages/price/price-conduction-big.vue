@@ -33,7 +33,7 @@
         flag: true,
         auxiliary: null,
         btnIndex: 0,
-        isHide: false,
+        isHide: true,
         marketclass: 'p2s',
         area: '山东',
         screenWidth: document.body.clientWidth,   // 这里是给到了一个默认值 （这个很重要）
@@ -58,10 +58,8 @@
           data: [],
           option: {}
         },
-        rankingEchartToggle: false,
-        btnData: ['主产区', '主销区'],
-        rankName: '山东产区对销区苹果价格的贡献度排名(%)',
-
+        rankingEchartToggle: true,
+        btnData: ['主产区', '主销区']
       }
     },
     computed: {
@@ -70,6 +68,10 @@
           area: this.area,
           type: this.marketclass
         }
+      },
+      rankName() {
+        //标题处理部分
+        return this.marketclass == 'p2s' ? this.area + '对其他地区苹果价格的影响程度排名（%）' : this.area + '受其他地区苹果价格的影响程度排名（%）'
       }
     },
     mounted() {
@@ -95,8 +97,6 @@
             }]
             this.rankingEchart.yAxisData = res.data.rankName.reverse()
             this.rankingEchart.data = res.data.rankData.reverse()
-            //标题处理部分
-            this.rankName = this.marketclass == 's2p' ? this.area + '销区受产区苹果价格的贡献度排名(%)' : this.area + '产区对销区苹果价格的贡献度排名(%)'
           }
         })
       },

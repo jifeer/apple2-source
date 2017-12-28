@@ -95,7 +95,7 @@
               nameTextStyle: {
                 fontSize: 18,
                 color: '#fff',
-                padding: [0, 40, 15, 0]
+                padding: [20, 40, 5, 0]
               },
               axisLine: {
                 show: false

@@ -1,15 +1,12 @@
 <template>
-
   <div class="price-risefall-wrapper big-wrapper">
     <div class="bigW-option">
       <div class="chart-title">价格预测</div>
       <div class="area-select">
         <selectDiy @change="_changeDiy" :url="url" :data="selectData" v-if="selectData.length"></selectDiy>
-      </div>
-      <div class="date-select">
         <selectBtn :btnData="btnData" @changeBtn="_changeType" :btnIndex.sync="btnIndex"></selectBtn>
+        <explain :eText="eText"></explain>
       </div>
-      <explain :eText="eText"></explain>
     </div>
     <div class="forecast-wrapper">
       <div class="chart-up">
@@ -27,11 +24,9 @@
       </div>
     </div>
   </div>
-
 </template>
-
 <script>
-  import {rightBarMixin} from 'assets/js/common.js'
+  import { rightBarMixin } from 'assets/js/common.js'
 
   import Linechart from './echarts/price-forecast-line.vue'
   import Updown from './echarts/up-down-bar.vue'
@@ -40,7 +35,6 @@
   import Explain from '../../components/explain/explain.vue'
 
   export default {
-
     name: 'warning-big',
     data() {
       return {
@@ -179,10 +173,8 @@
         this.getWarningBarData()
       }
     }
-
-  };
+  }
 </script>
-
 <style lang="scss" scoped>
   @import "./../../assets/css/_variable.scss";
   @import "./../../assets/css/_mixin.scss";
@@ -191,20 +183,25 @@
     height: 100%;
     padding-bottom: 0;
     .bigW-option {
-      //border-top: 1px solid #1961A5;
+      @include flex(space-between);
       height: 0.5rem;
       padding-top: 0.1rem;
     }
+
     .forecast-wrapper {
       height: calc(100% - 0.6rem);
     }
-    .date-select {
+    /*.date-select {
       width: 5.6rem;
       text-align: right;
       margin-right: 0.2rem;
-    }
+    }*/
     .area-select {
-      margin-right: 0rem;
+      display: flex;
+    }
+    .area-select>div {
+      display: inline-block;
+      margin-left: 0.2rem;
     }
     .title-info {
       margin: 0.1rem 0;
@@ -214,13 +211,13 @@
       height: 42%;
     }
 
-    .chart-up > div, .chart-down .chart-down-chart {
+    .chart-up>div,
+    .chart-down .chart-down-chart {
       height: 100%;
     }
     .chart-title {
       font-size: 0.24rem;
       height: 0.3rem;
-      width: 100%;
       color: #fff;
     }
     .chart-down .chart-title {

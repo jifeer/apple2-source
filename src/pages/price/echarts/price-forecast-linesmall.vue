@@ -73,7 +73,7 @@
             legend: {
               show: false,
               left: 'center',
-              data: ['价格预测', '实际价格'],
+              data: ['预测价格', '实际价格'],
               icon: 'line',
               itemWidth: 15,
               textStyle: {
@@ -141,7 +141,7 @@
             },
             series: [
               {
-                name: '价格预测',
+                name: '预测价格',
                 type: 'line',
                 /*symbolSize: 0,
                 itemStyle: {

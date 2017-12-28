@@ -1,16 +1,15 @@
 <template>
   <div ref="chart" :style="{width:width,height:height}">
-
   </div>
 </template>
 <script>
-  import {resizeMixin} from 'assets/js/common'
-  import {axisLabel, MarkArea} from 'assets/js/echarts-style.js';
+  import { resizeMixin } from 'assets/js/common'
+  import { axisLabel, MarkArea } from 'assets/js/echarts-style.js';
 
   export default {
     mixins: [resizeMixin],
     name: 'historical-big',
-    data(){
+    data() {
       return {
         myChart: {}
       }
@@ -25,7 +24,7 @@
       },
       axisData: {
         type: Object,
-        default: function () {
+        default: function() {
           return {
             yAxisNameL: '产量（万吨）',
             yAxisNameR: '变化率（%）',
@@ -40,7 +39,8 @@
           [0, 4],
           [4, 8],
           [8, 12],
-          [12, 15]]
+          [12, 15]
+        ]
       },
       height: {
         type: String,
@@ -54,10 +54,10 @@
 
     watch: {
       echartsData: {
-        handler: function (val, oldVal) {
+        handler: function(val, oldVal) {
           this.initChart()
         },
-        deep: true  //增加deep 观察对象的子对象变化
+        deep: true //增加deep 观察对象的子对象变化
       }
     },
 
@@ -68,7 +68,7 @@
     computed: {},
 
     methods: {
-      initOption(){
+      initOption() {
         this.option = {
           grid: {
             left: '4%',
@@ -90,15 +90,17 @@
                 color: 'rgba(0, 255, 102, .05)'
               }
             },
-            formatter: function (params) {
-//                console.log(params)
+            formatter: function(params) {
+              //                console.log(params)
               let str = `<div style="padding: 6px"><p style="text-align: left">${params[0].axisValue}</p>`
-              params.forEach(function (val, index) {
-                if (index % 2 == 0) {
-                  str += `<p style="text-align: left">${val.seriesName}：${val.value || val.value === 0 ? val.value.toFixed(2) : "-"}${val.seriesName.indexOf("种植面积") >= 0 ? '万亩' : val.seriesName.indexOf("单产") >= 0 ? '公斤/亩' : '万吨'}</p>`
-                } else {
-                  str += `<p style="text-align: left">${val.seriesName}：${val.value || val.value === 0 ? val.value.toFixed(2) : "-"}%</p>`
-                }
+              params.forEach(function(val, index) {
+                const unite = (val.seriesName.indexOf('种植面积')  > -1 || val.seriesName.indexOf('产量'))  > -1 && val.seriesType === 'bar' ? '万亩' : val.seriesName.indexOf('单产') > -1 && val.seriesType === 'bar' ? '公斤/亩' : '%'
+                str += `<p style="text-align: left">${val.seriesName}：${val.value || val.value === 0 ? val.value.toFixed(2) : "-"}${unite}`
+                // if (index % 2 == 0) {
+                //   str += `<p style="text-align: left">${val.seriesName}：${val.value || val.value === 0 ? val.value.toFixed(2) : "-"}${val.seriesName.indexOf("种植面积") >= 0 ? '万亩' : val.seriesName.indexOf("单产") >= 0 ? '公斤/亩' : '万吨'}</p>`
+                // } else {
+                //   str += `<p style="text-align: left">${val.seriesName}：${val.value || val.value === 0 ? val.value.toFixed(2) : "-"}%</p>`
+                // }
               })
               str += `</div>`
               return str
@@ -280,11 +282,11 @@
               newSeries.push({
                 name: `${this.axisData.isXian?'苹果':item}${this.axisData.type}`,
                 type: 'bar',
-//                barWidth: 16,
+                //                barWidth: 16,
                 barMaxWidth: 16,
                 itemStyle: {
                   normal: {
-//                    color: '#40b0fc'
+                    //                    color: '#40b0fc'
                   }
                 },
                 data: this.echartsData.data[item].data1,
@@ -296,12 +298,12 @@
                 symbolSize: 8,
                 lineStyle: {
                   normal: {
-//                    color: '#099d4f'
+                    //                    color: '#099d4f'
                   }
                 },
                 itemStyle: {
                   normal: {
-//                    color: '#099d4f',
+                    //                    color: '#099d4f',
                     opacity: 0
                   }
                 },
@@ -319,11 +321,9 @@
                       width: 1
                     }
                   },
-                  data: [
-                    {
-                      yAxis: 0
-                    }
-                  ]
+                  data: [{
+                    yAxis: 0
+                  }]
                 },
                 data: this.echartsData.data[item].data2,
               })
@@ -362,9 +362,10 @@
       }
     }
   }
-</script>
 
+</script>
 <style lang="scss" scoped>
   @import "./../../../assets/css/_variable.scss";
   @import "./../../../assets/css/_mixin.scss";
+
 </style>

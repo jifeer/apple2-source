@@ -23,7 +23,7 @@
         <div class="left-bar-underline"></div>
       </router-link>
       <router-link class="item" tag="li" :to="{name:'ForeignTrade'}">
-        <p><i class="iconfont icon-shijieditu"></i><br/>对外贸易</p>
+        <p><i class="iconfont icon-shijieditu"></i><br/>贸易</p>
         <div class="left-bar-underline"></div>
       </router-link>
       <router-link class="item" tag="li" :to="{name:'CostBenefit'}">

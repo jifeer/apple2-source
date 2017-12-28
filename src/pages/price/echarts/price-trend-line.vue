@@ -1,10 +1,9 @@
 <template>
   <div ref="barchart"></div>
 </template>
-
 <script>
-  import {$, datazoom, resizeMixin} from 'assets/js/common'
-  import {dataZoom, tooltipStyle, axisLabel} from 'assets/js/echarts-style'
+  import { $, datazoom, resizeMixin } from 'assets/js/common'
+  import { dataZoom, tooltipStyle, axisLabel } from 'assets/js/echarts-style'
 
   export default {
     name: 'lineecharts',
@@ -22,24 +21,21 @@
     },
     watch: {
       echartsData: {
-        handler: function (val, oldVal) {
+        handler: function(val, oldVal) {
           this.initChart()
+
         },
-        deep: true  //增加deep 观察对象的子对象变化
+        deep: true //增加deep 观察对象的子对象变化
       }
     },
     mounted() {
       this.myChart = this.$echarts.init(this.$refs.barchart)
+      //console.log(this.echartsData)
     },
     computed: {},
     methods: {
       initChart() {
-        let echartOpt = {
-          fz: '16',
-          color: '#fff'
-        };
         if (Object.keys(this.echartsData).length) {
-          //console.log(this.echartsData)
           let option = {
             tooltip: {
               ...tooltipStyle,
@@ -173,8 +169,7 @@
               "start": 1,
               "end": 35
             }],
-            series: [
-              {
+            series: [{
                 //name: '零售价格',
                 name: this.echartsData.name1,
                 type: 'line',
@@ -199,7 +194,7 @@
                 symbolSize: 10,
                 itemStyle: {
                   normal: {
-                    color: '#00B874',  // 定义 线条及圆点内部的颜色
+                    color: '#00B874', // 定义 线条及圆点内部的颜色
                     borderColor: '#FEFB00', // 定义圆点边框颜色
                     borderWidth: 2,
                   },
@@ -292,11 +287,10 @@
 
 
   }
-</script>
 
+</script>
 <style lang="scss" scoped>
   @import "./../../../assets/css/_variable.scss";
   @import "./../../../assets/css/_mixin.scss";
-
 
 </style>

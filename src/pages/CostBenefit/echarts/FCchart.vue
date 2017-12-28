@@ -33,7 +33,7 @@
     },
     data() {
       return {
-        color: ["#009E4C", "#E9C80E", "#0071B3", "#FF7200"],
+        color: ["#009E4C", "#E9C80E", "#0071B3", "#FF7200", '#986DB2', '#86C1ee','#64363C','#F0A986','#F7C242','#2EA9DF','#E03C8A','#5DAC81'],
         unit: null,
       };
     },
@@ -152,9 +152,9 @@
             yAxis: {
               nameTextStyle: {
                 color: '#fff',
-                fontSize: '20',
-                align: "center",
-                lineHeight: 50,
+                fontSize: '18',
+                align: "left",
+                padding: [0,0,0,-20],
               },
               nameGap: 26,
               type: 'value',
@@ -226,11 +226,11 @@
           this.unit = "元/亩"
         }
         this.option.tooltip.formatter = (params) => {
-          let a1 = "<div style='text-align:left'>" + params[0].name + "年<br/>"
+          let tooltip = "<div style='text-align:left'>" + params[0].name + "年<br/>"
           for (let index = 0; index < params.length; index++) {
-            a1 += params[index].marker + params[index].seriesName + "：" + params[index].value + this.unit + "<br/>"
+            tooltip += `${params[index].marker}${params[index].seriesName}：${params[index].value === '-' ? 0 : params[index].value}${this.unit}<br/>`
           }
-          return a1 + "</div>"
+          return tooltip + "</div>"
         }
         this.option.series = newSeries
         this.option.legend.data = legendData

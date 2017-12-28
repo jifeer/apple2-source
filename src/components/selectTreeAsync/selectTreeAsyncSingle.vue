@@ -56,7 +56,7 @@
         highlightCurrent: true,
         selectShow: false,
         // 供显示使用
-        showId: '陕西',
+        showId: '全国',
         //供点击使用
         clickId: '',
         clickType: 0,
@@ -106,7 +106,7 @@
         if (this.clickType === 1 || this.clickType === 3) {
           this.showId = this.clickId
         } else if (this.clickType == 2) {
-          alert('市级不可选')
+          this.open()
         }
         this.$emit("change", this.showId ,this.emitType)
       },
@@ -119,6 +119,13 @@
       },
       controlShow() {
         this.selectShow = false
+      },
+
+      open() {
+        this.$message({
+          message: '市级不可选',
+          center: true
+        })
       },
       refreshBtn() {
         /*setTimeout(() => {
@@ -193,7 +200,10 @@
       .scroll-wrapper {
         //overflow-y:scroll;
         width: 3rem; // height: calc(100% - 0.33rem);
-        // padding-bottom: 0.33rem;
+        .el-tree /deep/ .el-tree-node .el-tree-node__content .el-tree-node__label {
+          font-size: 18px;
+          font-weight: 200;
+        }
       }
       ul {
         li {
